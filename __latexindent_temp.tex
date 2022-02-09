@@ -1,0 +1,94 @@
+\documentclass[12pt]{article}
+\usepackage{url}
+\usepackage{setspace}
+\usepackage[superscript]{cite}
+\usepackage{graphicx}
+\usepackage[normalem]{ulem}
+\graphicspath{ {Figures/} }
+\usepackage{caption}
+\usepackage{cite}
+\usepackage{indentfirst}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\textwidth=6.5in
+\oddsidemargin=0.0in
+\usepackage{listings}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{longtable}
+\usepackage[table]{xcolor}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Project Title}
+\rhead{Page \thepage}
+
+\usepackage{color}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor=black,
+    linktoc=all,
+    linkcolor=black,
+}
+
+\begin{document}
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\center
+
+\textsc{\LARGE Missouri State University\\~\\Department computer Science}\\[1.0cm]
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Project title}\\[0.4cm]
+\HRule \\[1.5cm]
+
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+Team member 1 \\ Team member 2 \\ Team member 3
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+Client Info \\
+fer@yahoo.com
+\end{flushright}
+\end{minipage}\\[2cm]
+
+{\large \today}\\[2cm]
+
+\end{titlepage}
+
+\newpage
+%-----------------------------------------------------------------------
+\tableofcontents
+
+\newpage
+%----------------------------------------------------------------------
+
+%-----------------------------------------------------------------------------
+\section{Project description}
+Project suggestions: \\
+Project 1: \\
+Project 2: Test
+\subsection{Hello}
+this is the hello section and it is about hello
+\section{References}
+
+\begingroup
+\renewcommand{\section}[2]{}
+\begin{thebibliography}{10}
+
+\bigskip
+
+
+\end{thebibliography}
+\endgroup
+
+
+\end{document}
