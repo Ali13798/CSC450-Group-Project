@@ -139,13 +139,13 @@ Req-04: Keyboard and mouse interactions are monitored to detect if the user has 
     \item Output(s): Req-05 is called.
     \item Dependency: Javascript being enabled on the chrome browser.
 \end{itemize}
-Req-05:
+Req-05: If no user inputs detected according to Req-04 after a predetermined amount of time, alert the user with a prompt to verify they are still working.
 \begin{itemize}
-    \item Description:
-    \item Rationale:
-    \item Input(s):
-    \item Output(s):
-    \item Dependency:
+    \item Description: When the conditions of Req-04 are met, the user is prompted to verify they are still working. The study timer is paused until the user verification is complete.
+    \item Rationale: Asking for user interaction to verify they are still working encourages more engagement with the material and ensures the user is present and attentive during the study times.
+    \item Input(s): Req-04.
+    \item Output(s): Prompt to user in the form of a pop up, or other contents.
+    \item Dependency: Javascript being enabled on the chrome browser and Req-04.
 \end{itemize}
 Req-06: During study time, check if the Google Chrome browser is in focus.
 \begin{itemize}
