@@ -20,7 +20,7 @@
 \usepackage[table]{xcolor}
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{Study Help Extension}
+\lhead{Personal Study Assistant}
 \rhead{Page \thepage}
 
 \usepackage{color}
@@ -43,7 +43,7 @@
     \textsc{\LARGE Missouri State University\\~\\Department computer Science}\\[1.0cm]
 
     \HRule \\[0.4cm]
-    { \huge \bfseries Study Help Extension}\\[0.4cm]
+    { \huge \bfseries Personal Study Assistant}\\[0.4cm]
     \HRule \\[1.5cm]
 
 
@@ -77,27 +77,235 @@
 
 %-----------------------------------------------------------------------------
 \section{Project description}
-\subsection{Study Assistant}
-Extension to help students study by forcing studying for a period of time.
-When student begins study time allows only approved websites to be accessed.
-When study time ends, there is a free time where they can access whatever they want until
-there is study time again.
-\\
-Parental controls\\
-\\
-Purpose:
+\subsection{Description}
+Google Chrome Extension to help students study by minimizing distractions from other websites.
+This is inspired by The Pomodoro Technique which recommendes studying for 25 minutes, then a 5 minute break, repeating that 3 times and then having a longer break.
+During study time, the user will only be allowed to access approved websites such as Google Classroom. This will be handled through a whitelist of approved websites.
+During the break time, the user is allowed to access any website they desire, but they are encouraged to practice healthy activites like stretching or drinking water.
+The user's keyboard and mouse inputs will be monitored to measure if they are actively working.
+\subsection{Key Components}
 \begin{itemize}
-    \item To increase effectiveness of study time for students.
+    \item Timer that switches between study time and break time
+    \item Whitelist of a pproved websites
+    \item Parental controls to alter the whitelist
+    \item Record of past sessions and the all time totals for study time
 \end{itemize}
-Knowledge: 
+\subsection{Knowledge Required for Developers} 
 \begin{itemize}
-    \item HTML, CSS, JS.
+    \item HTML
+    \item CSS 
+    \item JavaScript 
     \item How to make Chrome Extension
+    \item Locally host a webpage
 \end{itemize}
-Hardware:
+\subsection{Hardware required for the user}
 \begin{itemize}
     \item Computer
     \item Internet
+    \item Google Chrome Browser
+\end{itemize}
+
+\section{Software Requirement Specification}
+
+Req-01: On the first run, get information from the user.
+\begin{itemize}
+    \item Description: The function makes the user provide their information (name, parent pin, etc.) 
+    \item Rationale: Student provides information to personalize the experience. Parent pin allows for access to control the whitelist.  
+    \item Input(s): Input information about the user and the chosen parent pin. 
+    \item Output(s): N/A. 
+    \item Dependency: N/A. 
+\end{itemize}
+Req-02: Users can choose from a list of timer options when the extension is started. 
+\begin{itemize}
+    \item Description: The function lets users choose from a list of timer options. Example options would be A- 25 min study, 5-minute break, 3 times, 15 min long break or B- 45 minute study, 10 minute break, 3 times, 30 minute long break. 
+    \item Rationale: User might want to study for different amounts of time different days so this lets them choose. 
+    \item Input(s): Function receive option result from users. 
+    \item Output(s): Begin chosen session type.
+    \item Dependency: N/A.
+\end{itemize}
+Req-03:  There is a Timer to keep track of study and break time. 
+\begin{itemize}
+    \item Description: A timer is running to keep track of users’ study time and break time. Timer can be paused, resumed, and reset by the user and system. Change color in study mode and break mode. Can be hidden or unhidden by the user.
+    \item Rationale: It is easy to loose track of time or think that a lot more time has passed than really did while studying. A timer allows the user to know exactly how long they have been working, and how much longer they have. 
+    \item Input(s): Amount of time to start at, values for pause , resume, and hide the timer.
+    \item Output(s): Alert when timer is done.
+    \item Dependency: Timer amount from Req-02.
+\end{itemize}
+Req-04: 
+\begin{itemize}
+    \item Description: 
+    \item Rationale: 
+    \item Input(s): 
+    \item Output(s): 
+    \item Dependency: 
+\end{itemize}
+Req-05: 
+\begin{itemize}
+    \item Description: 
+    \item Rationale: 
+    \item Input(s): 
+    \item Output(s): 
+    \item Dependency: 
+\end{itemize}
+Req-06: During study time, check if the Google Chrome browser is in focus.
+\begin{itemize}
+    \item Description: The function checks if the browser window is in focus every few seconds. If it is found not to be, then the value is changed to false.
+    \item Rationale: If the Google Chrome browser window is not in focus during study time, then the user is not studying so the extension needs to get them back on task.
+    \item Input(s): N/A.
+    \item Output(s): The in-focus value is changed to false, and Req-07 is called.
+    \item Dependency: N/A.
+\end{itemize}
+Req-07: During study time, send an alarm and alert to the user if the Google Chrome browser is not in focus, and pause the timer. 
+\begin{itemize}
+    \item Description: During study time, an alarm will sound when the extension detects the Google Chrome browser is not the in-focus window. When the user comes back to the page, an alert will show explaining the alarm sounded because the browser window was out of focus.
+    \item Rationale: The purpose of the alarm and alert is to try to prevent the user from using other applications on the computer when they should be studying. The extension cannot prevent other applications, but it can encourage the user to stay on task. 
+    \item Input(s): Function receives a value of false.
+    \item Output(s): Sends out an alert and alarm to the user and pauses the timer until the alarm and alert is stopped.
+    \item Dependency: Gets input from Req-06, access timer through Req-03.
+\end{itemize}
+Req-08: Implement a whitelist for only previously approved websites.  
+\begin{itemize}
+    \item Description: During study time, the user is only allowed to visit previously approved websites as specified in the whitelist. 
+    \item Rationale: If the user is allowed to access non-educational sites such as social media or games, then they will not be focused on studying and will be wasting time. 
+    \item Input(s): Can accept new additions to the whitelist from the user’s parental figure with their pin.
+    \item Output(s): N/A.
+    \item Dependency: May receive input from Req-09 if a new site is added.  
+\end{itemize}
+Req-09: During study time, access to a non-approved site will result in access to the site being blocked. Option to add the site to the whitelist is displayed with the alert.  
+\begin{itemize}
+    \item Description: Access to a site not on the whitelist will be blocked and a message will show explaining that it has been blocked. An option to add the site to the whitelist will also show but will require a parent pin to add it.  
+    \item Rationale: Sites not on the approved whitelist should be blocked when attempted to access because the user will not be studying if they are trying to access social media. But, if the site is a new educational resource, then the parent should be able to add it to the list of approved sites. 
+    \item Input(s): The whitelist so that the function can see if a site is not allowed.  
+    \item Output(s): Block the site, send an alert, add a new website to whitelist if they choose to do so.
+    \item Dependency: Receives the whitelist form Req-08.  
+\end{itemize}
+Req-10: When study time ends, display a message for the user to choose to begin or postpone the break.  
+\begin{itemize}
+    \item Description: When the study time ends, congratulate the user, and ask if they are ready for their break by displaying a “Start Break” button, and a “Postpone for x minutes” button with a drop-down menu selector for 1, 2, 3, 4, or 5 minutes more. Function will call the short or long break depending on the value of numOfShortBreaksLeft.  
+    \item Rationale: The user must take short breaks to avoid burn out which would result in less effective studying.  
+    \item Input(s): Called when the study timer ends.
+    \item Output(s): Send the message to the user to being or postpone the break.  
+    \item Dependency: Receives the end timer message from Req-03.
+\end{itemize}
+Req-11: Short break: If a break is started, decrease the number of short breaks needed until a long break and begin break time.  
+\begin{itemize}
+    \item Description: During break time, the user is allowed to visit non-approved sites and can change the window. There will be a message shown when break time starts to encourage the user to participate in healthy activities such as drinking water, having a healthy snack, and doing some stretches.  This function will also update numOfShortBreaksLeft that decides how many more short breaks there must be until a long break.  
+    \item Rationale: The Pomodoro Technique says to have short breaks for a few cycles, then a long break before starting again to help prevent burn out and to use time wisely. The users should be allowed to do whatever they would like during break time, but the pomodoro technique recommends healthy activities and not scrolling social media.  
+    \item Input(s): N/A.
+    \item Output(s): Timer is changed to count down until the break is over.  
+    \item Dependency: Access the user’s input from Req-10 and access the timer from Req-03.  
+\end{itemize}
+Req-12: Long break: If it is time for a long break, begin the break. 
+\begin{itemize}
+    \item Description: This function begins the long break which happens once per session after a few cycles of study time and short breaks.  
+    \item Rationale: The Pomodoro Technique recommends having a long break after having a few short breaks.  
+    \item Input(s): N/A.
+    \item Output(s): Break message is sent out like the message for short break from Req-11. 
+    \item Dependency: Is called from Req-10 and accesses the timer from Req-03.
+\end{itemize}
+Req-13: If the break is postponed, turn timer red and keep counting. 
+\begin{itemize}
+    \item Description: This function activates when the user does not take the prompted break. Turning the timer read and continuing to count.
+    \item Rationale: Lets the user know that they need to take their break and that the timer is still counting. 
+    \item Input(s): User not having hit the break button. 
+    \item Output(s): Continues counting, but font is now red. 
+    \item Dependency: Input from Req-10 and timer from req-03.
+\end{itemize}
+Req-14: Do not allow for the study tabs to be opened during the break time 
+\begin{itemize}
+    \item Description: Does not allow the user to open the tabs they were using for studying during the break. 
+    \item Rationale: Forces the user to actually take their break. 
+    \item Input(s): Study timer and break timer. 
+    \item Output(s): Lock / unlock
+    \item Dependency: Input from Req-10 and timer from req-03.
+\end{itemize}
+Req-15: At the end of the break, display an alert to begin the next session, and play an audio alert if no response for 1 minute. If this is the end of a long break, ask if they want to restart the same session, stop, or choose a different session 
+\begin{itemize}
+    \item Description:  Asks user at the end of their break if they would like to begin their session again and ask if they want to resume, stop, or start a new session. Plays an audio alert after a minute if no response.
+    \item Rationale: Allows user to decide their next steps after a break. 
+    \item Input(s): User says: resume, stop, start new. 
+    \item Output(s): Repeats user’s input and reacts with the appropriate action. Resumes where user left off, stops the program, or starts a new session.
+    \item Dependency:  Input from Req-10 and timer from req-03. 
+\end{itemize}
+Req-16: Allow parents to approve new websites with a parent pin 
+\begin{itemize}
+    \item Description: Allows access to new websites with parent’s approval via a chosen PIN.
+    \item Rationale: User can only visit approved sites during study sessions.
+    \item Input(s): Parent PIN, website URL.
+    \item Output(s): User can now visit that website during study sessions.
+    \item Dependency: Req-09 to bring up whitelist option.
+\end{itemize}
+Req-17: 
+\begin{itemize}
+    \item Description: 
+    \item Rationale: 
+    \item Input(s): 
+    \item Output(s): 
+    \item Dependency: 
+\end{itemize}
+Req-18: User has the ability to stop the session at any time (emergency stop, may require parent pin) 
+\begin{itemize}
+    \item Description: User can stop their session with an “end button”.
+    \item Rationale: User needs to do something else or leave mid-session. Or they finish all of their work / studying.
+    \item Input(s): User pressing the “end button”. (Possibly a parent PIN input.)
+    \item Output(s): Message that the extension is being closed. (Or maybe a parent PIN input box for approval.)
+    \item Dependency: N/A.
+\end{itemize}
+Req-19: 
+\begin{itemize}
+    \item Description: 
+    \item Rationale: 
+    \item Input(s): 
+    \item Output(s): 
+    \item Dependency: 
+\end{itemize}
+Req-20: 
+\begin{itemize}
+    \item Description: 
+    \item Rationale: 
+    \item Input(s): 
+    \item Output(s): 
+    \item Dependency: 
+\end{itemize}
+Req-21: 
+\begin{itemize}
+    \item Description: 
+    \item Rationale: 
+    \item Input(s): 
+    \item Output(s): 
+    \item Dependency: 
+\end{itemize}
+Req-22:  
+\begin{itemize}
+    \item Description: 
+    \item Rationale: 
+    \item Input(s): 
+    \item Output(s): 
+    \item Dependency: 
+\end{itemize}
+Req-23:  
+\begin{itemize}
+    \item Description: 
+    \item Rationale: 
+    \item Input(s): 
+    \item Output(s): 
+    \item Dependency: 
+\end{itemize}
+Req-24: 
+\begin{itemize}
+    \item Description: 
+    \item Rationale: 
+    \item Input(s): 
+    \item Output(s): 
+    \item Dependency: 
+\end{itemize}
+Req-25: 
+\begin{itemize}
+    \item Description: 
+    \item Rationale: 
+    \item Input(s): 
+    \item Output(s): 
+    \item Dependency: 
 \end{itemize}
 \section{References}
 
