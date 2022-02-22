@@ -252,61 +252,40 @@ Req-18: User has the ability to stop the session at any time (emergency stop, ma
     \item Dependency: N/A.
 \end{itemize}
 \subsection{Non-Functional requirements}
-Req-19: 
+Req-19: Moderate level of responsiveness
 \begin{itemize}
-    \item Description: 
-    \item Rationale: 
-    \item Input(s): 
-    \item Output(s): 
-    \item Dependency: 
+    \item Description: The extension's features should have a moderate level of responsiveness, at no less than 2 seconds for any action that does not depend on data transfer over The Internet.
+    \item Rationale: This extension does not need to be especially responsive. It should be low enough that the accuracy of the timers is maintained.
 \end{itemize}
-Req-20: 
+Req-20: Very easy to use
 \begin{itemize}
-    \item Description: 
-    \item Rationale: 
-    \item Input(s): 
-    \item Output(s): 
-    \item Dependency: 
+    \item Description: The system should be very easy to use for users, with simple instructions and short descriptions. Only an elementary school reading level should be required. This requirement does not have to extend to settings menus or any other areas that require a parent PIN.
+    \item Rationale: This system will likely be used by children.
 \end{itemize}
-Req-21: 
+Req-21: Self-contained failure
 \begin{itemize}
-    \item Description: 
-    \item Rationale: 
-    \item Input(s): 
-    \item Output(s): 
-    \item Dependency: 
+    \item Description: If the extension crashes, produces an error, or otherwise fails, it should not compromise the integrity of the entire browser or any open tabs. At worst, only the extension itself should cease functioning.
+    \item Rationale: Users should not suddenly lose progress or data in their studies. Even though they will likely have to restart the browser for the extension to get working again, the user will have an opportunity to save data, bookmark pages, etc.
 \end{itemize}
-Req-22:  
+Req-22:  No storage of browsing history
 \begin{itemize}
-    \item Description: 
-    \item Rationale: 
-    \item Input(s): 
-    \item Output(s): 
-    \item Dependency: 
+    \item Description: Browsing history of any sort should not be saved or stored by this extension. If need be, only the history stored by the browser itself should be accessed, but it should never be copied anywhere permanent.
+    \item Rationale: Browsing history is often very sensitive data, and this extension should not become an attack vector for that data to be compromised.
 \end{itemize}
-Req-23:  
+Req-23:  No excessive memory usage
 \begin{itemize}
-    \item Description: 
-    \item Rationale: 
-    \item Input(s): 
-    \item Output(s): 
-    \item Dependency: 
+    \item Description: This extension should not add more than 100 MB of memory per tab.
+    \item Rationale: Although Chrome and other browsers are notoriously memory-heavy, this extension is simple enough that it should not contribute much to that problem. Notable extra memory usage originating from this extension is likely due to a memory leak or other error.
 \end{itemize}
-Req-24: 
+Req-24: Adherence to browser and university policies
 \begin{itemize}
-    \item Description: 
-    \item Rationale: 
-    \item Input(s): 
-    \item Output(s): 
-    \item Dependency: 
+    \item Description: The extension should adhere to all policies that are required of a browser extension for Google Chrome, that was created by students of Missouri State University. This is subject to change if the extension is ported to any other browsers.
+    \item Rationale: All browser extensions have policies they must adhere to in order to be listed on their respective app stores.
 \end{itemize}
-Req-25: 
+Req-25: Web-based features will update within a day
 \begin{itemize}
-    \item Description: 
-    \item Rationale: 
-    \item Input(s): 
-    \item Output(s): 
-    \item Dependency: 
+    \item Description: When any changes are submitted after a session, those updates should be visible to the user within 24 hours.
+    \item Rationale: Users will need to see their overall progress in their studies within a reasonable amount of time. Since this will be dependent on a web server, some time should be allowed for data transfer and potential outages.
 \end{itemize}
 \section{References}
 
