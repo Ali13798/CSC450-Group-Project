@@ -111,7 +111,7 @@ The user's keyboard and mouse inputs will be monitored to measure if they are ac
 \end{itemize}
 Req-01: On the first run, get information from the user.
 \begin{itemize}
-    \item Description: The function makes the user provide their information (name, parent pin, etc.)
+    \item Description: The function makes the user provide their chosen username and a parent pin. 
     \item Rationale: Student provides information to personalize the experience. Parent pin allows for access to control the whitelist.
     \item Input(s): Input information about the user and the chosen parent pin.
     \item Output(s): N/A.
@@ -130,7 +130,7 @@ Req-03:  There is a Timer to keep track of study and break time.
     \item Description: A timer is running to keep track of users’ study time and break time. Timer can be paused, resumed, and reset by the user and system. Change color in study mode and break mode. Can be hidden or unhidden by the user.
     \item Rationale: It is easy to loose track of time or think that a lot more time has passed than really did while studying. A timer allows the user to know exactly how long they have been working, and how much longer they have.
     \item Input(s): Amount of time to start at, values for pause , resume, and hide the timer.
-    \item Output(s): Alert when timer is done.
+    \item Output(s): Send an alert when timer reaches 00:00. 
     \item Dependency: Timer amount from Req-02.
 \end{itemize}
 Req-04: Keyboard and mouse interactions are monitored to detect if the user has stopped working.
@@ -237,7 +237,7 @@ Req-16: Allow parents to approve new websites with a parent pin
     \item Output(s): User can now visit that website during study sessions.
     \item Dependency: Req-09 to bring up whitelist option.
 \end{itemize}
-Req-17: Website for user to view progress data, statistics, and reports, as well as participate in gamification.
+Req-17: Website for user to view their history, progress data, statistics, and reports, as well as participate in gamification.
 \begin{itemize}
     \item Description: The user will have the option to log into a website (available on localhost for this project's scope; this website could be deployed on a specific domain) where useful data about their progress can be viewed. The user will be able to participate in gamification to encourage improvements over time.
     \item Rationale: A centralized location for the user to view all of their data can be very useful to spot trends, access reports, and improve study habits.
