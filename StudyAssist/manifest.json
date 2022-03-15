@@ -6,5 +6,11 @@
     "action": {
         "default_popup": "popup.html",
         "default_title": "Welcome!"
-    }
+    },
+    "background": {
+        "service_worker":"background.js"
+    },
+    "permissions": [
+        "storage"
+    ]
 }
