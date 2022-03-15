@@ -1,0 +1,16 @@
+Holding place for work in progress solution for manifest_version : 3 method to block 
+
+   "declarative_net_request" : {
+        "rule_resources" : [
+            {
+                "id": "ruleset_1",
+                "enabled": true,
+                "path": "rules.json"
+            }
+        ]
+    },
+    "permissions": [
+        "storage",
+        "declarativeNetRequest"
+        
+    ]
