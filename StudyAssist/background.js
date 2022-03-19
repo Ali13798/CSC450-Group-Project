@@ -49,7 +49,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
   
     chrome.storage.local.get(["blocked", "enabled"], function (local) {
       const { blocked, enabled } = local;
-      if (Array.isArray(blocked) && enabled && blocked.find(domain => hostname.includes(domain))) {
+      if (Array.isArray(blocked) && enabled && !blocked.find(domain => hostname.includes(domain))) {
         chrome.tabs.remove(tabId);
       }
     });

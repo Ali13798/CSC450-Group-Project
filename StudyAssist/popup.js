@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
     var save = document.getElementById("save");
     var checkbox = document.getElementById("checkbox");
 
+    //load the text area with our list of approved websites
+    textarea.innerHTML = "blackboard.missouristate.edu \nclassroom.google.com  \nwww.office.com  \ndrive.google.com \nowl.purdue.edu";
+
     document.getElementById("beginSession").addEventListener('click', () => {
        if(!checkbox.checked){
            checkbox.click();
