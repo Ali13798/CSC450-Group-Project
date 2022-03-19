@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Personal Study Assistant Menu</title>
+    <title>Personal Study Assistant</title>
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
@@ -10,6 +10,14 @@
         <h2>Hello!</h2>
         <button id="beginSession">Begin Session</button> 
         <button id="endSession">End Session</button> 
+        <button id="optionsBtn">Options</button> 
+        <div id="options">
+            <h3>Personal Study Assistant Options</h3>
+            <textarea id="textarea" rows="10" cols="30" spellcheck="false"></textarea>
+            <br>
+            <button id="save">Save</button>
+            <strong>Enabled?</strong><input id="checkbox" type="checkbox">
+        </div>
     </div>
     <script src="popup.js"></script>
 </body>

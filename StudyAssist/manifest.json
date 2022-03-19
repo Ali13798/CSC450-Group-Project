@@ -2,8 +2,8 @@
     "name": "Personal Study Assistant",
     "description": "Help you use your study time more efficently by minimizing distractions.",
     "version": "1.0",
-    "manifest_version": 2, 
-    "browser_action": {
+    "manifest_version": 3, 
+    "action": {
         "default_popup": "popup.html",
         "default_title": "Welcome!"
     },
@@ -12,8 +12,6 @@
     },
     "permissions": [
         "storage",
-        "webRequest",
-        "webRequestBlocking",
-        "<all_urls>"
+        "tabs"
     ]
 }
