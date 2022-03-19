@@ -2,23 +2,33 @@
 chrome.runtime.onMessage.addListener((msg) => {
     // console.log("in background");
     // console.log("about to block");
-    chrome.webRequest.onBeforeRequest.addListener(
-        function () {
-            return {cancel:true};
-        },
-        {
-            urls: ["*://*.com/*"]
-        },
-        ["blocking"]
-    );
-    return true;
+    if(msg.message == "end"){
+        chrome.webRequest.onBeforeRequest.addListener(
+            function () {
+                return {cancel:true};
+            },
+            {
+                urls: ["*://*.edu/*"]
+            },
+            ["blocking"]
+        );
+    }else{
+        chrome.webRequest.onBeforeRequest.addListener(
+            function () {
+                return {cancel:true};
+            },
+            {
+                urls: ["*://*.com/*"]
+            },
+            ["blocking"]
+        );
+        
+    }
+    return true;  
 });
 
-    // chrome.runtime.onInstalled.addListener(() => {
-        
-    // });
 
-
+//Mackensie - Research on alternative blocking methods: 
 // let wait = 1000;
 // async function checkCurrentTab() {
 //     let queryOptions = { active: true, currentWindow: true };
