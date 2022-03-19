@@ -1,6 +1,7 @@
 //Working on the whitlist aspect
-
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onMessage.addListener((msg) => {
+    // console.log("in background");
+    // console.log("about to block");
     chrome.webRequest.onBeforeRequest.addListener(
         function () {
             return {cancel:true};
@@ -10,7 +11,14 @@ chrome.runtime.onInstalled.addListener(() => {
         },
         ["blocking"]
     );
+    return true;
 });
+
+    // chrome.runtime.onInstalled.addListener(() => {
+        
+    // });
+
+
 // let wait = 1000;
 // async function checkCurrentTab() {
 //     let queryOptions = { active: true, currentWindow: true };
