@@ -8,9 +8,13 @@ document.addEventListener("DOMContentLoaded", ()=>{
     textarea.innerHTML = "blackboard.missouristate.edu \nclassroom.google.com  \nwww.office.com  \ndrive.google.com \nowl.purdue.edu";
 
     document.getElementById("beginSession").addEventListener('click', () => {
-       if(!checkbox.checked){
-           checkbox.click();
-       }
+        //begin blocking websites in the list
+        if(!checkbox.checked){
+            checkbox.click();
+        }
+        //TODO:get timer information
+        //TODO: Call begin timer function in background.js with message passing. Send it timer information
+        
     });
 
     document.getElementById("endSession").addEventListener('click', () => {
