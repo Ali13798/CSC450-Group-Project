@@ -11,17 +11,17 @@
         <p>(placeholder: get user information here.)</p>
         <!-- set up with locally stored variable so it only 
             shows on the first run and remembers their info after-->
-        <h3>Choose a study session type:</h3>
         <div id="timerOptions">
-            <input type="radio" id="opt1" name="opt1" value="25/5/3/20">
+            <h3>Choose a study session type:</h3>
+            <input type="radio" id="opt1" name="timerOp" value="25/5/3/20">
             <label for="opt1">25 min study, 5 min short break, 3 cycles, 20 min long break</label> <br>
-            <input type="radio" id="opt2" name="opt2" value="60/10/2/30">
+            <input type="radio" id="opt2" name="timerOp" value="60/10/2/30">
             <label for="opt2">60 min study, 10 min short break, 2 cycles, 30 min long break</label><br>
-            <input type="radio" id="opt3" name="opt3" value="1/.5/2/1">
+            <input type="radio" id="opt3" name="timerOp" value="1/.5/2/1">
             <label for="opt3">1 min study, .5 min short break, 2 cycles, 1 min long break (test)</label><br>
             
-            <input type="radio" id="opt4" name="opt4" value="cust">
-            <label for="opt4">Custom session type</label> <br>
+            <input type="radio" id="cust" name="timerOp" value="cust">
+            <label for="cust">Custom session type</label> <br>
             <div id="custSessionInputs"> 
                 <label for="studyMin">Study min:</label>
                 <input type="number" id="studyMin" name="studyMin" min="1" max="120"><br>
@@ -33,10 +33,9 @@
                 <input type="number" id="longBkMin" name="longBkMin" min="1" max="120"><br>
             </div>
         </div>
-
         <button id="beginSession">Begin Session</button> 
         <button id="endSession">End Session</button> 
-        <button id="optionsBtn">Options</button> 
+        <button id="optionsBtn">Whitelist Options</button> 
         <div id="options">
             <h3>Personal Study Assistant Options</h3>
             <textarea id="textarea" rows="10" cols="30" spellcheck="false"></textarea>

@@ -11,22 +11,7 @@ chrome.runtime.onInstalled.addListener(function () {
     });
 });
 
-// chrome.runtime.onMessage.addListener((msg) => {
-//     if(msg.message == "break"){
-//         chrome.webRequest.onBeforeRequest.addListener(
-//             function () {
-//                 return {cancel:true};
-//             },
-//             {
-//                 urls: ["*://*.edu/*"]
-//             },
-//             ["blocking"]
-//         );
-//     }
-//     return true;  
-// });
 chrome.runtime.onMessage.addListener((msg) => {
-    console.log("checked message recieved");
     if(msg.message == "begin"){
         if(!checkbox.checked){ //if not checked
             checkbox.click() //then check it
@@ -35,6 +20,8 @@ chrome.runtime.onMessage.addListener((msg) => {
         if(checkbox.checked){ //if checked
             checkbox.click() //then uncheck it
         }
+    }else if(msg.message == "StartTimer"){
+      
     }
     return true;  
 });

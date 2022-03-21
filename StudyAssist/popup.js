@@ -1,3 +1,9 @@
+// async function getCurrentTab() {
+//     let queryOptions = { active: true, currentWindow: true };
+//     let tab = await chrome.tabs.query(queryOptions);
+//     return tab;
+// }
+
 //Clicking on the button starts the blocking session
 document.addEventListener("DOMContentLoaded", ()=>{
     var textarea = document.getElementById("textarea");
@@ -6,21 +12,77 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     //load the text area with our list of approved websites
     textarea.innerHTML = "blackboard.missouristate.edu \nclassroom.google.com  \nwww.office.com  \ndrive.google.com \nowl.purdue.edu";
-
-    document.getElementById("beginSession").addEventListener('click', () => {
-        //begin blocking websites in the list
-        if(!checkbox.checked){
-            checkbox.click();
-        }
-        //TODO:get timer information
-        //TODO: Call begin timer function in background.js with message passing. Send it timer information
+    var beginButton = document.getElementById("beginSession");
+    var endButton = document.getElementById("endSession");
+    beginButton.addEventListener('click', () => {
         
+        //Get timer selection information
+        var timerOp = document.querySelector('input[name="timerOp"]:checked');
+        if(!timerOp){ //if no item was found
+            alert("Please select a timer type to begin");
+        }else if (!timerOp.getAttribute("id").includes("opt")){
+            var studyMin = document.getElementById("studyMin").value;
+            var shortBkMin = document.getElementById("shortBkMin").value;
+            var cycleNum = document.getElementById("cycleNum").value;
+            var longBkMin = document.getElementById("longBkMin").value;
+            //check if all the inputs have been filled
+            if(studyMin == ""){
+                alert("Please fill all customer time fields to begin");
+            }else if(shortBkMin == ""){
+                alert("Please fill all customer time fields to begin");
+            }else if(cycleNum == ""){
+                alert("Please fill all customer time fields to begin");
+            }else if(longBkMin == ""){
+                alert("Please fill all customer time fields to begin");
+            }else{
+                //begin blocking websites in the list
+                if(!checkbox.checked){
+                    checkbox.click();
+                }
+                //Remove timer options and begin session button, add end session button
+                var timerDiv = document.getElementById("timerOptions");
+                timerDiv.style.display = "none";
+                beginButton.style.display = "none";
+                endButton.style.display = "inline";
+                //call timer function
+                var timerInfo = "/" + studyMin + "/" + shortBkMin + "/" + cycleNum + "/" + longBkMin;
+                // chrome.runtime.sendMessage({message: "Timer:/" + timerInfo}, function(response) {
+                //     console.log(response.farewell);
+                // });
+            }
+        }else{
+            //begin blocking websites in the list
+            if(!checkbox.checked){
+                checkbox.click();
+            }
+            //Extract information from the string
+            //Remove timer options and begin session button, add end session button
+            var timerDiv = document.getElementById("timerOptions");
+            timerDiv.style.display = "none";
+            beginButton.style.display = "none";
+            // endButton.style.display = "inline";
+            //Call timer function
+            // let queryOptions = { active: true, currentWindow:true};
+            // let tabs = await chrome.tabs.query(queryOptions);
+            // chrome.tabs.sendMessage(tabs[0].id, {message: "Timer:/" + timerOp.value}, function(response) {
+            //     console.log(response.status);
+            // });
+            // let tab = getCurrentTab();
+            // chrome.tabs.sendMessage(tab[0].id, {message: "Timer:/" + timerOp.value}, function(response) {
+            //     console.log(response.status);
+            // });
+            
+        }
     });
-
-    document.getElementById("endSession").addEventListener('click', () => {
+    
+    endButton.addEventListener('click', () => {
         if(checkbox.checked){
             checkbox.click();
         }
+        var timerDiv = document.getElementById("timerOptions");
+        timerDiv.style.display = "block";
+        beginButton.style.display = "inline";
+        // endButton.style.display = "none";
     });
 
     var optionsBtn = document.getElementById("optionsBtn");
@@ -37,7 +99,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
             var options = document.getElementById("options");
             options.style.display = "none";
             //change hide options button to options
-            optionsBtn.innerHTML = "Options";
+            optionsBtn.innerHTML = "Whitelist Options";
         }
     });
 
@@ -63,5 +125,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
             }
         });
     });
+
 });
 
