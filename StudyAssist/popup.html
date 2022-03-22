@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Personal Study Assistant</title>
     <link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
     <div id="popupContainer">
         <h3>Welcome!</h3>
-        <p>(placeholder: get user information here.)</p>
-        <!-- set up with locally stored variable so it only 
-            shows on the first run and remembers their info after-->
+
+        <!--Get User information-->
+        <p>Please Enter Your First name and Last name: </p>
+        <form action="/action_page.php" method="get">
+            <label for="fname">First name: </label>
+            <input type="text" id="fname" name="fname"><br><br>
+            <label for="lname">Last name: </label>
+            <input type="text" id="lname" name="lname"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+
         <div id="timerOptions">
             <h3>Choose a study session type:</h3>
             <div id="radioButtons">
@@ -46,7 +56,16 @@
             <button id="save">Save</button>
             <strong>Enabled?</strong><input id="checkbox" type="checkbox">
         </div>
+
+        <!--Parent Mode Button-->
+        <br></br>
+        <a href="">
+            <button type="button" id="parentModeBtn">
+                Click here to enter Parent Mode
+            </button>
+        </a>
     </div>
     <script src="popup.js"></script>
 </body>
+
 </html>
