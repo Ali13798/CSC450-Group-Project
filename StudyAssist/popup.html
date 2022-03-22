@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Personal Study Assistant</title>
     <link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
     <div id="popupContainer">
         <h3>Welcome!</h3>
-        <p>(placeholder: get user information here.)</p>
-        <!-- set up with locally stored variable so it only 
-            shows on the first run and remembers their info after-->
+
+        <!--Get User information-->
+        <p>Please Enter Your First name and Last name: </p>
+        <form action="/action_page.php" method="get">
+            <label for="fname">First name: </label>
+            <input type="text" id="fname" name="fname"><br><br>
+            <label for="lname">Last name: </label>
+            <input type="text" id="lname" name="lname"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+
         <div id="timerOptions">
             <h3>Choose a study session type:</h3>
             <input type="radio" id="opt1" name="timerOp" value="25/5/3/20">
@@ -19,10 +29,10 @@
             <label for="opt2">60 min study, 10 min short break, 2 cycles, 30 min long break</label><br>
             <input type="radio" id="opt3" name="timerOp" value="1/.5/2/1">
             <label for="opt3">1 min study, .5 min short break, 2 cycles, 1 min long break (test)</label><br>
-            
+
             <input type="radio" id="cust" name="timerOp" value="cust">
             <label for="cust">Custom session type</label> <br>
-            <div id="custSessionInputs"> 
+            <div id="custSessionInputs">
                 <label for="studyMin">Study min:</label>
                 <input type="number" id="studyMin" name="studyMin" min="1" max="120"><br>
                 <label for="shortBkMin">Short Break min: </label>
@@ -33,9 +43,9 @@
                 <input type="number" id="longBkMin" name="longBkMin" min="1" max="120"><br>
             </div>
         </div>
-        <button id="beginSession">Begin Session</button> 
-        <button id="endSession">End Session</button> 
-        <button id="optionsBtn">Whitelist Options</button> 
+        <button id="beginSession">Begin Session</button>
+        <button id="endSession">End Session</button>
+        <button id="optionsBtn">Whitelist Options</button>
         <div id="options">
             <h3>Personal Study Assistant Options</h3>
             <textarea id="textarea" rows="10" cols="30" spellcheck="false"></textarea>
@@ -43,7 +53,16 @@
             <button id="save">Save</button>
             <strong>Enabled?</strong><input id="checkbox" type="checkbox">
         </div>
+
+        <!--Parent Mode Button-->
+        <br></br>
+        <a href="">
+            <button type="button" id="parentModeBtn">
+                Click here to enter Parent Mode
+            </button>
+        </a>
     </div>
     <script src="popup.js"></script>
 </body>
+
 </html>

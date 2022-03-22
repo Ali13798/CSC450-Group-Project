@@ -4,3 +4,6 @@
 #options {
     display: none;
 }
+#parentModeBtn {
+    float: right;
+}
