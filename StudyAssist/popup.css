@@ -1,9 +1,13 @@
 #popupContainer {
     width: 500px;
+    font-size: 15px;
 }
 #options {
     display: none;
 }
 #parentModeBtn {
     float: right;
+}
+#textarea {
+    display: block;
 }

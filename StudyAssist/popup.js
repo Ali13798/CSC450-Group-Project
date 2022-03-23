@@ -3,39 +3,67 @@
 //     let tab = await chrome.tabs.query(queryOptions);
 //     return tab;
 // }
+//global object for storing ifnormation about the timer
+var timer = {};
 
 //Clicking on the button starts the blocking session
 document.addEventListener("DOMContentLoaded", ()=>{
-    //Website
+    //Variables 
     var websiteBtn = document.getElementById("websiteBtn");
+    var timerDiv = document.getElementById("timerOptions");
+    var textarea = document.getElementById("textarea");
+    var save = document.getElementById("save");
+    var checkbox = document.getElementById("checkbox");
+    var radioButtons = document.getElementById("radioButtons");
+    var custSessionInputs = document.getElementById("custSessionInputs");
+    var beginButton = document.getElementById("beginSession");
+    var endButton = document.getElementById("endSession");
+    var optionsBtn = document.getElementById("optionsBtn");
+    var popWebsites = document.getElementById("popWebsites");
+
+    //Website    
     websiteBtn.addEventListener("click", () =>{
         chrome.tabs.create({url: chrome.runtime.getURL("testWebPage.html") });
     });
-
+    
     //Load previous session data if any
     if(localStorage){
         var popupStateJSON = localStorage.getItem('popupState');
-        if(!(popupStateJSON === undefined || popupStateJSON === null || popupStateJSON.length === 0)){
+        if(!(popupStateJSON === "undefined" || popupStateJSON === null || popupStateJSON.length === 0)){
             //if there is data load it in, get it as a string
             var popupState = JSON.parse(popupStateJSON);
             //Radio button selection
             if(popupState){
-                if(!(popupState.choiceid == undefined)){
+                if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state == "study"){
+                    //hide timer options
+                    var timerDiv = document.getElementById("timerOptions");
+                    timerDiv.style.display = "none";
+                    beginButton.style.display = "none";
+                    endButton.style.display = "inline";
+                }
+                if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state == "mainpg"){
+                    //show timer options
+                    var timerDiv = document.getElementById("timerOptions");
+                    timerDiv.style.display = "block";
+                    beginButton.style.display = "inline";
+                }
+                if(!(popupState.choiceid === undefined || popupState.choiceid === null || popupState.choiceid.length === 0)){
                     //choice is the id of the element to set to be checked
                     document.getElementById(popupState.choiceid).checked = true;
                 }
-                if(!(popupState.studyMin == undefined)){
+                if(!(popupState.studyMin === undefined || popupState.studyMin === null || popupState.studyMin.length === 0)){
                     document.getElementById("studyMin").value = popupState.studyMin;
                 }
-                if(!(popupState.studyMin == undefined)){
+                if(!(popupState.shortBkMin === undefined || popupState.shortBkMin === null || popupState.shortBkMin.length === 0)){
                     document.getElementById("shortBkMin").value = popupState.shortBkMin;
                 }
-                if(!(popupState.studyMin == undefined)){
+                if(!(popupState.cycleNum === undefined || popupState.cycleNum === null || popupState.cycleNum.length === 0)){
                     document.getElementById("cycleNum").value = popupState.cycleNum;
                 }
-                if(!(popupState.studyMin == undefined)){
+                if(!(popupState.longBkMin === undefined || popupState.longBkMin === null || popupState.longBkMin.length === 0)){
                     document.getElementById("longBkMin").value = popupState.longBkMin;
                 }
+                
             }
             //Next: save/load the state of being in study mode
            
@@ -43,11 +71,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
     }
 
     //Whitelisting 
-    var textarea = document.getElementById("textarea");
-    var save = document.getElementById("save");
-    var checkbox = document.getElementById("checkbox");
-    //load the text area with our list of approved websites
-    textarea.innerHTML = "blackboard.missouristate.edu \nclassroom.google.com  \nwww.office.com  \ndrive.google.com \nowl.purdue.edu";
     //saves the list of blocked sites to localstorage
     save.addEventListener("click", () => {
         const blocked = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
@@ -68,10 +91,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
     });
     
     //if a button is selected, save selection in local storage
-    var radioButtons = document.getElementById("radioButtons");
     radioButtons.addEventListener('click', e =>{
         if(e.target && e.target.matches("input[type='radio']")){
-            var timer = {};
             timer.choiceid = e.target.getAttribute("id");
             if(!(timer.choiceid.includes("opt"))){
                 var studyMin = document.getElementById("studyMin").value;
@@ -88,6 +109,12 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 }if(longBkMin != ""){
                     timer.longBkMin = longBkMin;
                 }
+            }else{
+                //if it is opt, get rid of other properties
+                delete timer.studyMin;
+                delete timer.shortBkMin;
+                delete timer.cycleNum;
+                delete timer.longBkMin;
             }
             let serializedTimer = JSON.stringify(timer);
             if(localStorage){
@@ -97,10 +124,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
     });
 
     //if a cust value is input, save input in local storage
-    var custSessionInputs = document.getElementById("custSessionInputs");
     custSessionInputs.addEventListener('input', e =>{
         if(e.target && e.target.matches("input[type='number']")){
-            var timer = {};
             var studyMin = document.getElementById("studyMin").value;
             var shortBkMin = document.getElementById("shortBkMin").value;
             var cycleNum = document.getElementById("cycleNum").value;
@@ -123,7 +148,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
     });
 
     //Begin session by getting timer informaiton
-    var beginButton = document.getElementById("beginSession");
     beginButton.addEventListener('click', () => {
         //Get timer selection information
         var timerOp = document.querySelector('input[name="timerOp"]:checked');
@@ -145,12 +169,17 @@ document.addEventListener("DOMContentLoaded", ()=>{
             }else if(longBkMin == ""){
                 alert("Please fill all customer time fields to begin");
             }else{
+                //save state to local storage
+                timer.state = "study";
+                let serializedTimer = JSON.stringify(timer);
+                if(localStorage){
+                    localStorage.setItem("popupState", serializedTimer)
+                }
                 //begin blocking websites in the list
                 if(!checkbox.checked){
                     checkbox.click();
                 }
                 //Remove timer options and begin session button, add end session button
-                var timerDiv = document.getElementById("timerOptions");
                 timerDiv.style.display = "none";
                 beginButton.style.display = "none";
                 endButton.style.display = "inline";
@@ -161,12 +190,17 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 // });
             }
         }else{
+            //save state to local storage
+            timer.state = "study";
+            let serializedTimer = JSON.stringify(timer);
+            if(localStorage){
+                localStorage.setItem("popupState", serializedTimer)
+            }
             //begin blocking websites in the list
             if(!checkbox.checked){
                 checkbox.click();
             }
             //Remove timer options and begin session button, add end session button
-            var timerDiv = document.getElementById("timerOptions");
             timerDiv.style.display = "none";
             beginButton.style.display = "none";
             // endButton.style.display = "inline";
@@ -184,23 +218,25 @@ document.addEventListener("DOMContentLoaded", ()=>{
         }
     });
     
-    //End session
-    var endButton = document.getElementById("endSession");
+    //End session //end session button not working
     endButton.addEventListener('click', () => {
         if(checkbox.checked){
             checkbox.click();
         }
-        var timerDiv = document.getElementById("timerOptions");
+        //load state into LS
+        timer.state = "mainpg";
+        let serializedTimer = JSON.stringify(timer);
+        if(localStorage){
+            localStorage.setItem("popupState", serializedTimer);
+        }
         timerDiv.style.display = "block";
         beginButton.style.display = "inline";
-        // endButton.style.display = "none";
-    });
+        
+    });// endButton.style.display = "none";
 
-    //Show / hide wWhitelisting options 
-    var optionsBtn = document.getElementById("optionsBtn");
+    //Show / hide whitelisting options 
     optionsBtn.addEventListener('click', () => {
-        console.log("optionsBtn clicked");
-        if(optionsBtn.innerHTML == "Options"){
+        if(optionsBtn.innerHTML == "Whitelist Options"){
             //show the options
             var options = document.getElementById("options");
             options.style.display = "block";
@@ -213,6 +249,13 @@ document.addEventListener("DOMContentLoaded", ()=>{
             //change hide options button to options
             optionsBtn.innerHTML = "Whitelist Options";
         }
+    });
+
+    //populate recomanded webistes 
+    popWebsites.addEventListener('click', () => {
+        //load the text area with our list of approved websites
+        textarea.value = "blackboard.missouristate.edu \nclassroom.google.com  \nwww.office.com  \ndrive.google.com \nowl.purdue.edu";
+        save.click();
     });
 
 });
