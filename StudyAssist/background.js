@@ -28,3 +28,32 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
     });
 });
 
+//this is not working right now bc I am injecting and including this file
+//find a way to show the same timer progress on each tab
+//Tell content js to put the script on the newly opened tab
+// try{
+//   chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+//     if (changeInfo.status == 'complete') {
+//       chrome.scripting.executeScript({
+//         target: {tabId: tabId, allFrames: true},
+//         files: ['content.js']
+//       },
+//       () => {});
+//     }
+//   });
+// }catch(e){
+//   console.log(e);
+// }
+
+
+try{
+  chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, {timerMessage: "reloadTimer"}, function(response) {
+      });
+    });
+  });
+}catch(e){
+  console.log(e);
+}
+

@@ -1,8 +1,3 @@
-// async function getCurrentTab() {
-//     let queryOptions = { active: true, currentWindow: true };
-//     let tab = await chrome.tabs.query(queryOptions);
-//     return tab;
-// }
 //global object for storing ifnormation about the timer
 var timer = {};
 
@@ -23,7 +18,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     //Website    
     websiteBtn.addEventListener("click", () =>{
-        chrome.tabs.create({url: chrome.runtime.getURL("testWebPage.html") });
+        chrome.tabs.create({url: chrome.runtime.getURL("home-site.html") });
     });
     
     //Load previous session data if any
@@ -65,7 +60,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 }
                 
             }
-            //Next: save/load the state of being in study mode
            
         }        
     }
@@ -184,10 +178,12 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 beginButton.style.display = "none";
                 endButton.style.display = "inline";
                 //call timer function
-                var timerInfo = "/" + studyMin + "/" + shortBkMin + "/" + cycleNum + "/" + longBkMin;
-                // chrome.runtime.sendMessage({message: "Timer:/" + timerInfo}, function(response) {
-                //     console.log(response.farewell);
-                // });
+                // var timerInfo = "/" + studyMin + "/" + shortBkMin + "/" + cycleNum + "/" + longBkMin;
+                //send timer end time to content js
+                chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                    chrome.tabs.sendMessage(tabs[0].id, {timerMessage: "EndTime", mins: studyMin}, function(response) {
+                    });
+                });
             }
         }else{
             //save state to local storage
@@ -204,17 +200,19 @@ document.addEventListener("DOMContentLoaded", ()=>{
             timerDiv.style.display = "none";
             beginButton.style.display = "none";
             // endButton.style.display = "inline";
-            //Call timer function
-            // let queryOptions = { active: true, currentWindow:true};
-            // let tabs = await chrome.tabs.query(queryOptions);
-            // chrome.tabs.sendMessage(tabs[0].id, {message: "Timer:/" + timerOp.value}, function(response) {
-            //     console.log(response.status);
-            // });
-            // let tab = getCurrentTab();
-            // chrome.tabs.sendMessage(tab[0].id, {message: "Timer:/" + timerOp.value}, function(response) {
-            //     console.log(response.status);
-            // });
+
+            //Store timer done time to be accessed by background script to run the same timer across all tabs
+            var timerInfoArray = timerOp.value.split("/");
+            var studyMin = timerInfoArray[0];
+            // var shortBkMin = timerInfoArray[1];
+            // var cycleNum = timerInfoArray[2];
+            // var longBkMin = timerInfoArray[3];
             
+            //send timer end time to content js
+            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                chrome.tabs.sendMessage(tabs[0].id, {timerMessage: "EndTime", mins: studyMin}, function(response) {
+                });
+            });
         }
     });
     
@@ -259,4 +257,17 @@ document.addEventListener("DOMContentLoaded", ()=>{
     });
 
 });
+
+//NOT WORKING 
+//listen for timer to end
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        console.log(sender.tab ?
+                    "from a content script:" + sender.tab.url :
+                    "from the extension");
+        if (request.timerMessage === "TimerEnd"){
+            endButton.click();
+        }
+    }
+);
 

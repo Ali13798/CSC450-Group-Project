@@ -14,9 +14,11 @@
         "matches": ["http://*/*", "https://*/*"],
         "js": ["content.js"]
     }],
+    "host_permissions": ["<all_urls>"],
     "permissions": [
         "storage",
         "tabs",
-        "activeTab"
+        "activeTab",
+        "scripting"
     ]
 }
