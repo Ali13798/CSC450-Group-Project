@@ -260,13 +260,24 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 //NOT WORKING 
 //listen for timer to end
+var endButton = document.getElementById("endSession");
+var checkbox = document.getElementById("checkbox");
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         console.log(sender.tab ?
                     "from a content script:" + sender.tab.url :
                     "from the extension");
         if (request.timerMessage === "TimerEnd"){
-            endButton.click();
+            // endButton.click();
+            if(checkbox.checked){
+                checkbox.click();
+            }
+            //load state into LS
+            timer.state = "mainpg";
+            let serializedTimer = JSON.stringify(timer);
+            if(localStorage){
+                localStorage.setItem("popupState", serializedTimer);
+            }
         }
     }
 );
