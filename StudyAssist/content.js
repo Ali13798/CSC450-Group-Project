@@ -13,13 +13,6 @@ timerPlace.style.opacity = "0.5";
 
 var endTime;
 
-function getTimerEndTime(min){
-    console.log("making date");
-    var countDownTime = new Date().getTime();
-    countDownTime = new Date(countDownTime + min*60000);    
-    endTime = countDownTime;
-    timerFunction(endTime);
-}
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
@@ -27,17 +20,35 @@ chrome.runtime.onMessage.addListener(
                     "from a content script:" + sender.tab.url :
                     "from the extension");
         if (request.timerMessage === "EndTime"){
-            mins = request.mins;
-            getTimerEndTime(mins); 
-        }else if (!(endTime === undefined || endTime === null) && (request.timerMessage === "reloadTimer")){
-            //call timer function
-            timerFunction();
+            //if there were minutes send, make the end time obj
+            if(!(request.endTimeString == "undefined" || request.endTimeString === undefined ||
+            request.endTimeString === null || request.endTimeString == "null" )){
+                // console.log("mins = "+ request.endTimeString);
+                //set end time
+                var endTimeString = request.endTimeString;
+                var endTimeArray = endTimeString.split(" ");
+                endTime = new Date();
+                endTime.setHours(parseInt(endTimeArray[0]));
+                endTime.setMinutes(parseInt(endTimeArray[1]));
+                endTime.setSeconds(parseInt(endTimeArray[2]));
+                // console.log("endTIme not null = " + endTime);
+                timerFunction();
+            }
+        }if (request.timerMessage === "loadTime"){
+            // console.log("in content loadTime listener " + endTime);
+            //if there is a time
+            if(!(endTime == "undefined" || endTime === undefined || endTime === null || endTime == "null" )){
+                // console.log("endTIme not null = " + endTime);
+                timerFunction();
+            }
+            
         }
     }
 );
 
 
 function timerFunction(){
+    console.log("in timer function where endTime= " + endTime);
     var stID = setInterval(function() {
         var now = new Date().getTime();
         var dist = endTime - now;
@@ -51,7 +62,7 @@ function timerFunction(){
             timerPlace.innerHTML = "0:0:0";
             document.body.prepend(timerPlace);
             //send message to popup that the timer ended
-            chrome.runtime.sendMessage({timerMessage: "TimerEnd"}, function(response) {
+            chrome.runtime.sendMessage({timerMessage: "endSession"}, function(response) {
             });
             return;
         }

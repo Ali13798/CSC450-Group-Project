@@ -1,6 +1,14 @@
 //global object for storing ifnormation about the timer
 var timer = {};
+var timeMessage;
 
+function calcEndTime(mins){
+    //returns a string represenation of the time to send as a message
+    var countDownTime = new Date().getTime();
+    endTimeDate = new Date(countDownTime + mins*60000);
+    var endTimeString = endTimeDate.getHours() + " " + endTimeDate.getMinutes() + " " + endTimeDate.getSeconds();
+    return endTimeString;
+}
 //Clicking on the button starts the blocking session
 document.addEventListener("DOMContentLoaded", ()=>{
     //Variables 
@@ -24,7 +32,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     //Load previous session data if any
     if(localStorage){
         var popupStateJSON = localStorage.getItem('popupState');
-        if(!(popupStateJSON === "undefined" || popupStateJSON === null || popupStateJSON.length === 0)){
+        if(!(popupStateJSON === undefined || popupStateJSON === null || popupStateJSON.length === 0)){
             //if there is data load it in, get it as a string
             var popupState = JSON.parse(popupStateJSON);
             //Radio button selection
@@ -177,11 +185,16 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 timerDiv.style.display = "none";
                 beginButton.style.display = "none";
                 endButton.style.display = "inline";
-                //call timer function
                 // var timerInfo = "/" + studyMin + "/" + shortBkMin + "/" + cycleNum + "/" + longBkMin;
+                //calculate the end time
+                timeMessage = calcEndTime(studyMin);
+                //tell background in session
+                chrome.runtime.sendMessage({timerMessage: "inSession", endTimeString: timeMessage}, function(response) {
+                    // console.log(response.farewell);
+                });
                 //send timer end time to content js
                 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                    chrome.tabs.sendMessage(tabs[0].id, {timerMessage: "EndTime", mins: studyMin}, function(response) {
+                    chrome.tabs.sendMessage(tabs[0].id, {timerMessage: "EndTime", endTimeString: timeMessage}, function(response) {
                     });
                 });
             }
@@ -207,10 +220,16 @@ document.addEventListener("DOMContentLoaded", ()=>{
             // var shortBkMin = timerInfoArray[1];
             // var cycleNum = timerInfoArray[2];
             // var longBkMin = timerInfoArray[3];
-            
+
+            //calculate the end time
+            timeMessage = calcEndTime(studyMin);
+            //tell background in session
+            chrome.runtime.sendMessage({timerMessage: "inSession", endTimeString: timeMessage}, function(response) {
+                // console.log(response.farewell);
+            });
             //send timer end time to content js
             chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                chrome.tabs.sendMessage(tabs[0].id, {timerMessage: "EndTime", mins: studyMin}, function(response) {
+                chrome.tabs.sendMessage(tabs[0].id, {timerMessage: "EndTime", endTimeString: timeMessage}, function(response) {
                 });
             });
         }
@@ -229,6 +248,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
         }
         timerDiv.style.display = "block";
         beginButton.style.display = "inline";
+
+        //tell background not in session
+        chrome.runtime.sendMessage({timerMessage: "NotinSession"}, function(response) {
+            // console.log(response.farewell);
+        });
         
     });// endButton.style.display = "none";
 
@@ -267,7 +291,7 @@ chrome.runtime.onMessage.addListener(
         console.log(sender.tab ?
                     "from a content script:" + sender.tab.url :
                     "from the extension");
-        if (request.timerMessage === "TimerEnd"){
+        if (request.timerMessage === "endSession"){
             // endButton.click();
             if(checkbox.checked){
                 checkbox.click();
@@ -278,6 +302,10 @@ chrome.runtime.onMessage.addListener(
             if(localStorage){
                 localStorage.setItem("popupState", serializedTimer);
             }
+            //tell background not in session
+            chrome.runtime.sendMessage({timerMessage: "NotinSession"}, function(response) {
+                // console.log(response.farewell);
+            });
         }
     }
 );
