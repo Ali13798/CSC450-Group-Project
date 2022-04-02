@@ -12,6 +12,7 @@ var beginButton;
 var endButton;
 var optionsBtn;
 var popWebsites;
+var pauseBtn;
 
 //Clicking on the button starts the blocking session
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -27,6 +28,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     endButton = document.getElementById("endSession");
     optionsBtn = document.getElementById("optionsBtn");
     popWebsites = document.getElementById("popWebsites");
+    pauseBtn = document.getElementById("pauseBtn");
 
     //Website    
     websiteBtn.addEventListener("click", () =>{
@@ -35,7 +37,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
     
     //Load previous session data if any
         chrome.storage.sync.get(['popupState'], function(result) {
-            console.log('Value currently is ' + result.popupState);
             if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
                 //if there is data load it in, get it as a string
                 var popupState = JSON.parse(result.popupState);
@@ -48,6 +49,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                         timerDiv.style.display = "none";
                         beginButton.style.display = "none";
                         endButton.style.display = "inline";
+                        pauseBtn.style.display = "inline";
                     }
                     //check if in main page menu state
                     if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state == "mainpg"){
@@ -60,6 +62,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                         var timerDiv = document.getElementById("timerOptions");
                         timerDiv.style.display = "block";
                         beginButton.style.display = "inline";
+                        pauseBtn.style.display = "none";
                     }
 
                     //Populate choices for customer timer
@@ -209,6 +212,14 @@ document.addEventListener("DOMContentLoaded", ()=>{
         save.click();
     });
 
+    pauseBtn.addEventListener('click', ()=>{
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, {message: "pause"}, function(response) {
+              console.log(response.farewell);
+            });
+        });
+    });
+
 });
 
 //Begin Session Functions
@@ -257,16 +268,15 @@ function startTimer(minutes){
     timer.state = "study";
     //begin blocking websites in the list
     if(!checkbox.checked){
-        console.log("setting check box in start timer")
         const enabled = true;
         chrome.storage.local.set({ enabled });
         checkbox.click();
-        console.log("now is: " + checkbox.checked);
     }
     //Remove timer options and begin session button, add end session button
     timerDiv.style.display = "none";
     beginButton.style.display = "none";
     endButton.style.display = "inline";
+    pauseBtn.style.display = "inline";
     // var timerInfo = "/" + studyMin + "/" + shortBkMin + "/" + cycleNum + "/" + longBkMin;
 
     //calculate the end time
