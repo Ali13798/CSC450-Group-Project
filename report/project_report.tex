@@ -291,6 +291,24 @@ Req-25: Web-based features will update within a day
     \item Description: When any changes are submitted after a session, those updates should be visible to the user within 24 hours.
     \item Rationale: Users will need to see their overall progress in their studies within a reasonable amount of time. Since this will be dependent on a web server, some time should be allowed for data transfer and potential outages.
 \end{itemize}
+\pagebreak
+\section{Design}
+\subsection{Design Diagram}
+\begin{figure}[h]
+\includegraphics[width=15.0cm, height=10.0cm]{images/Design.png}
+\end{figure}
+\subsection{Module Descriptions}
+\textbf{Study Extension:} A google chrome extension to help users focus on studying and remember to take breaks. Users have the option to log in which gives access to the website. The extension stores data about the study sessions in the database. \\\\
+\textbf{User Interface:} The popup menu where users control the session, make choices about the timer, provide information, and can access the Progress Website.\\\\
+\textbf{Storage:} Storage provided by the chrome.storage API that is shared among the scripts in the extension.\\\\
+Background: Monitors the content pages to implement the whitelist and closes tabs that violate it. Continuously checks for mouse or keyboard inputs for statistics.\\\\
+\textbf{Content:} Makes changes to the current tab's content such as running the Timer.\\\\
+\textbf{Timer:} Displays a timer on the screen and counts down to the provided time. Contained and executed in the Content Script. Timer accesses storage when finished.\\\\
+\textbf{Database:} Database that stores information about the study sessions such as total time studied and keyboard and mouse input frequencies. Verifies user login in the extension or the website before allowing access to the website information. \\\\
+Progress Website: A locally hosted website which allows users to view information and progress on their study sessions. \\\\
+\textbf{Statistics:} Displays information such as total time spent studying and input frequency. 
+History: Displays information on previous sessions such as date, time began and ended, and total time studied for the session. \\\\
+\textbf{Gamification:} Provides incentives for the users to study more through a game-like system where the total amount studied is translated to points and then to levels and titles.\\\\
 % \section{References}
 
 % \begingroup
