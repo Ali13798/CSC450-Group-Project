@@ -1,11 +1,13 @@
 var timer = {}; //global object for storing ifnormation about the timer
 var timeMessage;
+var numStudy, numBreak, numLongBreak;
+var Stime, Btime, LBtime, Cnum;
 //HTML element variables
+var popCont;
 var websiteBtn;
 var timerDiv;
 var textarea;
 var save;
-var checkbox;
 var radioButtons;
 var custSessionInputs;
 var beginButton;
@@ -13,15 +15,17 @@ var endButton;
 var optionsBtn;
 var popWebsites;
 var pauseBtn;
+var nextStep;
+
 
 //Clicking on the button starts the blocking session
 document.addEventListener("DOMContentLoaded", ()=>{
     //Variables 
+    popCont = document.getElementById("popupContainer");
     websiteBtn = document.getElementById("websiteBtn");
     timerDiv = document.getElementById("timerOptions");
     textarea = document.getElementById("textarea");
     save = document.getElementById("save");
-    checkbox = document.getElementById("checkbox");
     radioButtons = document.getElementById("radioButtons");
     custSessionInputs = document.getElementById("custSessionInputs");
     beginButton = document.getElementById("beginSession");
@@ -29,83 +33,129 @@ document.addEventListener("DOMContentLoaded", ()=>{
     optionsBtn = document.getElementById("optionsBtn");
     popWebsites = document.getElementById("popWebsites");
     pauseBtn = document.getElementById("pauseBtn");
-
+    nextStep = document.getElementById("nextStep");
     //Website    
     websiteBtn.addEventListener("click", () =>{
         chrome.tabs.create({url: chrome.runtime.getURL("home-site.html") });
     });
-    
+
+    //if the title is welcome, then clear some info from storage
+    if(PgTitle.innerHTML == "Welcome!"){
+        //TODO: decide what to remove or change
+
+        //for now, just make sure blocking is off
+        const enabled = false;
+        chrome.storage.local.set({ enabled });
+    }
+
     //Load previous session data if any
-        chrome.storage.sync.get(['popupState'], function(result) {
-            if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
-                //if there is data load it in, get it as a string
-                var popupState = JSON.parse(result.popupState);
-                //Radio button selection
-                if(popupState){
-                    //Check if in study state
-                    if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state == "study"){
-                        //hide timer options
-                        var timerDiv = document.getElementById("timerOptions");
-                        timerDiv.style.display = "none";
-                        beginButton.style.display = "none";
-                        endButton.style.display = "inline";
-                        pauseBtn.style.display = "inline";
-                    }
-                    //check if in main page menu state
-                    if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state == "mainpg"){
-                        //if checked, uncheck bc session over
-                        if(checkbox.checked){
-                            const enabled = false;
-                            chrome.storage.local.set({ enabled });
-                            checkbox.click();
-                        }
-                        var timerDiv = document.getElementById("timerOptions");
-                        timerDiv.style.display = "block";
-                        beginButton.style.display = "inline";
-                        pauseBtn.style.display = "none";
-                    }
+    chrome.storage.sync.get(['popupState'], function(result) {
+        if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
+            //if there is data load it in, get it as a string
+            var popupState = JSON.parse(result.popupState);
+            if(popupState){
+                //load vars keeping track of num of study and breaks
+                numStudy = popupState.numStudy;
+                numBreak = popupState.numBreak;
+                numLongBreak = popupState.numLongBreak;
+                Stime = popupState.studyMin;
+                Btime = popupState.shortBkMin;
+                LBtime = popupState.longBkMin;
+                Cnum = popupState.cycleNum;
 
-                    //Populate choices for customer timer
-                    if(!(popupState.choiceid === undefined || popupState.choiceid === null || popupState.choiceid.length === 0)){
-                        //choice is the id of the element to set to be checked
-                        document.getElementById(popupState.choiceid).checked = true;
-                    }
-                    if(!(popupState.studyMin === undefined || popupState.studyMin === null || popupState.studyMin.length === 0)){
-                        document.getElementById("studyMin").value = popupState.studyMin;
-                    }
-                    if(!(popupState.shortBkMin === undefined || popupState.shortBkMin === null || popupState.shortBkMin.length === 0)){
-                        document.getElementById("shortBkMin").value = popupState.shortBkMin;
-                    }
-                    if(!(popupState.cycleNum === undefined || popupState.cycleNum === null || popupState.cycleNum.length === 0)){
-                        document.getElementById("cycleNum").value = popupState.cycleNum;
-                    }
-                    if(!(popupState.longBkMin === undefined || popupState.longBkMin === null || popupState.longBkMin.length === 0)){
-                        document.getElementById("longBkMin").value = popupState.longBkMin;
-                    }
-                    
+                //Check if in study state
+                if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "study"){
+                    //display it is in study mode
+                    var PgTitle = document.getElementById("PgTitle");
+                    PgTitle.innerHTML = "Study Mode";
+                    //hide timer options
+                    const enabled = true;
+                    chrome.storage.local.set({ enabled });
+                    console.log("in study state");
+                    timerDiv.style.display = "none";
+                    beginButton.style.display = "none";
+                    endButton.style.display = "inline";
+                    pauseBtn.style.display = "inline";
+                    nextStep.style.display = "none";
                 }
-               
-            } 
-        });
+                //check if in intermission state
+                if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "intermission"){
+                    var PgTitle = document.getElementById("PgTitle");
+                    PgTitle.innerHTML = "Intermission";
+                    console.log("in intermission state");
+                    const enabled = false;
+                    chrome.storage.local.set({ enabled });
+                    timerDiv.style.display = "none";
+                    beginButton.style.display = "none";
+                    endButton.style.display = "inline";
+                    pauseBtn.style.display = "none";
+                    nextStep.style.display = "inline";
+                }
+                //check if in main page menu state
+                if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "mainpg"){
+                    var PgTitle = document.getElementById("PgTitle");
+                    PgTitle.innerHTML = "Main Menu";
+                    const enabled = false;
+                    chrome.storage.local.set({ enabled });
+                    timerDiv.style.display = "block";
+                    beginButton.style.display = "inline";
+                    pauseBtn.style.display = "none";
+                    nextStep.style.display = "none";
+                    endButton.style.display = "none";
+                }
 
-    //Whitelisting 
+                if(!(popupState.newBlockedPg === undefined || popupState.newBlockedPg === null || popupState.newBlockedPg.length === 0)){
+                    if (popupState.newBlockedPg == true){
+                        var url = popupState.lastBlockedPage;
+                        //get the domain from the url
+                        var domain = (new URL(url)).hostname;
+                        message = "Access to the following page is not permitted during study mode:\n" + url 
+                                    + "\nAllow this domain? " + domain;
+                        popupState.newBlockedPg = false;
+                        popupState.lastBlockedPage = "";
+                        saveToStorage(popupState);
+                        answer = confirm(message);
+                        if(answer){
+                            //Add it to the whitelist
+                            
+                            //get list from storage
+                            chrome.storage.local.get(["blocked"], function (local) {
+                                const blocked = local;
+                                if (Array.isArray(blocked.blocked)) {
+                                    textarea.value = blocked.blocked.join("\n");
+                                }
+                                textarea.value += "\n" + domain;
+                                save.click();
+                            });
+                        }
+                    }
+                }
+                //Populate choices for custom timer
+                if(!(popupState.choiceid === undefined || popupState.choiceid === null || popupState.choiceid.length === 0)){
+                    //choice is the id of the element to set to be checked
+                    document.getElementById(popupState.choiceid).checked = true;
+                }
+                if(!(popupState.studyMin === undefined || popupState.studyMin === null || popupState.studyMin.length === 0)){
+                    document.getElementById("studyMin").value = popupState.studyMin;
+                }
+                if(!(popupState.shortBkMin === undefined || popupState.shortBkMin === null || popupState.shortBkMin.length === 0)){
+                    document.getElementById("shortBkMin").value = popupState.shortBkMin;
+                }
+                if(!(popupState.cycleNum === undefined || popupState.cycleNum === null || popupState.cycleNum.length === 0)){
+                    document.getElementById("cycleNum").value = popupState.cycleNum;
+                }
+                if(!(popupState.longBkMin === undefined || popupState.longBkMin === null || popupState.longBkMin.length === 0)){
+                    document.getElementById("longBkMin").value = popupState.longBkMin;
+                }
+                
+            }
+            
+        } 
+    });
     //saves the list of blocked sites to localstorage
     save.addEventListener("click", () => {
         const blocked = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
         chrome.storage.local.set({ blocked });
-    });
-    //sets the user's choice of blocking to be enabled
-    checkbox.addEventListener("change", (event) => {
-        const enabled = event.target.checked;
-        chrome.storage.local.set({ enabled });
-    });
-    //get the list of sites and the user's choice of enabled from local storage
-    chrome.storage.local.get(["blocked", "enabled"], function (local) {
-        const { blocked, enabled } = local;
-        if (Array.isArray(blocked)) {
-        textarea.value = blocked.join("\n");
-        checkbox.checked = enabled;
-        }
     });
 
     //if a button is selected, save selection in storage
@@ -128,10 +178,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     timer.longBkMin = longBkMin;
                 }
             }
-            let serializedTimer = JSON.stringify(timer);
-            chrome.storage.sync.set({"popupState": serializedTimer}, function() {
-                console.log('Value is set to ' + serializedTimer);
-            });
+            saveToStorage(timer);
         }
     });
 
@@ -152,10 +199,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
             }if(longBkMin != ""){
                 timer.longBkMin = longBkMin;
             }
-            let serializedTimer = JSON.stringify(timer);
-            chrome.storage.sync.set({"popupState": serializedTimer}, function() {
-                console.log('Value is set to ' + serializedTimer);
-            });
+            saveToStorage(timer);
         }
     });
 
@@ -166,27 +210,28 @@ document.addEventListener("DOMContentLoaded", ()=>{
     
     //End session //end session button not working
     endButton.addEventListener('click', () => {
-        if(checkbox.hasAttribute("checked")){
-            console.log("in end session checkbox now: " + checkbox.checked)
-            const enabled = false;
-            chrome.storage.local.set({ enabled });
-            checkbox.click();
-        }
-        //load state into LS
-        timer.state = "mainpg";
+        var PgTitle = document.getElementById("PgTitle");
+        PgTitle.innerHTML = "Main Menu";
+        const enabled = false;
+        chrome.storage.local.set({ enabled });
         timerDiv.style.display = "block";
         beginButton.style.display = "inline";
-        timer.inStudySession = false;
-
-        //Store endTime and inSession
-        timer.inStudySession = false;
-        //Store updated timer information
-        let serializedTimer = JSON.stringify(timer);
-        chrome.storage.sync.set({"popupState": serializedTimer}, function() {
-            console.log('Value is set to ' + serializedTimer);
-        });
+        pauseBtn.style.display = "none";
+        nextStep.style.display = "none";
+        endButton.style.display = "none";
+        timer.state = "mainpg";
         
-    });// endButton.style.display = "none";
+        timer.inStudySession = false;
+        timer.endTime = "";
+        saveToStorage(timer);
+        if(timer.state == "study"){
+            answer = confirm("Reload page for timer to stop?");
+            if(answer){
+                chrome.tabs.reload();
+            }
+        }
+                
+    });
 
     //Show / hide whitelisting options 
     optionsBtn.addEventListener('click', () => {
@@ -196,6 +241,14 @@ document.addEventListener("DOMContentLoaded", ()=>{
             options.style.display = "block";
             //change options button to hide options
             optionsBtn.innerHTML = "Hide Options";
+            //get the list of sites
+            chrome.storage.local.get(["blocked"], function (local) {
+                console.log("getting sites");
+                const blocked = local;
+                if (Array.isArray(blocked.blocked)) {
+                    textarea.value = blocked.blocked.join("\n");
+                }
+            });
         }else{
             //hide the options
             var options = document.getElementById("options");
@@ -220,6 +273,21 @@ document.addEventListener("DOMContentLoaded", ()=>{
         });
     });
 
+    // nextStep.addEventListener('click', ()=>{
+    //     console.log("clicked nextstep");
+    //     //figure out if the next step is to study or break
+    //     if(numStudy == Cnum && numBreak == Cnum){
+    //         //long break time
+    //         //TODO
+    //     }
+    //     else if(numStudy > numBreak){
+    //         //short break
+    //         //TODO
+    //     }else if(numStudy == numBreak){
+    //         //study time
+    //         startTimer(Stime);
+    //     }
+    // });
 });
 
 //Begin Session Functions
@@ -235,11 +303,16 @@ function validateTimerChoice(){
         //Extract information from choice
         var timerInfoArray = timerOp.value.split("/");
         var studyMin = timerInfoArray[0]; 
+        var shortBkMin = timerInfoArray[1];
+        var cycleNum = timerInfoArray[2];
+        var longBkMin = timerInfoArray[3];
+        timer.studyMin = studyMin;
+        timer.shortBkMin = shortBkMin;
+        timer.cycleNum = cycleNum;
+        timer.longBkMin = longBkMin;
+        saveToStorage(timer);
         startTimer(studyMin);
-        //Todo: add choice to storage
-        // var shortBkMin = timerInfoArray[1];
-        // var cycleNum = timerInfoArray[2];
-        // var longBkMin = timerInfoArray[3];
+        
     }
 }
 
@@ -258,20 +331,29 @@ function validateCustomTimer(){
     }else if(longBkMin == ""){
         alert("Please fill all customer time fields to begin");
     }else{
+        timer.studyMin = studyMin;
+        timer.shortBkMin = shortBkMin;
+        timer.cycleNum = cycleNum;
+        timer.longBkMin = longBkMin;
+        saveToStorage(timer);
         startTimer(studyMin);
     }
 }
 
 function startTimer(minutes){
     confirm("Ready to reload page for timer to begin?");
+    //display study mode
+    // var studyH3 = document.createElement("h3");
+    // studyH3.innerHTML = "Study Mode";
+    // var popCont = document.getElementById("popupContainer");
+    // popCont.prepend(studyH3);
+
     //save state to storage
     timer.state = "study";
     //begin blocking websites in the list
-    if(!checkbox.checked){
-        const enabled = true;
-        chrome.storage.local.set({ enabled });
-        checkbox.click();
-    }
+    const enabled = true;
+    chrome.storage.local.set({ enabled });
+
     //Remove timer options and begin session button, add end session button
     timerDiv.style.display = "none";
     beginButton.style.display = "none";
@@ -286,10 +368,7 @@ function startTimer(minutes){
     timer.inStudySession = true;
     timer.endTime = timeMessage;
     //Store updated timer information
-    let serializedTimer = JSON.stringify(timer);
-    chrome.storage.sync.set({"popupState": serializedTimer}, function() {
-        console.log('Value is set to ' + serializedTimer);
-    });
+    saveToStorage(timer);
     chrome.tabs.reload();
 }
 function calcEndTime(mins){
@@ -298,4 +377,11 @@ function calcEndTime(mins){
     endTimeDate = new Date(countDownTime + mins*60000);
     var endTimeString = endTimeDate.getHours() + " " + endTimeDate.getMinutes() + " " + endTimeDate.getSeconds();
     return endTimeString;
+}
+
+function saveToStorage(obj){
+    let serialized = JSON.stringify(obj);
+    chrome.storage.sync.set({"popupState": serialized}, function() {
+        console.log('Value is set to ' + serialized);
+    });
 }

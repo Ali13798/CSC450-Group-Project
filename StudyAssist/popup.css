@@ -9,6 +9,9 @@
 #options, #pauseBtn {
     display: none;
 }
+#nextStep{
+    display: none;
+}
 #parentModeBtn {
     float: right;
 }
