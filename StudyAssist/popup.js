@@ -93,8 +93,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     console.log("in study state");
                     timerDiv.style.display = "none";
                     beginButton.style.display = "none";
-                    endButton.style.display = "inline";
-                    pauseBtn.style.display = "inline";
+                    endButton.style.display = "inline-block";
+                    pauseBtn.style.display = "inline-block";
                     nextStep.style.display = "none";
                 }
                 //check if in intermission state
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     chrome.storage.local.set({ enabled });
                     timerDiv.style.display = "none";
                     beginButton.style.display = "none";
-                    endButton.style.display = "inline";
+                    endButton.style.display = "inline-block";
                     pauseBtn.style.display = "none";
                     //figure out what is next
                     var nextStepMessage;
@@ -130,8 +130,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     chrome.storage.local.set({ enabled });
                     timerDiv.style.display = "none";
                     beginButton.style.display = "none";
-                    endButton.style.display = "inline";
-                    pauseBtn.style.display = "inline";
+                    endButton.style.display = "inline-block";
+                    pauseBtn.style.display = "inline-block";
                 }
                 //check if in long break state
                 if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "Long break"){
@@ -141,8 +141,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     chrome.storage.local.set({ enabled });
                     timerDiv.style.display = "none";
                     beginButton.style.display = "none";
-                    endButton.style.display = "inline";
-                    pauseBtn.style.display = "inline";
+                    endButton.style.display = "inline-block";
+                    pauseBtn.style.display = "inline-block";
                 }
                 //check if in main page menu state
                 if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "mainpg"){
@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     const enabled = false;
                     chrome.storage.local.set({ enabled });
                     timerDiv.style.display = "block";
-                    beginButton.style.display = "inline";
+                    beginButton.style.display = "inline-block";
                     pauseBtn.style.display = "none";
                     nextStep.style.display = "none";
                     endButton.style.display = "none";
@@ -270,7 +270,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         var PgTitle = document.getElementById("PgTitle");
         PgTitle.innerHTML = "Main Menu";
         timerDiv.style.display = "block";
-        beginButton.style.display = "inline";
+        beginButton.style.display = "inline-block";
         pauseBtn.style.display = "none";
         nextStep.style.display = "none";
         endButton.style.display = "none";
@@ -451,8 +451,8 @@ function startTimer(minutes){
     //Remove timer options and begin session button, add end session button
     timerDiv.style.display = "none";
     beginButton.style.display = "none";
-    endButton.style.display = "inline";
-    pauseBtn.style.display = "inline";
+    endButton.style.display = "inline-block";
+    pauseBtn.style.display = "inline-block";
 
     //calculate the end time
     calcEndTime(minutes);

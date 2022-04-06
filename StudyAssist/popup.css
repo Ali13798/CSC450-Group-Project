@@ -1,7 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Michroma');
 
-#popupContainer {
+body{
     width: 500px;
+}
+#popupContainer {
+    width: 100%;
+    height: 100%;
     font-size: 15px;
     color: white;
     /* font-family:'Aquire', sans-serif; */
@@ -23,12 +27,12 @@
 
 body
 {
-    position: absolute;
+    /* position: absolute; */
     text-align: center;
-    margin-left: 10em;
+    /* margin-left: 10em; */
     padding: 0;
     font-family:'Comfortaa', sans-serif;
-    box-sizing: border-box;
+    box-sizing: border-box; 
     background: #0c002b; /* page background color */
 }
 
@@ -45,31 +49,38 @@ h3
     text-align: left;
     
 }
-
+ 
 #studyMin
 {
     width: 14.75%;
-    margin-left: 4.25em;
-    
+    /* margin-left: 4.25em; */
+    margin-left: 70px;
+    margin-top: 5px;
 }
 
 #shortBkMin 
 {
-    margin-left: 1.2em;
+    /* margin-left: 1.2em; */
     width: 14.75%;
+    margin-left: 29px;
+    margin-top: 5px;
 }
 
 #cycleNum
 {
-    margin-left: 2.3em;
+    /* margin-left: 2.3em; */
     width: 14.75%;
+    margin-left: 44px;
+    margin-top: 5px;
 }
 
 #longBkMin
 {
-    margin-left: 1.4em;
+    /* margin-left: 1.4em; */
     width: 14.75%;
-}
+    margin-left: 32px;
+    margin-top: 5px;
+} 
 
 h3
 {
@@ -84,17 +95,26 @@ h3
 
 
 /* START buttons*/
-#beginSession
+ #beginSession
 {
+    /* color: cyan;
+    font-family:'Michroma', sans-serif;
+    background-color: rgb(58, 1, 122);
+    text-align: left;
+    /* margin-left: 2.5em; */
+    /* position: absolute; */
+    /* left: 0%; */
+    /* padding-top: 3em; */
+    /* margin-top: 10%;
+    margin-left: 6%;
+    float: left;  */
+
     color: cyan;
     font-family:'Michroma', sans-serif;
     background-color: rgb(58, 1, 122);
     text-align: left;
     margin-left: 2.5em;
-    position: absolute;
-    left: 0%;
-    padding-top: 3em;
-    margin-top: 0%;
+    margin-top: 10%;
     margin-left: 6%;
 }
 
@@ -105,9 +125,9 @@ h3
     background-color: rgb(58, 1, 122);
     text-align: left;
     margin-left: 2.5em;
-    position: absolute;
-    left: 0%;
-    padding-top: 3em;
+    /* position: absolute;
+    left: 0%; */
+    /* padding-top: 3em; */
     margin-top: 0%;
     margin-left: 6%;
 }
@@ -120,29 +140,51 @@ h3
     background-color: rgb(58, 1, 122);
     text-align: left;
     margin-left: 2.5em;
-    position: absolute;
-    left: 0%;
-    padding-top: 3em;
+    /* position: absolute;
+    left: 0%; */
+    /* padding-top: 3em; */
     margin-top: 0%;
     margin-left: 6%;
 }
-
+#save, #popWebsites {
+    color: cyan;
+    font-family:'Michroma', sans-serif;
+    background-color: rgb(58, 1, 122);
+    margin-bottom: 10px;
+}
+#textarea {
+    margin-left: 100px;
+}
 #endSession
 {
-    padding-top: 3em;
+    /* padding-top: 3em;
     font-family:'Michroma', sans-serif;
     left: 0%;
     color: cyan;
     background-color: rgb(58, 1, 122);
     text-align: left;
     margin-top: 0%;
-    margin-left: 25%;
+    margin-left: 25%; */
+    
+ /* same as begin btn */
+    color: cyan;
+    font-family:'Michroma', sans-serif;
+    background-color: rgb(58, 1, 122);
+    text-align: left;
+    margin-left: 2.5em;
+    /* position: absolute; */
+    /* left: 0%; */
+    /* padding-top: 3em; */
+    margin-top: 10%;
+    margin-left: 6%;
+    /* float: left; */
+    
 }
 
 #websiteBtn
 {
     font-family:'Michroma', sans-serif;
-    left: 0%;
+    /* left: 0%; */
     color: cyan;
     background-color: rgb(58, 1, 122);
     text-align: left;
@@ -155,7 +197,7 @@ h3
 {
     padding-top: 11em;
     font-family:'Michroma', sans-serif;
-    left: 0%;
+    /* left: 0%; */
     color: cyan;
     background-color: rgb(58, 1, 122);
     text-align: left;
@@ -168,13 +210,15 @@ h3
 {
     padding-top: 14em;
     font-family:'Michroma', sans-serif;
-    left: 0%;
+    /* left: 0%; */
     color: cyan;
-    position: absolute;
+    /* position: absolute; */
     background-color: rgb(58, 1, 122);
     text-align: left;
-    margin-left: 6.5%;
+    /* margin-left: 6.5%; */
     margin-top: 5%;
+    margin-right: 15%;
+    margin-bottom: 10%;
 }
 
 input[type=submit]
@@ -182,14 +226,14 @@ input[type=submit]
     margin-left: -10%;
     font-family:'Michroma', sans-serif;
     color: cyan;
-    position: absolute;
+    /* position: absolute; */
     background-color: rgb(58, 1, 122);
 }
 
 
 
 
-#beginSession, #endSession, #websiteBtn, #optionsBtn, #parentModeBtn, input[type=submit], #nextStep
+#beginSession, #endSession, #websiteBtn, #optionsBtn, #parentModeBtn, input[type=submit], #nextStep, #pauseBtn, #popWebsites , #save
 {
     display: inline-block;
     padding: 15px 25px;
@@ -201,12 +245,12 @@ input[type=submit]
     border: none;
 }
   
-#beginSession:hover, #endSession:hover, #websiteBtn:hover, #optionsBtn:hover, #parentModeBtn:hover, input[type=submit]:hover, #nextStep:hover
+#beginSession:hover, #endSession:hover, #websiteBtn:hover, #optionsBtn:hover, #parentModeBtn:hover, input[type=submit]:hover, #nextStep:hover, #pauseBtn:hover, #popWebsites:hover , #save:hover
 {
     background-color: #ff1764;
 }
 
-#beginSession:active, #endSession:active, #websiteBtn:active, #optionsBtn:active, #parentModeBtn:active, input[type=submit]:active, #nextStep:active
+#beginSession:active, #endSession:active, #websiteBtn:active, #optionsBtn:active, #parentModeBtn:active, input[type=submit]:active, #nextStep:active, #pauseBtn:active, #popWebsites:active , #save:active
 {
 background-color: #ff178b;
 box-shadow: 0 5px #910e4f;
@@ -242,9 +286,9 @@ input[type="radio"]:checked
 input[type="radio"]::before
 {
     content: '';
-    position: absolute;
+    /* position: absolute;
     top: 0px;
-    left: 0;
+    left: 0; */
     width: 40px;
     height: 20px;
     background: linear-gradient(to top, #000, #555);
@@ -255,17 +299,17 @@ input[type="radio"]::before
 }
 
 
-input[type="radio"]:checked::before
+/* input[type="radio"]:checked::before
 {
     left: 20px;
-}
+} */
 
 input[type="radio"]::after
 {
     content: '';
-    position: absolute;
-    right: 65px;
-    top: calc(50% - 2px);
+    /* position: absolute; */
+    /* right: 65px; */
+    /* top: calc(50% - 2px); */
     width: 4px;
     height: 4px;
     border-radius: 50%;
@@ -275,7 +319,7 @@ input[type="radio"]::after
 
 input[type="radio"]:checked::after
 {
-    left: calc(65px - 20px);
+    /* left: calc(65px - 20px); */
     background: #63cdff;
     box-shadow: 0 0 5px #63cdff,
                 0 0 15px #63cdff,
