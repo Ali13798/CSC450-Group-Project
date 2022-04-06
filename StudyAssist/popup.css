@@ -42,45 +42,55 @@ h3
     text-align: center;
     margin-left: -1em;
 }
+#timerTable{
+    
+    width: 100%;
+}
+table, th, td{
+    border: 1px solid aqua;
+    border-collapse: collapse;
+    text-align: center;
+}
 
 #timerOptions
 {
-    margin-left: 2em;
+    margin-left: 1em;
+    margin-right: 1em;
     text-align: left;
     
 }
  
-#studyMin
+/* #studyMin
 {
-    width: 14.75%;
+    width: 14.75%; */
     /* margin-left: 4.25em; */
-    margin-left: 70px;
+    /* margin-left: 70px;
     margin-top: 5px;
-}
+} */
 
-#shortBkMin 
-{
+/* #shortBkMin 
+{ */
     /* margin-left: 1.2em; */
-    width: 14.75%;
+    /* width: 14.75%;
     margin-left: 29px;
     margin-top: 5px;
-}
+} */
 
-#cycleNum
-{
+/* #cycleNum
+{ */
     /* margin-left: 2.3em; */
-    width: 14.75%;
+    /* width: 14.75%;
     margin-left: 44px;
-    margin-top: 5px;
-}
+    margin-top: 5px; */
+/* } */
 
-#longBkMin
-{
+/* #longBkMin
+{ */
     /* margin-left: 1.4em; */
-    width: 14.75%;
+    /* width: 14.75%;
     margin-left: 32px;
-    margin-top: 5px;
-} 
+    margin-top: 5px; */
+/* }  */
 
 h3
 {
@@ -90,7 +100,7 @@ h3
 
 #opt1, #opt2, #opt3, #cust
 {
-    margin-top: 2em;
+    margin-top: 1em;
 }
 
 
@@ -223,7 +233,7 @@ h3
 
 input[type=submit]
 {
-    margin-left: -10%;
+    /* margin-left: -10%; */
     font-family:'Michroma', sans-serif;
     color: cyan;
     /* position: absolute; */
@@ -262,10 +272,11 @@ transform: translateY(4px);
 
 input[type="radio"]
 {
-    position: relative;
+    /* position: relative; */
     width: 60px;
     height: 20px;
-    margin: 5px;
+    /* margin: 5px; */
+    margin-bottom: 1em;
     padding-top: 10px;
     background: #fff;
     -webkit-appearance: none;
