@@ -4,7 +4,7 @@ var timeMessage; //Stores the string rep of the end timer time
 // var numStudy, numBreak, numLongBreak;
 //Timer choice values
 // var Stime, Btime, LBtime, Cnum;
-var innerCycleNum = 3;
+var innerCycleNum = 2;
 //Content areas
 var popCont, timerDiv, custSessionInputs, textarea, messages;
 //Buttons
@@ -209,6 +209,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     });
     //saves the list of blocked sites to localstorage
     save.addEventListener("click", () => {
+        //TODO: validate input to ensure only domains
         const blocked = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
         chrome.storage.local.set({ blocked });
     });

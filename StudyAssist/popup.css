@@ -296,10 +296,10 @@ input[type="radio"]:checked
 
 input[type="radio"]::before
 {
-    content: '';
-    /* position: absolute;
+    /* content: ''; */
+    position: relative;
     top: 0px;
-    left: 0; */
+    left: 0;
     width: 40px;
     height: 20px;
     background: linear-gradient(to top, #000, #555);
@@ -310,17 +310,18 @@ input[type="radio"]::before
 }
 
 
-/* input[type="radio"]:checked::before
+input[type="radio"]:checked::before
 {
+    position: relative;
     left: 20px;
-} */
+}
 
 input[type="radio"]::after
 {
-    content: '';
-    /* position: absolute; */
-    /* right: 65px; */
-    /* top: calc(50% - 2px); */
+    /* content: '' */
+    position: relative;
+    right: 65px;
+    top: calc(50% - 2px);
     width: 4px;
     height: 4px;
     border-radius: 50%;
@@ -330,7 +331,7 @@ input[type="radio"]::after
 
 input[type="radio"]:checked::after
 {
-    /* left: calc(65px - 20px); */
+    left: calc(65px - 20px);
     background: #63cdff;
     box-shadow: 0 0 5px #63cdff,
                 0 0 15px #63cdff,
