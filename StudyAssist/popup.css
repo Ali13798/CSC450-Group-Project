@@ -1,10 +1,10 @@
-@import url('http://fonts.cdnfonts.com/css/aquire');
+@import url('https://fonts.googleapis.com/css?family=Michroma');
 
 #popupContainer {
     width: 500px;
     font-size: 15px;
     color: white;
-    font-family:'Aquire', sans-serif;
+    /* font-family:'Aquire', sans-serif; */
 }
 #options, #pauseBtn, #nextStep, #messages {
     display: none;
@@ -23,149 +23,261 @@
 
 body
 {
-    margin: 10px;
+    position: absolute;
+    text-align: center;
+    margin-left: 10em;
     padding: 0;
-    font-family:'Aquire', sans-serif;
+    font-family:'Comfortaa', sans-serif;
     box-sizing: border-box;
     background: #0c002b; /* page background color */
 }
 
-h3, .radioButtons
+h3
 {
-    color: aqua;
-    font-family:'Aquire', sans-serif;
-}
-
-.radioButtons:hover
-{
-    color: aqua;
-}
-
-
-/* */
-.beginSession
-{
-    position: absolute;
-    top: 60%;
-    left: 25%;
-    transform: translate(-50%,-50%);
-    color: #1670f0;
-    padding: 30px 60px;
+    font-family:'Michroma', sans-serif;
     text-align: center;
-    font-size: 30px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    margin-left: -1em;
+}
+
+#timerOptions
+{
+    margin-left: 2em;
+    text-align: left;
+    
+}
+
+#studyMin
+{
+    width: 14.75%;
+    margin-left: 4.25em;
+    
+}
+
+#shortBkMin 
+{
+    margin-left: 1.2em;
+    width: 14.75%;
+}
+
+#cycleNum
+{
+    margin-left: 2.3em;
+    width: 14.75%;
+}
+
+#longBkMin
+{
+    margin-left: 1.4em;
+    width: 14.75%;
+}
+
+h3
+{
+    color: aqua;
+    /* font-family:'Aquire', sans-serif; */
+}
+
+#opt1, #opt2, #opt3, #cust
+{
+    margin-top: 2em;
+}
+
+
+/* START buttons*/
+#beginSession
+{
+    color: cyan;
+    font-family:'Michroma', sans-serif;
+    background-color: rgb(58, 1, 122);
+    text-align: left;
+    margin-left: 2.5em;
+    position: absolute;
+    left: 0%;
+    padding-top: 3em;
+    margin-top: 0%;
+    margin-left: 6%;
+}
+
+#pauseBtn
+{
+    color: cyan;
+    font-family:'Michroma', sans-serif;
+    background-color: rgb(58, 1, 122);
+    text-align: left;
+    margin-left: 2.5em;
+    position: absolute;
+    left: 0%;
+    padding-top: 3em;
+    margin-top: 0%;
+    margin-left: 6%;
+}
+
+
+#nextStep
+{
+    color: cyan;
+    font-family:'Michroma', sans-serif;
+    background-color: rgb(58, 1, 122);
+    text-align: left;
+    margin-left: 2.5em;
+    position: absolute;
+    left: 0%;
+    padding-top: 3em;
+    margin-top: 0%;
+    margin-left: 6%;
+}
+
+#endSession
+{
+    padding-top: 3em;
+    font-family:'Michroma', sans-serif;
+    left: 0%;
+    color: cyan;
+    background-color: rgb(58, 1, 122);
+    text-align: left;
+    margin-top: 0%;
+    margin-left: 25%;
+}
+
+#websiteBtn
+{
+    font-family:'Michroma', sans-serif;
+    left: 0%;
+    color: cyan;
+    background-color: rgb(58, 1, 122);
+    text-align: left;
+    margin-top: 5%;
+    margin-left: 6%;
+
+}
+
+#optionsBtn
+{
+    padding-top: 11em;
+    font-family:'Michroma', sans-serif;
+    left: 0%;
+    color: cyan;
+    background-color: rgb(58, 1, 122);
+    text-align: left;
+    margin-left: 2.5em;
+    margin-top: 5%;
+    margin-left: -88%;
+}
+
+#parentModeBtn
+{
+    padding-top: 14em;
+    font-family:'Michroma', sans-serif;
+    left: 0%;
+    color: cyan;
+    position: absolute;
+    background-color: rgb(58, 1, 122);
+    text-align: left;
+    margin-left: 6.5%;
+    margin-top: 5%;
+}
+
+input[type=submit]
+{
+    margin-left: -10%;
+    font-family:'Michroma', sans-serif;
+    color: cyan;
+    position: absolute;
+    background-color: rgb(58, 1, 122);
+}
+
+
+
+
+#beginSession, #endSession, #websiteBtn, #optionsBtn, #parentModeBtn, input[type=submit], #nextStep
+{
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: left;
     text-decoration: none;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
+    outline: none;
+    border: none;
+}
+  
+#beginSession:hover, #endSession:hover, #websiteBtn:hover, #optionsBtn:hover, #parentModeBtn:hover, input[type=submit]:hover, #nextStep:hover
+{
+    background-color: #ff1764;
 }
 
-.beginSession::before
+#beginSession:active, #endSession:active, #websiteBtn:active, #optionsBtn:active, #parentModeBtn:active, input[type=submit]:active, #nextStep:active
 {
-content: '';
-position: absolute;
-top: 2px;
-left: 2px;
-bottom: 2px;
-width: 50%;
-background: rgba(255, 255, 255, 0.05);
-}
-
-.beginSession span:nth-child(1)
-{
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 2px;
-background: linear-gradient(to right, #0c002b, #1779ff);
-
-animation: animate1 1.0s linear infinite;
-animation-delay: 1.0s;
-}
-
-@keyframes animate1
-{
-    0%
-    {
-    transform: translateX(-100%);
-    }
-    100%
-    {
-    transform: translateX(100%);
-    }
-}
-
-.beginSession span:nth-child(2)
-{
-position: absolute;
-top: 0;
-right: 0;
-width: 2px;
-height: 100%;
-background: linear-gradient(to bottom, #2b0000, #ff1749);
-animation: animate2 1s linear infinite;
-animation-delay: 1.5s;
+background-color: #ff178b;
+box-shadow: 0 5px #910e4f;
+transform: translateY(4px);
 }
 
 
-@keyframes animate2
-{
-    0%
-    {
-    transform: translateY(-100%);
-    }
-    100%
-    {
-    transform: translateY(100%);
-    }
-}
-.beginSession span:nth-child(3)
-{
-position: absolute;
-bottom: 0;
-left: 0;
-width: 100%;
-height: 2px;
-background: linear-gradient(to left, #17c8ff, #17ffd8);
-animation: animate3 1s linear infinite;
-animation-delay: 1.0s;
-}
+/* RADIO BUTTONS */
 
-
-@keyframes animate3
+input[type="radio"]
 {
-    0%
-    {
-    transform: translateX(100%);
-    }
-    100%
-    {
-    transform: translateX(-100%);
-    }
+    position: relative;
+    width: 60px;
+    height: 20px;
+    margin: 5px;
+    padding-top: 10px;
+    background: #fff;
+    -webkit-appearance: none;
+    cursor: pointer;
+    border-radius: 20px;
+    box-shadow: -5px -5px 20px rgba(255, 255, 255, 0.1),
+                5px 5px 10px rgba(0, 0, 0 1),
+                inset -2px -2px 5px rgba(255, 255, 255, 0.1),
+                inset 2px 2px 5px rgba(0, 0, 0, 0.5),
+                0 0 0 2px #1f1f1f;
+    transition: 0.5s;
+}
+input[type="radio"]:checked
+{
+    background: #ff178b;
 }
 
-.beginSession span:nth-child(4)
+input[type="radio"]::before
 {
-position: absolute;
-top: 0;
-left: 0;
-width: 2px;
-height: 100%;
-background: linear-gradient(to top, #8317ff, #ff17f7);
-animation: animate4 1s linear infinite;
-animation-delay: .5s;
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: 40px;
+    height: 20px;
+    background: linear-gradient(to top, #000, #555);
+    border-radius: 20px;
+    box-shadow: 0 0 0 1px #232323;
+    transform: scale(0.98, 0.96);
+    transition: 0.5s;
 }
 
 
-@keyframes animate4
+input[type="radio"]:checked::before
 {
-    0%
-    {
-    transform: translateY(100%);
-    }
-    100%
-    {
-    transform: translateY(-100%);
-    }
+    left: 20px;
+}
+
+input[type="radio"]::after
+{
+    content: '';
+    position: absolute;
+    right: 65px;
+    top: calc(50% - 2px);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #555;
+    transition: 0.8s;
+}
+
+input[type="radio"]:checked::after
+{
+    left: calc(65px - 20px);
+    background: #63cdff;
+    box-shadow: 0 0 5px #63cdff,
+                0 0 15px #63cdff,
+                0 0 30px #63cdff;
 }
