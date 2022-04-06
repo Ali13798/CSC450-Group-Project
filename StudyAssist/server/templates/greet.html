@@ -1,6 +1,8 @@
 {% extends 'layout.html' %} {% block body %}
 
 <div>Hello, {{name }}</div>
+
+{% if names %}
 <div>
     <table>
         <tr>
@@ -16,5 +18,4 @@
         {% endfor %}
     </table>
 </div>
-
-{% endblock body %}
+{% endif %} {% endblock body %}
