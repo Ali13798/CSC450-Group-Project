@@ -9,10 +9,10 @@
     <body>
         <!-- Start Nav Bar -->
         <div class="menu">
-            <a href="home-site.html" class="brand"><img src="logo1.png"></a>
+            <a href="home.html" class="brand"><img src="logo1.png"></a>
             <nav>
                 <ul>
-                    <li><a href="home-site.html">Home</a></li>
+                    <li><a href="home.html">Home</a></li>
                     <li><a href="stats.html">Stats</a></li>
                     <li><a href="Pomodoro.html">Pomodoro</a></li>
                     <li><a href="Parent.html">Parent Page</a>
@@ -91,7 +91,26 @@
 
         <!-- Levels and perks? -->
 
-        <script src="home-site.js"></script>
+        <script>
+            let number = document.getElementById("number");
+            let counter = 0;
+            let exp = 65;
+            let curLevel = 3;
+            let nextLevel = curLevel + 1;
+            setInterval(() => {
+                {
+                    if (counter == exp) // The number we define
+                    {
+                        clearInterval();
+                    }
+                    else
+                    {
+                        counter += 1;
+                        number.innerHTML = counter + "%";
+                    }
+                }
+            }, 30);
+        </script>
 
         <!-- End EXP Bar -->
         
