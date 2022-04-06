@@ -12,95 +12,11 @@ timerPlace.style.padding = "10px";
 timerPlace.style.opacity = "0.5";
 timerPlace.innerHTML="";
 
-var timer;
 var endTime;
 var pause = false;
 var pauseStart = null;
 var pauseEnd = null;
-// var timerEnd = false;
-// var studyTime;
-// var shortBkMin;
-// var cycleNum;
-// var longBkMin;
-// var numStudyCompleted = 0;
-// var numBreakCompleted = 0;
 
-//timer control point
-//get each timer out of storage
-// chrome.storage.sync.get(['popupState'], function(result) {
-//     if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
-//         //get the popup state obj
-//         var popupState = JSON.parse(result.popupState);
-//         //get each timer choice
-//         studyTime = parseFloat(popupState.studyTime);
-//         shortBkMin = parseFloat(popupState.shortBkMin);
-//         cycleNum = parseInt(popupState.cycleNum);
-//         longBkMin = parseFloat(popupState.longBkMin);
-//     }
-// })
-
-// //if a timer has ended
-// if(timerEnd){
-//     // run a buffer time
-//     // TODO: figure out running a buffer time. probably have a count
-//     // start next timer
-//     if(numStudyCompleted == cycleNum && numBreakCompleted == cycleNum){
-//         timerEnd = false;
-//         //run a long break
-//         ////set end time for now + longbkTimer
-//         newTime = new Date();
-//         newTime.setMinutes(endTime.getMinutes() + longBkMin);
-//         chrome.storage.sync.get(['popupState'], function(result) {
-//             if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
-//                 var popupState = JSON.parse(result.popupState);
-//                 popupState.endTime = newTime.getHours() + " " + newTime.getMinutes() + " " + newTime.getSeconds();
-//                 let serializedTimer = JSON.stringify(popupState);
-//                 chrome.storage.sync.set({"popupState": serializedTimer}, function() {
-//                     console.log('Value is set to ' + serializedTimer);
-//                 });
-//                 //make sure they are allowed to access any site on break
-//                 const enabled = false;
-//                 chrome.storage.local.set({ enabled });
-//             }
-//         })
-
-//     }else if (numStudyCompleted > numBreakCompleted){
-//         //run a short break
-//         timerEnd = false;
-//         newTime = new Date();
-//         newTime.setMinutes(endTime.getMinutes() + shortBkMin);
-//         chrome.storage.sync.get(['popupState'], function(result) {
-//             if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
-//                 var popupState = JSON.parse(result.popupState);
-//                 popupState.endTime = newTime.getHours() + " " + newTime.getMinutes() + " " + newTime.getSeconds();
-//                 let serializedTimer = JSON.stringify(popupState);
-//                 chrome.storage.sync.set({"popupState": serializedTimer}, function() {
-//                     console.log('Value is set to ' + serializedTimer);
-//                 });
-//                 //make sure they are allowed to access any site on break
-//                 const enabled = false;
-//                 chrome.storage.local.set({ enabled });
-//             }
-//         })
-//     }else if(numBreakCompleted == numStudyCompleted){
-//         //run study time
-//         newTime = new Date();
-//         newTime.setMinutes(endTime.getMinutes() + studyTime);
-//         chrome.storage.sync.get(['popupState'], function(result) {
-//             if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
-//                 var popupState = JSON.parse(result.popupState);
-//                 popupState.endTime = newTime.getHours() + " " + newTime.getMinutes() + " " + newTime.getSeconds();
-//                 let serializedTimer = JSON.stringify(popupState);
-//                 chrome.storage.sync.set({"popupState": serializedTimer}, function() {
-//                     console.log('Value is set to ' + serializedTimer);
-//                 });
-//                 //make sure they are not allowed to access any site during study
-//                 const enabled = true;
-//                 chrome.storage.local.set({ enabled });
-//             }
-//         })
-//     }
-// }
 //Listen for message about pausing the timer
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
@@ -119,28 +35,7 @@ chrome.runtime.onMessage.addListener(
             timerPlace.innerHTML = "";
         }
         sendResponse({farewell: "paused or unpaused"});
-      } //else if (request.message === "end"){
-    //       //stop timer
-    //       clearInterval(stID);
-    //       timerPlace.innerHTML = "";
-    //       document.body.prepend(timerPlace);
-    //       //Store that the time has ended
-    //       chrome.storage.sync.get(['popupState'], function(result) {
-    //           if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
-    //               var popupState = JSON.parse(result.popupState);
-    //               popupState.state = "mainpg";
-    //               popupState.endTime = "";
-    //               let serializedTimer = JSON.stringify(popupState);
-    //               chrome.storage.sync.set({"popupState": serializedTimer}, function() {
-    //                   console.log('Value is set to ' + serializedTimer);
-    //               });
-    //               const enabled = false;
-    //               chrome.storage.local.set({ enabled });
-    //           }
-    //       })
-    //       sendResponse({farewell: "timer ended"});
-    //   }
-        
+      }
     }
 );
 
@@ -190,18 +85,21 @@ if(!pause){
                             chrome.storage.sync.get(['popupState'], function(result) {
                                 if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
                                     var popupState = JSON.parse(result.popupState);
-                                    if(popupState.state == "study"){
-                                        popupState.numStudy++;
-                                    }else if (popupState.state == "break"){
-                                        popupState.numBreak++;
-                                    }else if (popupState.state == "Long break"){
-                                        popupState.numLongBreak++;
+                                    if(popupState.state === "study"){
+                                        popupState.numStudy = (popupState.numStudy) ? (parseInt(popupState.numStudy) + 1) : 1;
+                                        // popupState.numStudy = parseInt(popupState.numStudy) + 1;
+                                    }else if (popupState.state === "break"){
+                                        popupState.numBreak = (popupState.numBreak) ? (parseInt(popupState.numBreak) + 1) : 1;
+                                    }else if (popupState.state === "Long break"){
+                                        popupState.numLongBreak = (popupState.numLongBreak) ? (parseInt(popupState.numLongBreak) + 1) : 1;
                                     }
+                                    console.log("counters(s,b,lb): " + popupState.numStudy + " " + popupState.numBreak + " " + popupState.numLongBreak);
+                                    //set popup state to be between study/break
                                     popupState.state = "intermission";
-                                    popupState.endTime = "";
+                                    popupState.endTime = undefined;
                                     let serializedTimer = JSON.stringify(popupState);
                                     chrome.storage.sync.set({"popupState": serializedTimer}, function() {
-                                        console.log('Value is set to ' + serializedTimer);
+                                        console.log('Content: Value is set to ' + serializedTimer);
                                     });
                                     //stop blocking
                                     const enabled = false;

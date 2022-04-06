@@ -1,10 +1,7 @@
 
 chrome.runtime.onInstalled.addListener(function () {
-  console.log("in bj for on install");
   chrome.storage.local.get(["blocked", "enabled"], function (local) {
-    console.log("in get storage func");
     if (!Array.isArray(local.blocked)) {
-      console.log("blocked not array");
       chrome.storage.local.set({ blocked: [] });
     }
 

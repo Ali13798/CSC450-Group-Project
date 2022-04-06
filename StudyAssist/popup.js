@@ -1,21 +1,15 @@
-var timer = {}; //global object for storing ifnormation about the timer
-var timeMessage;
-var numStudy, numBreak, numLongBreak;
-var Stime, Btime, LBtime, Cnum;
-//HTML element variables
-var popCont;
-var websiteBtn;
-var timerDiv;
-var textarea;
-var save;
-var radioButtons;
-var custSessionInputs;
-var beginButton;
-var endButton;
-var optionsBtn;
-var popWebsites;
-var pauseBtn;
-var nextStep;
+var timer = {}; //global object for storing information about the timer
+var timeMessage; //Stores the string rep of the end timer time
+//Session progress counters
+// var numStudy, numBreak, numLongBreak;
+//Timer choice values
+// var Stime, Btime, LBtime, Cnum;
+var innerCycleNum = 3;
+//Content areas
+var popCont, timerDiv, custSessionInputs, textarea, messages;
+//Buttons
+var websiteBtn, save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep;
+
 
 
 //Clicking on the button starts the blocking session
@@ -34,6 +28,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     popWebsites = document.getElementById("popWebsites");
     pauseBtn = document.getElementById("pauseBtn");
     nextStep = document.getElementById("nextStep");
+    messages = document.getElementById("messages");
     //Website    
     websiteBtn.addEventListener("click", () =>{
         chrome.tabs.create({url: chrome.runtime.getURL("home-site.html") });
@@ -53,16 +48,40 @@ document.addEventListener("DOMContentLoaded", ()=>{
         if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
             //if there is data load it in, get it as a string
             var popupState = JSON.parse(result.popupState);
+            timer = popupState;
             if(popupState){
                 //load vars keeping track of num of study and breaks
-                numStudy = popupState.numStudy;
-                numBreak = popupState.numBreak;
-                numLongBreak = popupState.numLongBreak;
-                Stime = popupState.studyMin;
-                Btime = popupState.shortBkMin;
-                LBtime = popupState.longBkMin;
-                Cnum = popupState.cycleNum;
-
+                timer.numStudy = (popupState.numStudy) ? parseInt(popupState.numStudy) : 0;
+                timer.numBreak = (popupState.numBreak) ? parseInt(popupState.numBreak) : 0;
+                timer.numLongBreak = (popupState.numLongBreak) ? parseInt(popupState.numLongBreak) : 0;
+                timer.Stime = parseFloat(popupState.studyMin);
+                timer.Btime = parseFloat(popupState.shortBkMin);
+                timer.LBtime = parseFloat(popupState.longBkMin);
+                timer.Cnum = parseInt(popupState.cycleNum);
+                //Debug: // console.log("counters(s,b,lb): " + numStudy + " " + numBreak + " " + numLongBreak);
+                //detect if the session has finished
+                if(timer.numLongBreak == timer.Cnum){
+                    //set back to main page and display session finished
+                    popupState.state = "mainpg";
+                    timer.state = "mainpg";
+                    messages.innerHTML = "Session Completed!";
+                    messages.style.display = "block";
+                    //reset counters
+                    timer.numStudy = 0;
+                    timer.numBreak = 0;
+                    timer.numLongBreak = 0;
+                }else if (popupState.state === "mainpg"){
+                    messages.innerHTML = "";
+                    messages.style.display = "block";
+                }else if( ((popupState.state === "study") || (popupState.state === "intermission")) || ((popupState.state === "break") || (popupState.state === "Long break"))){
+                    //display how many of each have been completed
+                    var progressMessage = "Study: " + timer.numStudy+ "/" + innerCycleNum 
+                                + ", Short Break: " + timer.numBreak + "/" + innerCycleNum
+                                + ", Long Break: " + timer.numLongBreak + "/" + timer.Cnum;
+                    messages.innerHTML = progressMessage;
+                    messages.style.display = "block";
+                }
+                
                 //Check if in study state
                 if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "study"){
                     //display it is in study mode
@@ -82,14 +101,48 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "intermission"){
                     var PgTitle = document.getElementById("PgTitle");
                     PgTitle.innerHTML = "Intermission";
-                    console.log("in intermission state");
                     const enabled = false;
                     chrome.storage.local.set({ enabled });
                     timerDiv.style.display = "none";
                     beginButton.style.display = "none";
                     endButton.style.display = "inline";
                     pauseBtn.style.display = "none";
+                    //figure out what is next
+                    var nextStepMessage;
+                    if(timer.numStudy == innerCycleNum && timer.numBreak == innerCycleNum){
+                        //long break time
+                        nextStepMessage = "Start Long Break";
+                    }else if(timer.numStudy > timer.numBreak){
+                        //short break
+                        nextStepMessage = "Start Short Break";
+                    }else if(timer.numStudy == timer.numBreak){
+                        //study time
+                        nextStepMessage = "Start Study Time";
+                    }
                     nextStep.style.display = "inline";
+                    nextStep.innerHTML = nextStepMessage;
+                }
+                //check if in break state
+                if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "break"){
+                    var PgTitle = document.getElementById("PgTitle");
+                    PgTitle.innerHTML = "Short Break";
+                    const enabled = false;
+                    chrome.storage.local.set({ enabled });
+                    timerDiv.style.display = "none";
+                    beginButton.style.display = "none";
+                    endButton.style.display = "inline";
+                    pauseBtn.style.display = "inline";
+                }
+                //check if in long break state
+                if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "Long break"){
+                    var PgTitle = document.getElementById("PgTitle");
+                    PgTitle.innerHTML = "Long Break";
+                    const enabled = false;
+                    chrome.storage.local.set({ enabled });
+                    timerDiv.style.display = "none";
+                    beginButton.style.display = "none";
+                    endButton.style.display = "inline";
+                    pauseBtn.style.display = "inline";
                 }
                 //check if in main page menu state
                 if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "mainpg"){
@@ -112,8 +165,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
                         message = "Access to the following page is not permitted during study mode:\n" + url 
                                     + "\nAllow this domain? " + domain;
                         popupState.newBlockedPg = false;
+                        timer.newBlockedPg = false;
                         popupState.lastBlockedPage = "";
-                        saveToStorage(popupState);
+                        timer.lastBlockedPage = "";
+                        saveToStorage(timer);
                         answer = confirm(message);
                         if(answer){
                             //Add it to the whitelist
@@ -135,17 +190,17 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     //choice is the id of the element to set to be checked
                     document.getElementById(popupState.choiceid).checked = true;
                 }
-                if(!(popupState.studyMin === undefined || popupState.studyMin === null || popupState.studyMin.length === 0)){
-                    document.getElementById("studyMin").value = popupState.studyMin;
+                if(!(popupState.studyMinCust === undefined || popupState.studyMinCust === null || popupState.studyMinCust.length === 0)){
+                    document.getElementById("studyMin").value = popupState.studyMinCust;
                 }
-                if(!(popupState.shortBkMin === undefined || popupState.shortBkMin === null || popupState.shortBkMin.length === 0)){
-                    document.getElementById("shortBkMin").value = popupState.shortBkMin;
+                if(!(popupState.shortBkMinCust === undefined || popupState.shortBkMinCust === null || popupState.shortBkMinCust.length === 0)){
+                    document.getElementById("shortBkMin").value = popupState.shortBkMinCust;
                 }
-                if(!(popupState.cycleNum === undefined || popupState.cycleNum === null || popupState.cycleNum.length === 0)){
-                    document.getElementById("cycleNum").value = popupState.cycleNum;
+                if(!(popupState.cycleNumCust === undefined || popupState.cycleNumCust === null || popupState.cycleNumCust.length === 0)){
+                    document.getElementById("cycleNum").value = popupState.cycleNumCust;
                 }
-                if(!(popupState.longBkMin === undefined || popupState.longBkMin === null || popupState.longBkMin.length === 0)){
-                    document.getElementById("longBkMin").value = popupState.longBkMin;
+                if(!(popupState.longBkMinCust === undefined || popupState.longBkMinCust === null || popupState.longBkMinCust.length === 0)){
+                    document.getElementById("longBkMin").value = popupState.longBkMinCust;
                 }
                 
             }
@@ -184,20 +239,21 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     //if a cust value is input, save input in storage
     custSessionInputs.addEventListener('input', e =>{
+        //set separate values for keeping the custom timer for later use
         if(e.target && e.target.matches("input[type='number']")){
-            var studyMin = document.getElementById("studyMin").value;
-            var shortBkMin = document.getElementById("shortBkMin").value;
-            var cycleNum = document.getElementById("cycleNum").value;
-            var longBkMin = document.getElementById("longBkMin").value;
+            var studyMinCust = document.getElementById("studyMin").value;
+            var shortBkMinCust = document.getElementById("shortBkMin").value;
+            var cycleNumCust = document.getElementById("cycleNum").value;
+            var longBkMinCust = document.getElementById("longBkMin").value;
             //check if any inputs
-            if(studyMin != ""){
-                timer.studyMin = studyMin;
-            }if(shortBkMin != ""){
-                timer.shortBkMin = shortBkMin;
-            }if(cycleNum != ""){
-                timer.cycleNum = cycleNum;
-            }if(longBkMin != ""){
-                timer.longBkMin = longBkMin;
+            if(studyMinCust != ""){
+                timer.studyMinCust = studyMinCust;
+            }if(shortBkMinCust != ""){
+                timer.shortBkMinCust = shortBkMinCust;
+            }if(cycleNumCust != ""){
+                timer.cycleNumCust = cycleNumCust;
+            }if(longBkMinCust != ""){
+                timer.longBkMinCust = longBkMinCust;
             }
             saveToStorage(timer);
         }
@@ -210,20 +266,26 @@ document.addEventListener("DOMContentLoaded", ()=>{
     
     //End session //end session button not working
     endButton.addEventListener('click', () => {
+        //set up the Main Menu
         var PgTitle = document.getElementById("PgTitle");
         PgTitle.innerHTML = "Main Menu";
-        const enabled = false;
-        chrome.storage.local.set({ enabled });
         timerDiv.style.display = "block";
         beginButton.style.display = "inline";
         pauseBtn.style.display = "none";
         nextStep.style.display = "none";
         endButton.style.display = "none";
         timer.state = "mainpg";
-        
-        timer.inStudySession = false;
+        messages.innerHTML = "";
+        //reset count of study and short breaks
+        timer.numStudy = 0;
+        timer.numBreak = 0;
+        timer.numLongBreak = 0;
+        // timer.inStudySession = false;
         timer.endTime = "";
         saveToStorage(timer);
+        //stop blocking
+        const enabled = false;
+        chrome.storage.local.set({ enabled });
         if(timer.state == "study"){
             answer = confirm("Reload page for timer to stop?");
             if(answer){
@@ -273,21 +335,45 @@ document.addEventListener("DOMContentLoaded", ()=>{
         });
     });
 
-    // nextStep.addEventListener('click', ()=>{
-    //     console.log("clicked nextstep");
-    //     //figure out if the next step is to study or break
-    //     if(numStudy == Cnum && numBreak == Cnum){
-    //         //long break time
-    //         //TODO
-    //     }
-    //     else if(numStudy > numBreak){
-    //         //short break
-    //         //TODO
-    //     }else if(numStudy == numBreak){
-    //         //study time
-    //         startTimer(Stime);
-    //     }
-    // });
+    nextStep.addEventListener('click', ()=>{
+        //figure out if the next step is to study or break
+        if(timer.numStudy == innerCycleNum && timer.numBreak == innerCycleNum){
+            //long break time
+            //display study mode
+            PgTitle.innerHTML = "Long Break";
+            //save state to storage
+            timer.state = "Long break";
+            //begin blocking websites in the list
+            const enabled = false;
+            chrome.storage.local.set({ enabled });
+            //reset count of study and short breaks
+            timer.numStudy = 0;
+            timer.numBreak = 0;
+            saveToStorage(timer);
+            startTimer(timer.LBtime);
+        }
+        else if(timer.numStudy > timer.numBreak){
+            //short break
+            //display study mode
+            PgTitle.innerHTML = "Short Break";
+            //save state to storage
+            timer.state = "break";
+            //begin blocking websites in the list
+            const enabled = false;
+            chrome.storage.local.set({ enabled });
+            startTimer(timer.Btime);
+        }else if(timer.numStudy == timer.numBreak){
+            //study time
+            //display study mode
+            PgTitle.innerHTML = "Study Mode";
+            //save state to storage
+            timer.state = "study";
+            //begin blocking websites in the list
+            const enabled = true;
+            chrome.storage.local.set({ enabled });
+            startTimer(timer.Stime);
+        }
+    });
 });
 
 //Begin Session Functions
@@ -310,9 +396,15 @@ function validateTimerChoice(){
         timer.shortBkMin = shortBkMin;
         timer.cycleNum = cycleNum;
         timer.longBkMin = longBkMin;
+        //display study mode
+        PgTitle.innerHTML = "Study Mode";
+        //save state to storage
+        timer.state = "study";
         saveToStorage(timer);
+        //begin blocking websites in the list
+        const enabled = true;
+        chrome.storage.local.set({ enabled });
         startTimer(studyMin);
-        
     }
 }
 
@@ -335,40 +427,37 @@ function validateCustomTimer(){
         timer.shortBkMin = shortBkMin;
         timer.cycleNum = cycleNum;
         timer.longBkMin = longBkMin;
+
+        //display study mode
+        PgTitle.innerHTML = "Study Mode";
+        //save state to storage
+        timer.state = "study";
         saveToStorage(timer);
+        //begin blocking websites in the list
+        const enabled = true;
+        chrome.storage.local.set({ enabled });
         startTimer(studyMin);
     }
 }
 
 function startTimer(minutes){
-    confirm("Ready to reload page for timer to begin?");
-    //display study mode
-    // var studyH3 = document.createElement("h3");
-    // studyH3.innerHTML = "Study Mode";
-    // var popCont = document.getElementById("popupContainer");
-    // popCont.prepend(studyH3);
-
-    //save state to storage
-    timer.state = "study";
-    //begin blocking websites in the list
-    const enabled = true;
-    chrome.storage.local.set({ enabled });
-
+    var answer = confirm("Ready to reload page for timer to begin? Press cancel to ask again in 30 seconds.");
+    while(!answer){ //TODO: come back to this, not a good way because it probably wont work when the popup is opened again. try adding a prompt when it loads
+        //wait 30 seconds and ask again
+        var intervalID = setInterval(function() {
+            answer = confirm("Ready to reload page for timer to begin? Press cancel to ask again in 30 seconds.");
+        }, 30*1000);
+    }
     //Remove timer options and begin session button, add end session button
     timerDiv.style.display = "none";
     beginButton.style.display = "none";
     endButton.style.display = "inline";
     pauseBtn.style.display = "inline";
-    // var timerInfo = "/" + studyMin + "/" + shortBkMin + "/" + cycleNum + "/" + longBkMin;
 
     //calculate the end time
-    timeMessage = calcEndTime(minutes);
+    calcEndTime(minutes);
 
-    //Store endTime and inSession
-    timer.inStudySession = true;
-    timer.endTime = timeMessage;
-    //Store updated timer information
-    saveToStorage(timer);
+    //reload to start timer on the tab
     chrome.tabs.reload();
 }
 function calcEndTime(mins){
@@ -376,7 +465,8 @@ function calcEndTime(mins){
     var countDownTime = new Date().getTime();
     endTimeDate = new Date(countDownTime + mins*60000);
     var endTimeString = endTimeDate.getHours() + " " + endTimeDate.getMinutes() + " " + endTimeDate.getSeconds();
-    return endTimeString;
+    timer.endTime = endTimeString;
+    saveToStorage(timer);
 }
 
 function saveToStorage(obj){

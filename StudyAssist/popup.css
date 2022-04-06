@@ -6,10 +6,7 @@
     color: white;
     font-family:'Aquire', sans-serif;
 }
-#options, #pauseBtn {
-    display: none;
-}
-#nextStep{
+#options, #pauseBtn, #nextStep, #messages {
     display: none;
 }
 #parentModeBtn {
