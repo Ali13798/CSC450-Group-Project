@@ -16,9 +16,8 @@ class db_tools:
             print("Error: Missing name or password.")
             return
 
-        rows = db_tools.get_users_rows(cur)
-        existing_names = [n[1] for n in rows]
-        if name in existing_names:
+        user_exists = db_tools.is_existing_user(cur=cur, name=name)
+        if user_exists:
             print("Error: Username already exists. Choose another username.")
             return
 
@@ -28,5 +27,18 @@ class db_tools:
         )
 
     def get_users_rows(cur: sqlite3.Cursor) -> list[tuple[int, str, str]]:
-        result = cur.execute("SELECT * FROM users").fetchall()
-        return result
+        return cur.execute("SELECT * FROM users").fetchall()
+
+    def is_existing_user(cur: sqlite3.Cursor, name: str) -> bool:
+        rows = db_tools.get_users_rows(cur=cur)
+        existing_names = [n[1] for n in rows]
+
+        if name in existing_names:
+            return True
+
+        return False
+
+    def get_user_password(cur: sqlite3.Cursor, name: str) -> str:
+        return cur.execute(
+            "SELECT password FROM users WHERE user_name=?", (name,)
+        ).fetchall()

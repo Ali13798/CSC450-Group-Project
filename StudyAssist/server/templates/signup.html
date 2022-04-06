@@ -1,0 +1,23 @@
+{% extends 'layout.html' %} {% block title %} {{ title }} {% endblock title %}
+{% block body %}
+
+<form action="/greetNewUser" method="post">
+    <input
+        autocomplete="off"
+        autofocus
+        name="name"
+        placeholder="Name"
+        type="text"
+        required
+    />
+    <input
+        autocomplete="off"
+        name="password"
+        placeholder="Password"
+        type="password"
+        require
+    />
+    <input type="submit" text="submit" />
+</form>
+
+{% endblock body %}
