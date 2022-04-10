@@ -209,8 +209,27 @@ document.addEventListener("DOMContentLoaded", ()=>{
     });
     //saves the list of blocked sites to localstorage
     save.addEventListener("click", () => {
-        //TODO: validate input to ensure only domains
-        const blocked = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
+        var domains = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
+        //check that each is a valid address
+        var blocked = [];
+        regex = /(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,256}\b(\.[a-z, A-Z]*)/;
+        var removedString = "The following domains are invalid and have been removed: <br>";
+        for(var i = 0; i < domains.length ; i++) {
+            
+            if(domains[i].match(regex)){
+                blocked.push(domains[i]);
+                console.log("valid: " + blocked);
+            }else{
+                removedString += domains[i] + "<br>";
+                console.log("removedString: " + removedString);
+            }
+        }
+        //update list with only approved
+        textarea.value = blocked.join("\n");
+        //tell user which were removed
+        var removedPara = document.getElementById("removedDomains");
+        removedPara.innerHTML = removedString;
+        console.log(blocked);
         chrome.storage.local.set({ blocked });
     });
 
@@ -313,6 +332,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 }
             });
         }else{
+            //clear removed message
+            var removedPara = document.getElementById("removedDomains");
+            removedPara.innerHTML = "";
             //hide the options
             var options = document.getElementById("options");
             options.style.display = "none";
