@@ -4,27 +4,22 @@
         <meta charset="utf-8">
         <title>Home</title>
         <link rel="stylesheet" href="style-site.css">
+        <script src ="home-site.js"></script>
     </head>
 
     <body>
         <!-- Start Nav Bar -->
         <div class="menu">
-            <a href="home.html" class="brand"><img src="logo1.png"></a>
+            <a href="home-site.html" class="brand"><img src="logo1.png"></a>
             <nav>
                 <ul>
-                    <li><a href="home.html">Home</a></li>
+                    <li><a href="home-site.html">Home</a></li>
                     <li><a href="stats.html">Stats</a></li>
-                    <li><a href="Pomodoro.html">Pomodoro</a></li>
-                    <li><a href="Parent.html">Parent Page</a>
-                        <ul>
-                            <li><a href="whitelisted.html">Whitelisted Sites</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="contactus.html">Contact Us</a></li>
                     <li><a href="login.html">Login</a></li>
                 </ul>
             </nav>
         </div>
+        
         <!-- End Nav Bar -->
 
         <!-- Start Welcome User -->
@@ -45,21 +40,25 @@
 
  
         <!-- Start Progress Buttons -->
-            <button1 href="">
+            <button class="button1" href="">
                 <span></span>
                 <span></span>
                 <span></span>
                 <span></span>
                 Current Level <br> 3 <br> Mage </br>
-            </button1>
+            </button>
 
-            <button2 href="">
+            <button class="button2" href="">
                 <span></span>
                 <span></span>
                 <span></span>
                 <span></span>
                 Next Level <br> 4 <br> Warlock </br>
-            </button2>
+            </button>
+
+            <p class="CurLevelExplain">This is your current level!</p>
+            <p class="ExpBarExplain">Your Percent to next level! <br>Keep studying to level up!</p>
+            <p class="NextLevelExplain">This is your next level!</p>
         <!-- End Progress Buttons -->
 
         <!-- Start EXP Bar -->
@@ -77,43 +76,17 @@
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="160px" height="160px">
                 <defs>
                    <linearGradient id="GradientColor">
-                      <stop offset="0%" stop-color="#8317ff" /> <!-- #14ffe9 // blue : #ffeb3b // yellow : #8317ff // purple : #ff17f7 // pink -->
-                      <stop offset="50%" stop-color="#ff17f7" />
+                      <stop offset="0%" stop-color="#013236" /> <!-- #14ffe9 // blue : #ffeb3b // yellow : #8317ff // purple : #ff17f7 // pink -->
+                      <stop offset="100%" stop-color="#ffbe30" />
 
-                      <stop offset="51%" stop-color="#ff17f7" />
-                      <stop offset="100%" stop-color="#8317ff" />
+                      <!--<stop offset="51%" stop-color="#fff" />
+                      <stop offset="100%" stop-color="#fff" /> -->
                    </linearGradient>
                 </defs>
                 <circle cx="80" cy="80" r="70" stroke-linecap="round" />
         </svg>
 
         </div>
-
-        <!-- Levels and perks? -->
-
-        <!-- <script> moved to js file
-            let number = document.getElementById("number");
-            let counter = 0;
-            let exp = 65;
-            let curLevel = 3;
-            let nextLevel = curLevel + 1;
-            setInterval(() => {
-                {
-                    if (counter == exp) // The number we define
-                    {
-                        clearInterval();
-                    }
-                    else
-                    {
-                        counter += 1;
-                        number.innerHTML = counter + "%";
-                    }
-                }
-            }, 30);
-        </script> -->
-
-        <!-- End EXP Bar -->
-        
     </body>
 
 
