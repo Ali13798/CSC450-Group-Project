@@ -1,3 +1,6 @@
+#* Custom
+flask_session/
+
 #* Python related from https://github.com/github/gitignore/blob/main/Python.gitignore
 # Byte-compiled / optimized / DLL files
 __pycache__/
