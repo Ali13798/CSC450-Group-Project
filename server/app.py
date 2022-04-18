@@ -97,7 +97,7 @@ def logout():
 
 @app.route("/stats")
 def stats():
-    return "stats not yet implemented."
+    return render_template("stats.html", title="Stats")
 
 
 def hash_password(pswd: str) -> str:
