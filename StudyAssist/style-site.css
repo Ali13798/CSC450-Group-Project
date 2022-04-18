@@ -16,6 +16,7 @@ python manage.py runserver
 /* navbar */
 
 @import url('http://fonts.cdnfonts.com/css/aquire');
+@import url('https://fonts.googleapis.com/css?family=Michroma');
 
 body
 {
@@ -23,7 +24,10 @@ margin: 0;
 padding: 0;
 font-family:'Aquire', sans-serif;
 box-sizing: border-box;
-background: #0c002b; /* page background color */
+/*background: #0c002b; /* page background color */
+/*background: #5ed0d8; */
+background-image: url("bg3.jpg");
+background-size: cover;
 }
 
 .menu
@@ -40,7 +44,6 @@ border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 {
 float: left;
 width: 84px;
-color: #0BD9D9;
 }
 
 nav
@@ -105,7 +108,7 @@ transform: translateY(0px);
 
 nav ul li a:hover
 {
-background: #da0b73; /* change hover color */
+background: #e2a218; /* change hover color  #da0b73 */
 color: #0c002b; /* hover font color */
 
 }
@@ -119,7 +122,6 @@ color: #0c002b; /* hover font color */
 
 .welcome
 {
-
 position: relative;
 width: 300px;
 height: 300px;
@@ -137,7 +139,7 @@ top: 40%;
 left: 0;
 width: 100%;
 height: 100%;
-border: 2px solid #da0b73;
+border: 2px solid #ffbe30;
 border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
 transition: 0.5s;
 animation: bubbleAnim 6s linear infinite;
@@ -156,7 +158,7 @@ top: 40%;
 left: 0;
 width: 100%;
 height: 100%;
-border: 2px solid #da0b73;
+border: 2px solid #ffbe30;
 border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
 transition: 0.5s;
 animation: bubbleAnim 4s linear infinite;
@@ -176,7 +178,7 @@ top: 40%;
 left: 0;
 width: 100%;
 height: 100%;
-border: 2px solid #da0b73;
+border: 2px solid #ffbe30;
 border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
 transition: 0.5s;
 animation: bubbleAnim2 10s linear infinite;
@@ -185,7 +187,7 @@ animation: bubbleAnim2 10s linear infinite;
 .welcome:hover span:nth-child(3)
 {
 border: none;
-background: rgba(23, 216, 216, 0.8);
+background: rgba(19, 117, 117, 0.8);
 }
 
 @keyframes bubbleAnim 
@@ -215,7 +217,7 @@ rotate: (0deg);
 {
 position: relative;
 padding: 40px 60px;
-color: #8317ff;
+color: #ffbe30;
 text-align: center;
 transition: 0.5s;
 z-index: 1000;
@@ -227,10 +229,10 @@ top: 30%;
 position: relative;
 display: inline-block;
 margin-top: 10px;
-border: 2px solid #8317ff;
+border: 2px solid #ffbe30;
 padding: 6px 18px;
 text-decoration: none;
-color: #8317ff;
+color: #ffbe30;
 font-weight: 600;
 border-radius: 73% 27% 44% 56% / 49% 44% 56% 51%;
 }
@@ -241,14 +243,19 @@ border-radius: 73% 27% 44% 56% / 49% 44% 56% 51%;
 
 /* Start buttons */
 
+.button1, .button2, .buttonMouse, .buttonKey, .buttonTotalTime, .buttonDaysStudied
+{
+  background-color: #004e55;
+  color: rgb(0, 0, 0);
+}
+
 /* Start Button 1 */
-button1
+.button1
 {
 position: absolute;
 top: 60%;
 left: 25%;
 transform: translate(-50%,-50%);
-color: #1670f0;
 text-align: center;
 padding: 30px 60px;
 font-size: 30px;
@@ -258,7 +265,7 @@ text-decoration: none;
 box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 overflow: hidden;
 }
-button1::before
+.button1::before
 {
 content: '';
 position: absolute;
@@ -268,14 +275,14 @@ bottom: 2px;
 width: 50%;
 background: rgba(255, 255, 255, 0.05);
 }
-button1 span:nth-child(1)
+.button1 span:nth-child(1)
 {
 position: absolute;
 top: 0;
 left: 0;
 width: 100%;
 height: 2px;
-background: linear-gradient(to right, #0c002b, #1779ff);
+background: linear-gradient(to right, #ffbe30, #81611a);
 
 animation: animate1 1.0s linear infinite;
 animation-delay: 1.0s;
@@ -292,14 +299,14 @@ animation-delay: 1.0s;
   }
 }
 
-button1 span:nth-child(2)
+.button1 span:nth-child(2)
 {
 position: absolute;
 top: 0;
 right: 0;
 width: 2px;
 height: 100%;
-background: linear-gradient(to bottom, #2b0000, #ff1749);
+background: linear-gradient(to bottom, #2b0000, #ff2617);
 animation: animate2 1s linear infinite;
 animation-delay: 1.5s;
 }
@@ -316,7 +323,7 @@ animation-delay: 1.5s;
     transform: translateY(100%);
   }
 }
-button1 span:nth-child(3)
+.button1 span:nth-child(3)
 {
 position: absolute;
 bottom: 0;
@@ -341,14 +348,14 @@ animation-delay: 1.0s;
   }
 }
 
-button1 span:nth-child(4)
+.button1 span:nth-child(4)
 {
 position: absolute;
 top: 0;
 left: 0;
 width: 2px;
 height: 100%;
-background: linear-gradient(to top, #8317ff, #ff17f7);
+background: linear-gradient(to top, rgb(90, 89, 89), #fff);
 animation: animate4 1s linear infinite;
 animation-delay: .5s;
 }
@@ -372,13 +379,13 @@ animation-delay: .5s;
 
 /* Start button 2 */
 
-button2
+.button2
 {
 position: absolute;
 top: 60%;
 left: 75%;
 transform: translate(-50%,-50%);
-color: #1670f0;
+
 text-align: center;
 padding: 30px 60px;
 font-size: 30px;
@@ -388,7 +395,7 @@ text-decoration: none;
 box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 overflow: hidden;
 }
-button2::before
+.button2::before
 {
 content: '';
 position: absolute;
@@ -398,14 +405,14 @@ bottom: 2px;
 width: 50%;
 background: rgba(255, 255, 255, 0.05);
 }
-button2 span:nth-child(1)
+.button2 span:nth-child(1)
 {
 position: absolute;
 top: 0;
 left: 0;
 width: 100%;
 height: 2px;
-background: linear-gradient(to right, #0c002b, #1779ff);
+background: linear-gradient(to right, #ffbe30, #81611a);
 
 animation: animate1 1.0s linear infinite;
 animation-delay: 1.0s;
@@ -422,14 +429,14 @@ animation-delay: 1.0s;
   }
 }
 
-button2 span:nth-child(2)
+.button2 span:nth-child(2)
 {
 position: absolute;
 top: 0;
 right: 0;
 width: 2px;
 height: 100%;
-background: linear-gradient(to bottom, #2b0000, #ff1749);
+background: linear-gradient(to bottom, #2b0000, #ff2617);
 animation: animate2 1s linear infinite;
 animation-delay: 1.5s;
 }
@@ -446,7 +453,7 @@ animation-delay: 1.5s;
     transform: translateY(100%);
   }
 }
-button2 span:nth-child(3)
+.button2 span:nth-child(3)
 {
 position: absolute;
 bottom: 0;
@@ -471,14 +478,14 @@ animation-delay: 1.0s;
   }
 }
 
-button2 span:nth-child(4)
+.button2 span:nth-child(4)
 {
 position: absolute;
 top: 0;
 left: 0;
 width: 2px;
 height: 100%;
-background: linear-gradient(to top, #8317ff, #ff17f7);
+background: linear-gradient(to top, rgb(90, 89, 89), #fff);
 animation: animate4 1s linear infinite;
 animation-delay: .5s;
 }
@@ -496,6 +503,8 @@ animation-delay: .5s;
   }
 }
 
+
+
 /* End Buttons */
 
 /* ##########################################################################################################################################################*/
@@ -506,7 +515,8 @@ animation-delay: .5s;
 {
 width: 160px;
 height: 160px;
-background: #0c002b;
+background: rgba(0, 0, 0, .75);
+border-radius: 50%;
 position: absolute;
 top: 51%;
 left: 46%;
@@ -520,8 +530,8 @@ height: 160;
 width: 160;
 border-radius: 50%;
 padding: 20px;
-box-shadow: 12px 12px 20px -3px #da0b73, /* Bot Right Shadow of wheel       #14ffe9  */
-          -12px -12px 20px -3px #da0b73; /* Top Left shadow of wheel   #ff1749   #ffeb3b*/
+box-shadow: 12px 12px 20px -3px #e2a218, /* Bot Right Shadow of wheel       #14ffe9  */
+          -12px -12px 20px -3px #e2a218; /* Top Left shadow of wheel   #ff1749   #ffeb3b*/
 }
 
 .inner
@@ -532,7 +542,7 @@ border-radius: 50%;
 display: flex;
 align-items: center;
 justify-content: center;
-border: 1px solid #da0b73;
+border: 1px solid #e2a218;
 box-shadow: inset 4px 4px 6px -1px rgba(0, 0, 0, .2),
           inset -4px -4px 6px -1px rgba (255, 255, 255, .7),
           -0.5px -0.5px 0px rgba(255, 255, 255, 1),
@@ -542,7 +552,7 @@ box-shadow: inset 4px 4px 6px -1px rgba(0, 0, 0, .2),
 #number
 {
 font-weight: 600px;
-color: #1670f0; /* number color */ 
+color: #e2a218; /* number color */ 
 }
 
 circle
@@ -576,13 +586,12 @@ stroke-dashoffset: 165;
 /* Start stats.html */
 
 /* Start buttonMouse*/
-buttonMouse
+.buttonMouse
 {
 position: absolute;
 top: 30%;
 left: 25%;
 transform: translate(-50%,-50%);
-color: #1670f0;
 text-align: center;
 padding: 30px 60px;
 font-size: 30px;
@@ -592,7 +601,7 @@ text-decoration: none;
 box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 overflow: hidden;
 }
-buttonMouse::before
+.buttonMouse::before
 {
 content: '';
 position: absolute;
@@ -602,14 +611,16 @@ bottom: 2px;
 width: 50%;
 background: rgba(255, 255, 255, 0.05);
 }
-buttonMouse span:nth-child(1)
+
+
+.buttonMouse span:nth-child(1)
 {
 position: absolute;
 top: 0;
 left: 0;
 width: 100%;
 height: 2px;
-background: linear-gradient(to right, #0c002b, #1779ff);
+background: linear-gradient(to right, #ffbe30, #81611a);
 
 animation: animate1 1.0s linear infinite;
 animation-delay: 1.0s;
@@ -626,14 +637,14 @@ animation-delay: 1.0s;
   }
 }
 
-buttonMouse span:nth-child(2)
+.buttonMouse span:nth-child(2)
 {
 position: absolute;
 top: 0;
 right: 0;
 width: 2px;
 height: 100%;
-background: linear-gradient(to bottom, #2b0000, #ff1749);
+background: linear-gradient(to bottom, #2b0000, #ff2617);
 animation: animate2 1s linear infinite;
 animation-delay: 1.5s;
 }
@@ -650,7 +661,7 @@ animation-delay: 1.5s;
     transform: translateY(100%);
   }
 }
-buttonMouse span:nth-child(3)
+.buttonMouse span:nth-child(3)
 {
 position: absolute;
 bottom: 0;
@@ -675,14 +686,14 @@ animation-delay: 1.0s;
   }
 }
 
-buttonMouse span:nth-child(4)
+.buttonMouse span:nth-child(4)
 {
 position: absolute;
 top: 0;
 left: 0;
 width: 2px;
 height: 100%;
-background: linear-gradient(to top, #8317ff, #ff17f7);
+background: linear-gradient(to top, rgb(90, 89, 89), #fff);
 animation: animate4 1s linear infinite;
 animation-delay: .5s;
 }
@@ -703,13 +714,12 @@ animation-delay: .5s;
 /* End buttonMouse */
 
 /* Start buttonKey */
-buttonKey
+.buttonKey
 {
 position: absolute;
 top: 60%;
 left: 25%;
 transform: translate(-50%,-50%);
-color: #1670f0;
 text-align: center;
 padding: 30px 60px;
 font-size: 30px;
@@ -719,7 +729,7 @@ text-decoration: none;
 box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 overflow: hidden;
 }
-buttonKey::before
+.buttonKey::before
 {
 content: '';
 position: absolute;
@@ -729,14 +739,16 @@ bottom: 2px;
 width: 50%;
 background: rgba(255, 255, 255, 0.05);
 }
-buttonKey span:nth-child(1)
+
+
+.buttonKey span:nth-child(1)
 {
 position: absolute;
 top: 0;
 left: 0;
 width: 100%;
 height: 2px;
-background: linear-gradient(to right, #0c002b, #1779ff);
+background: linear-gradient(to right, #ffbe30, #81611a);
 
 animation: animate1 1.0s linear infinite;
 animation-delay: 1.0s;
@@ -753,14 +765,14 @@ animation-delay: 1.0s;
   }
 }
 
-buttonKey span:nth-child(2)
+.buttonKey span:nth-child(2)
 {
 position: absolute;
 top: 0;
 right: 0;
 width: 2px;
 height: 100%;
-background: linear-gradient(to bottom, #2b0000, #ff1749);
+background: linear-gradient(to bottom, #2b0000, #ff2617);
 animation: animate2 1s linear infinite;
 animation-delay: 1.5s;
 }
@@ -777,7 +789,7 @@ animation-delay: 1.5s;
     transform: translateY(100%);
   }
 }
-buttonKey span:nth-child(3)
+.buttonKey span:nth-child(3)
 {
 position: absolute;
 bottom: 0;
@@ -802,14 +814,14 @@ animation-delay: 1.0s;
   }
 }
 
-buttonKey span:nth-child(4)
+.buttonKey span:nth-child(4)
 {
 position: absolute;
 top: 0;
 left: 0;
 width: 2px;
 height: 100%;
-background: linear-gradient(to top, #8317ff, #ff17f7);
+background: linear-gradient(to top, rgb(90, 89, 89), #fff);
 animation: animate4 1s linear infinite;
 animation-delay: .5s;
 }
@@ -831,13 +843,12 @@ animation-delay: .5s;
 
 /* Start buttonTotalTime */
 
-buttonTotalTime
+.buttonTotalTime
 {
 position: absolute;
 top: 30%;
 left: 75%;
 transform: translate(-50%,-50%);
-color: #1670f0;
 text-align: center;
 padding: 30px 60px;
 font-size: 30px;
@@ -847,7 +858,7 @@ text-decoration: none;
 box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 overflow: hidden;
 }
-buttonTotalTime::before
+.buttonTotalTime::before
 {
 content: '';
 position: absolute;
@@ -857,14 +868,16 @@ bottom: 2px;
 width: 50%;
 background: rgba(255, 255, 255, 0.05);
 }
-buttonTotalTime span:nth-child(1)
+
+
+.buttonTotalTime span:nth-child(1)
 {
 position: absolute;
 top: 0;
 left: 0;
 width: 100%;
 height: 2px;
-background: linear-gradient(to right, #0c002b, #1779ff);
+background: linear-gradient(to right, #ffbe30, #81611a);
 
 animation: animate1 1.0s linear infinite;
 animation-delay: 1.0s;
@@ -881,14 +894,14 @@ animation-delay: 1.0s;
   }
 }
 
-buttonTotalTime span:nth-child(2)
+.buttonTotalTime span:nth-child(2)
 {
 position: absolute;
 top: 0;
 right: 0;
 width: 2px;
 height: 100%;
-background: linear-gradient(to bottom, #2b0000, #ff1749);
+background: linear-gradient(to bottom, #2b0000, #ff2617);
 animation: animate2 1s linear infinite;
 animation-delay: 1.5s;
 }
@@ -905,7 +918,7 @@ animation-delay: 1.5s;
     transform: translateY(100%);
   }
 }
-buttonTotalTime span:nth-child(3)
+.buttonTotalTime span:nth-child(3)
 {
 position: absolute;
 bottom: 0;
@@ -930,14 +943,14 @@ animation-delay: 1.0s;
   }
 }
 
-buttonTotalTime span:nth-child(4)
+.buttonTotalTime span:nth-child(4)
 {
 position: absolute;
 top: 0;
 left: 0;
 width: 2px;
 height: 100%;
-background: linear-gradient(to top, #8317ff, #ff17f7);
+background: linear-gradient(to top, rgb(90, 89, 89), #fff);
 animation: animate4 1s linear infinite;
 animation-delay: .5s;
 }
@@ -959,13 +972,12 @@ animation-delay: .5s;
 
 /* Start buttonDaysStudied*/
 
-buttonDaysStudied
+.buttonDaysStudied
 {
   position: absolute;
   top: 60%;
   left: 75%;
   transform: translate(-50%,-50%);
-  color: #1670f0;
   text-align: center;
   padding: 30px 60px;
   font-size: 30px;
@@ -975,7 +987,7 @@ buttonDaysStudied
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 }
-buttonDaysStudied::before
+.buttonDaysStudied::before
 {
   content: '';
   position: absolute;
@@ -985,38 +997,40 @@ buttonDaysStudied::before
   width: 50%;
   background: rgba(255, 255, 255, 0.05);
 }
-buttonDaysStudied span:nth-child(1)
-{
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(to right, #0c002b, #1779ff);
 
-  animation: animate1 1.0s linear infinite;
-  animation-delay: 1.0s;
+
+.buttonDaysStudied span:nth-child(1)
+{
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 2px;
+background: linear-gradient(to right, #ffbe30, #81611a);
+
+animation: animate1 1.0s linear infinite;
+animation-delay: 1.0s;
 }
 @keyframes animate1
 {
-    0%
-    {
-      transform: translateX(-100%);
-    }
-    100%
-    {
-      transform: translateX(100%);
-    }
+  0%
+  {
+    transform: translateX(-100%);
+  }
+  100%
+  {
+    transform: translateX(100%);
+  }
 }
 
-buttonDaysStudied span:nth-child(2)
+.buttonDaysStudied span:nth-child(2)
 {
 position: absolute;
 top: 0;
 right: 0;
 width: 2px;
 height: 100%;
-background: linear-gradient(to bottom, #2b0000, #ff1749);
+background: linear-gradient(to bottom, #2b0000, #ff2617);
 animation: animate2 1s linear infinite;
 animation-delay: 1.5s;
 }
@@ -1033,7 +1047,7 @@ animation-delay: 1.5s;
     transform: translateY(100%);
   }
 }
-buttonDaysStudied span:nth-child(3)
+.buttonDaysStudied span:nth-child(3)
 {
 position: absolute;
 bottom: 0;
@@ -1058,14 +1072,14 @@ animation-delay: 1.0s;
   }
 }
 
-buttonDaysStudied span:nth-child(4)
+.buttonDaysStudied span:nth-child(4)
 {
 position: absolute;
 top: 0;
 left: 0;
 width: 2px;
 height: 100%;
-background: linear-gradient(to top, #8317ff, #ff17f7);
+background: linear-gradient(to top, rgb(90, 89, 89), #fff);
 animation: animate4 1s linear infinite;
 animation-delay: .5s;
 }
@@ -1081,4 +1095,65 @@ animation-delay: .5s;
   {
     transform: translateY(-100%);
   }
+}
+
+/* Explanations */
+
+.CurLevelExplain, .ExpBarExplain, .NextLevelExplain
+{
+  padding-top: 20%;
+  color: #fff;
+  font-size: 1.5em;
+  position: relative;
+}
+
+.CurLevelExplain
+{
+  padding-left: 13%;
+}
+
+.ExpBarExplain
+{
+  margin-top: -22.25%;
+  padding-left: 40%;
+}
+
+.NextLevelExplain
+{
+  margin-top: -23.5%;
+  padding-left: 66%;
+}
+
+/* Stats Explain */
+.mouseExplain
+{
+  padding-top: 18%;
+  position: relative;
+  padding-left: 13%;
+  color: #fff;
+  font-size: 1.5em;
+}
+
+.timeExplain
+{
+  padding-left: 63%;
+  color: #fff;
+  font-size: 1.5em;
+  margin-top: -2.5%;
+}
+
+.keyExplain
+{
+  padding-top: 13%;
+  padding-left: 13%;
+  color: #fff;
+  font-size: 1.5em;
+}
+
+.studyExplain
+{
+  padding-left: 58%;
+  color: #fff;
+  font-size: 1.5em;
+  margin-top: -2.5%;
 }

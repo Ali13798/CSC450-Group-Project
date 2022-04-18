@@ -2,12 +2,11 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Home</title>
+        <title>Stats</title>
         <link rel="stylesheet" href="style-site.css">
     </head>
 
     <body>
-
         <!-- Start Nav Bar -->
         <div class="menu">
             <a href="home-site.html" class="brand"><img src="logo1.png"></a>
@@ -15,13 +14,6 @@
                 <ul>
                     <li><a href="home-site.html">Home</a></li>
                     <li><a href="stats.html">Stats</a></li>
-                    <li><a href="Pomodoro.html">Pomodoro</a></li>
-                    <li><a href="Parent.html">Parent Page</a>
-                        <ul>
-                            <li><a href="whitelisted.html">Whitelisted Sites</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="contactus.html">Contact Us</a></li>
                     <li><a href="login.html">Login</a></li>
                 </ul>
             </nav>
@@ -30,36 +22,43 @@
         <!-- End Nav Bar -->
 
         <!-- Start stat buttons -->
-        <buttonMouse href="">
+        <button class="buttonMouse" href="">
             <span></span>
             <span></span>
             <span></span>
             <span></span>
             Mouse Stats <br>
-        </buttonMouse>
+        </button>
 
-        <buttonKey href="">
+        <!--
+        <p class="mouseExplain">Here are your Mouse Click Stats!</p>
+        <p class="timeExplain">Here is your Time Spent Studying!</p>
+        <p class="keyExplain">Here are your Key Click Stats!</p>
+        <p class="studyExplain">Here are the number of days you have used us!</p>
+        ### This causes issues with the page ### -->
+
+        <button class="buttonKey" href="">
             <span></span>
             <span></span>
             <span></span>
             <span></span>
             Key Stats <br>
-        </buttonKey>
+        </button>        
 
-        <buttonTotalTime href="">
+        <button class="buttonTotalTime" href="">
             <span></span>
             <span></span>
             <span></span>
             <span></span>
-            Total Time <br> Spent Studying
-        </buttonTotalTime>
+            Study Time
+        </button>        
 
-        <buttonDaysStudied href="">
+        <button class="buttonDaysStudied" href="">
             <span></span>
             <span></span>
             <span></span>
             <span></span>
             Days Studied <br>
-        </buttonDaysStudied>
+        </button>
 
     </body>

@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Michroma');
 
-body{
+body {
     width: 500px;
 }
+
 #popupContainer {
     width: 100%;
     height: 100%;
@@ -10,12 +11,18 @@ body{
     color: white;
     /* font-family:'Aquire', sans-serif; */
 }
-#options, #pauseBtn, #nextStep, #messages {
+
+#options,
+#pauseBtn,
+#nextStep,
+#messages {
     display: none;
 }
+
 #parentModeBtn {
     float: right;
 }
+
 #textarea {
     display: block;
 }
@@ -25,88 +32,90 @@ body{
 /* style to match site */
 
 
-body
-{
+body {
     /* position: absolute; */
     text-align: center;
     /* margin-left: 10em; */
     padding: 0;
-    font-family:'Comfortaa', sans-serif;
-    box-sizing: border-box; 
-    background: #0c002b; /* page background color */
+    font-family: 'Comfortaa', sans-serif;
+    box-sizing: border-box;
+    background: #0c002b;
+    /* page background color */
 }
 
-h3
-{
-    font-family:'Michroma', sans-serif;
+h3 {
+    font-family: 'Michroma', sans-serif;
     text-align: center;
     margin-left: -1em;
 }
-#timerTable{
-    
+
+#timerTable {
+
     width: 100%;
 }
-table, th, td{
+
+table,
+th,
+td {
     border: 1px solid aqua;
     border-collapse: collapse;
     text-align: center;
 }
 
-#timerOptions
-{
+#timerOptions {
     margin-left: 1em;
     margin-right: 1em;
     text-align: left;
-    
+
 }
- 
+
 /* #studyMin
 {
     width: 14.75%; */
-    /* margin-left: 4.25em; */
-    /* margin-left: 70px;
+/* margin-left: 4.25em; */
+/* margin-left: 70px;
     margin-top: 5px;
 } */
 
 /* #shortBkMin 
 { */
-    /* margin-left: 1.2em; */
-    /* width: 14.75%;
+/* margin-left: 1.2em; */
+/* width: 14.75%;
     margin-left: 29px;
     margin-top: 5px;
 } */
 
 /* #cycleNum
 { */
-    /* margin-left: 2.3em; */
-    /* width: 14.75%;
+/* margin-left: 2.3em; */
+/* width: 14.75%;
     margin-left: 44px;
     margin-top: 5px; */
 /* } */
 
 /* #longBkMin
 { */
-    /* margin-left: 1.4em; */
-    /* width: 14.75%;
+/* margin-left: 1.4em; */
+/* width: 14.75%;
     margin-left: 32px;
     margin-top: 5px; */
 /* }  */
 
-h3
-{
+h3 {
     color: aqua;
     /* font-family:'Aquire', sans-serif; */
 }
 
-#opt1, #opt2, #opt3, #cust
-{
+#opt1,
+#opt2,
+#opt3,
+#cust {
     margin-top: 1em;
 }
 
 
 /* START buttons*/
- #beginSession
-{
+#beginSession {
     /* color: cyan;
     font-family:'Michroma', sans-serif;
     background-color: rgb(58, 1, 122);
@@ -120,7 +129,7 @@ h3
     float: left;  */
 
     color: cyan;
-    font-family:'Michroma', sans-serif;
+    font-family: 'Michroma', sans-serif;
     background-color: rgb(58, 1, 122);
     text-align: left;
     margin-left: 2.5em;
@@ -128,10 +137,9 @@ h3
     margin-left: 6%;
 }
 
-#pauseBtn
-{
+#pauseBtn {
     color: cyan;
-    font-family:'Michroma', sans-serif;
+    font-family: 'Michroma', sans-serif;
     background-color: rgb(58, 1, 122);
     text-align: left;
     margin-left: 2.5em;
@@ -143,10 +151,9 @@ h3
 }
 
 
-#nextStep
-{
+#nextStep {
     color: cyan;
-    font-family:'Michroma', sans-serif;
+    font-family: 'Michroma', sans-serif;
     background-color: rgb(58, 1, 122);
     text-align: left;
     margin-left: 2.5em;
@@ -156,17 +163,20 @@ h3
     margin-top: 0%;
     margin-left: 6%;
 }
-#save, #popWebsites {
+
+#save,
+#popWebsites {
     color: cyan;
-    font-family:'Michroma', sans-serif;
+    font-family: 'Michroma', sans-serif;
     background-color: rgb(58, 1, 122);
     margin-bottom: 10px;
 }
+
 #textarea {
     margin-left: 100px;
 }
-#endSession
-{
+
+#endSession {
     /* padding-top: 3em;
     font-family:'Michroma', sans-serif;
     left: 0%;
@@ -175,10 +185,10 @@ h3
     text-align: left;
     margin-top: 0%;
     margin-left: 25%; */
-    
- /* same as begin btn */
+
+    /* same as begin btn */
     color: cyan;
-    font-family:'Michroma', sans-serif;
+    font-family: 'Michroma', sans-serif;
     background-color: rgb(58, 1, 122);
     text-align: left;
     margin-left: 2.5em;
@@ -188,12 +198,11 @@ h3
     margin-top: 10%;
     margin-left: 6%;
     /* float: left; */
-    
+
 }
 
-#websiteBtn
-{
-    font-family:'Michroma', sans-serif;
+#websiteBtn {
+    font-family: 'Michroma', sans-serif;
     /* left: 0%; */
     color: cyan;
     background-color: rgb(58, 1, 122);
@@ -203,10 +212,9 @@ h3
 
 }
 
-#optionsBtn
-{
+#optionsBtn {
     padding-top: 11em;
-    font-family:'Michroma', sans-serif;
+    font-family: 'Michroma', sans-serif;
     /* left: 0%; */
     color: cyan;
     background-color: rgb(58, 1, 122);
@@ -216,10 +224,9 @@ h3
     margin-left: -88%;
 }
 
-#parentModeBtn
-{
+#parentModeBtn {
     padding-top: 14em;
-    font-family:'Michroma', sans-serif;
+    font-family: 'Michroma', sans-serif;
     /* left: 0%; */
     color: cyan;
     /* position: absolute; */
@@ -231,20 +238,35 @@ h3
     margin-bottom: 10%;
 }
 
-input[type=submit]
-{
+input[type=submit] {
     /* margin-left: -10%; */
-    font-family:'Michroma', sans-serif;
+    font-family: 'Michroma', sans-serif;
     color: cyan;
     /* position: absolute; */
     background-color: rgb(58, 1, 122);
 }
 
+.buttonInfo {
+    /* margin-left: -10%; */
+    font-family: 'Michroma', sans-serif;
+    color: cyan;
+    /* position: absolute; */
+    background-color: rgb(58, 1, 122);
+
+}
 
 
 
-#beginSession, #endSession, #websiteBtn, #optionsBtn, #parentModeBtn, input[type=submit], #nextStep, #pauseBtn, #popWebsites , #save
-{
+#beginSession,
+#endSession,
+#websiteBtn,
+#optionsBtn,
+#parentModeBtn,
+input[type=submit],
+#nextStep,
+#pauseBtn,
+#popWebsites,
+#save {
     display: inline-block;
     padding: 15px 25px;
     font-size: 14px;
@@ -254,24 +276,39 @@ input[type=submit]
     outline: none;
     border: none;
 }
-  
-#beginSession:hover, #endSession:hover, #websiteBtn:hover, #optionsBtn:hover, #parentModeBtn:hover, input[type=submit]:hover, #nextStep:hover, #pauseBtn:hover, #popWebsites:hover , #save:hover
-{
+
+#beginSession:hover,
+#endSession:hover,
+#websiteBtn:hover,
+#optionsBtn:hover,
+#parentModeBtn:hover,
+input[type=submit]:hover,
+#nextStep:hover,
+#pauseBtn:hover,
+#popWebsites:hover,
+#save:hover {
     background-color: #ff1764;
 }
 
-#beginSession:active, #endSession:active, #websiteBtn:active, #optionsBtn:active, #parentModeBtn:active, input[type=submit]:active, #nextStep:active, #pauseBtn:active, #popWebsites:active , #save:active
-{
-background-color: #ff178b;
-box-shadow: 0 5px #910e4f;
-transform: translateY(4px);
+#beginSession:active,
+#endSession:active,
+#websiteBtn:active,
+#optionsBtn:active,
+#parentModeBtn:active,
+input[type=submit]:active,
+#nextStep:active,
+#pauseBtn:active,
+#popWebsites:active,
+#save:active {
+    background-color: #ff178b;
+    box-shadow: 0 5px #910e4f;
+    transform: translateY(4px);
 }
 
 
 /* RADIO BUTTONS */
 
-input[type="radio"]
-{
+input[type="radio"] {
     /* position: relative; */
     width: 60px;
     height: 20px;
@@ -283,23 +320,22 @@ input[type="radio"]
     cursor: pointer;
     border-radius: 20px;
     box-shadow: -5px -5px 20px rgba(255, 255, 255, 0.1),
-                5px 5px 10px rgba(0, 0, 0 1),
-                inset -2px -2px 5px rgba(255, 255, 255, 0.1),
-                inset 2px 2px 5px rgba(0, 0, 0, 0.5),
-                0 0 0 2px #1f1f1f;
+        5px 5px 10px rgba(0, 0, 0 1),
+        inset -2px -2px 5px rgba(255, 255, 255, 0.1),
+        inset 2px 2px 5px rgba(0, 0, 0, 0.5),
+        0 0 0 2px #1f1f1f;
     transition: 0.5s;
 }
-input[type="radio"]:checked
-{
+
+input[type="radio"]:checked {
     background: #ff178b;
 }
 
-input[type="radio"]::before
-{
-    content: '';
-    /* position: absolute;
+input[type="radio"]::before {
+    /* content: ''; */
+    position: relative;
     top: 0px;
-    left: 0; */
+    left: 0;
     width: 40px;
     height: 20px;
     background: linear-gradient(to top, #000, #555);
@@ -310,17 +346,16 @@ input[type="radio"]::before
 }
 
 
-/* input[type="radio"]:checked::before
-{
+input[type="radio"]:checked::before {
+    position: relative;
     left: 20px;
-} */
+}
 
-input[type="radio"]::after
-{
-    content: '';
-    /* position: absolute; */
-    /* right: 65px; */
-    /* top: calc(50% - 2px); */
+input[type="radio"]::after {
+    /* content: '' */
+    position: relative;
+    right: 65px;
+    top: calc(50% - 2px);
     width: 4px;
     height: 4px;
     border-radius: 50%;
@@ -328,11 +363,10 @@ input[type="radio"]::after
     transition: 0.8s;
 }
 
-input[type="radio"]:checked::after
-{
-    /* left: calc(65px - 20px); */
+input[type="radio"]:checked::after {
+    left: calc(65px - 20px);
     background: #63cdff;
     box-shadow: 0 0 5px #63cdff,
-                0 0 15px #63cdff,
-                0 0 30px #63cdff;
+        0 0 15px #63cdff,
+        0 0 30px #63cdff;
 }

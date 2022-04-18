@@ -14,14 +14,12 @@
 
         <!--Get User information-->
         <p>Please Enter Your First name and Last name: </p>
-        <form action="/action_page.php" method="get">
-            <label for="fname">First name: </label>
-            <input type="text" id="fname" name="fname"><br><br>
-            <label for="lname">Last name: </label>
-            <input type="text" id="lname" name="lname"><br><br>
-            <input type="submit" value="Submit">
-        </form>
-        <br><br><br>
+
+        <label for="fname">First name: </label>
+        <input type="text" id="fname" name="fname"><br><br>
+        <label for="lname">Last name: </label>
+        <input type="text" id="lname" name="lname"><br><br>
+        <button class="buttonInfo" id="buttonInfo" type="button">Save</button>
 
         <div id="timerOptions">
             <h3>Choose a study session type:</h3>
@@ -31,8 +29,8 @@
                         <th>Option</th>
                         <th>Study</th>
                         <th>Short Break</th>
-                        <th>Long Break</th>
                         <th>Cycles</th>
+                        <th>Long Break</th>
                     </tr>
                     <tr>
                         <td><input type="radio" id="opt1" name="timerOp" value="25/5/3/20"> </td>
@@ -55,9 +53,10 @@
                         <td><label for="opt3">2</label></td>
                         <td><label for="opt3">.5</label></td>
                     </tr>
-                    <tr> <!--  custom -->
+                    <tr>
+                        <!--  custom -->
                         <td><input type="radio" id="cust" name="timerOp" value="cust"></td>
-                        <div id="custSessionInputs"> 
+                        <div id="custSessionInputs">
                             <!-- <label for="studyMin">Study min:</label> -->
                             <td><input type="number" id="studyMin" name="studyMin" min="1" max="120"></td>
                             <!-- <label for="shortBkMin">Short Break min: </label> -->
@@ -75,7 +74,7 @@
                 <label for="opt2">60 min study, 10 min short break, 2 cycles, 30 min long break</label><br> -->
                 <!-- <input type="radio" id="opt3" name="timerOp" value="1/.5/2/1">
                 <label for="opt3">1 min study, .5 min short break, 2 cycles, 1 min long break (test)</label><br> -->
-                
+
                 <!-- <input type="radio" id="cust" name="timerOp" value="cust">
                 <label for="cust">Custom session type</label> <br> -->
             </div>
@@ -94,9 +93,9 @@
         <button id="beginSession">Begin Session</button>
         <button id="pauseBtn">Toggle Pause</button>
         <button id="nextStep">Next Step</button>
-        <button id="endSession">End Session</button> <br/>
+        <button id="endSession">End Session</button> <br />
         <button id="websiteBtn">Go To Website</button>
-        <button id="optionsBtn">Whitelist Options</button> 
+        <button id="optionsBtn">Whitelist Options</button>
         <div id="options">
             <h3>Allowed During Study Mode:</h3>
             <button id="popWebsites">Populate Recomended Websites</button>
@@ -104,6 +103,7 @@
             <textarea id="textarea" rows="10" cols="30" spellcheck="false"></textarea>
             <br>
             <button id="save">Save</button>
+            <p id="removedDomains"></p>
         </div>
 
         <!--Parent Mode Button-->

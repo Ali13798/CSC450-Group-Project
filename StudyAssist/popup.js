@@ -4,16 +4,30 @@ var timeMessage; //Stores the string rep of the end timer time
 // var numStudy, numBreak, numLongBreak;
 //Timer choice values
 // var Stime, Btime, LBtime, Cnum;
-var innerCycleNum = 3;
+var innerCycleNum = 2;
 //Content areas
 var popCont, timerDiv, custSessionInputs, textarea, messages;
 //Buttons
 var websiteBtn, save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep;
 
+//Get User information
+var buttonInfo;
+window.addEventListener("DOMContentLoaded", () => {
+    buttonInfo = document.getElementById("buttonInfo");
+    buttonInfo.addEventListener("click", submitForm);
+
+    function submitForm() {
+        let data = {};
+        data.fname = document.getElementById("fname").value;
+        data.lname = document.getElementById("lname").value;
+        alert("Hello, " + fname.value + " " + lname.value);
+    }
+})
+
 
 
 //Clicking on the button starts the blocking session
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", () => {
     //Variables 
     popCont = document.getElementById("popupContainer");
     websiteBtn = document.getElementById("websiteBtn");
@@ -30,12 +44,12 @@ document.addEventListener("DOMContentLoaded", ()=>{
     nextStep = document.getElementById("nextStep");
     messages = document.getElementById("messages");
     //Website    
-    websiteBtn.addEventListener("click", () =>{
-        chrome.tabs.create({url: chrome.runtime.getURL("home-site.html") });
+    websiteBtn.addEventListener("click", () => {
+        chrome.tabs.create({ url: chrome.runtime.getURL("home-site.html") });
     });
 
     //if the title is welcome, then clear some info from storage
-    if(PgTitle.innerHTML == "Welcome!"){
+    if (PgTitle.innerHTML == "Welcome!") {
         //TODO: decide what to remove or change
 
         //for now, just make sure blocking is off
@@ -44,12 +58,12 @@ document.addEventListener("DOMContentLoaded", ()=>{
     }
 
     //Load previous session data if any
-    chrome.storage.sync.get(['popupState'], function(result) {
-        if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
+    chrome.storage.sync.get(['popupState'], function (result) {
+        if (!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)) {
             //if there is data load it in, get it as a string
             var popupState = JSON.parse(result.popupState);
             timer = popupState;
-            if(popupState){
+            if (popupState) {
                 //load vars keeping track of num of study and breaks
                 timer.numStudy = (popupState.numStudy) ? parseInt(popupState.numStudy) : 0;
                 timer.numBreak = (popupState.numBreak) ? parseInt(popupState.numBreak) : 0;
@@ -60,7 +74,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 timer.Cnum = parseInt(popupState.cycleNum);
                 //Debug: // console.log("counters(s,b,lb): " + numStudy + " " + numBreak + " " + numLongBreak);
                 //detect if the session has finished
-                if(timer.numLongBreak == timer.Cnum){
+                if (timer.numLongBreak == timer.Cnum) {
                     //set back to main page and display session finished
                     popupState.state = "mainpg";
                     timer.state = "mainpg";
@@ -70,20 +84,20 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     timer.numStudy = 0;
                     timer.numBreak = 0;
                     timer.numLongBreak = 0;
-                }else if (popupState.state === "mainpg"){
+                } else if (popupState.state === "mainpg") {
                     messages.innerHTML = "";
                     messages.style.display = "block";
-                }else if( ((popupState.state === "study") || (popupState.state === "intermission")) || ((popupState.state === "break") || (popupState.state === "Long break"))){
+                } else if (((popupState.state === "study") || (popupState.state === "intermission")) || ((popupState.state === "break") || (popupState.state === "Long break"))) {
                     //display how many of each have been completed
-                    var progressMessage = "Study: " + timer.numStudy+ "/" + innerCycleNum 
-                                + ", Short Break: " + timer.numBreak + "/" + innerCycleNum
-                                + ", Long Break: " + timer.numLongBreak + "/" + timer.Cnum;
+                    var progressMessage = "Study: " + timer.numStudy + "/" + innerCycleNum
+                        + ", Short Break: " + timer.numBreak + "/" + innerCycleNum
+                        + ", Long Break: " + timer.numLongBreak + "/" + timer.Cnum;
                     messages.innerHTML = progressMessage;
                     messages.style.display = "block";
                 }
-                
+
                 //Check if in study state
-                if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "study"){
+                if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "study") {
                     //display it is in study mode
                     var PgTitle = document.getElementById("PgTitle");
                     PgTitle.innerHTML = "Study Mode";
@@ -98,7 +112,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     nextStep.style.display = "none";
                 }
                 //check if in intermission state
-                if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "intermission"){
+                if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "intermission") {
                     var PgTitle = document.getElementById("PgTitle");
                     PgTitle.innerHTML = "Intermission";
                     const enabled = false;
@@ -109,13 +123,13 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     pauseBtn.style.display = "none";
                     //figure out what is next
                     var nextStepMessage;
-                    if(timer.numStudy == innerCycleNum && timer.numBreak == innerCycleNum){
+                    if (timer.numStudy == innerCycleNum && timer.numBreak == innerCycleNum) {
                         //long break time
                         nextStepMessage = "Start Long Break";
-                    }else if(timer.numStudy > timer.numBreak){
+                    } else if (timer.numStudy > timer.numBreak) {
                         //short break
                         nextStepMessage = "Start Short Break";
-                    }else if(timer.numStudy == timer.numBreak){
+                    } else if (timer.numStudy == timer.numBreak) {
                         //study time
                         nextStepMessage = "Start Study Time";
                     }
@@ -123,7 +137,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     nextStep.innerHTML = nextStepMessage;
                 }
                 //check if in break state
-                if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "break"){
+                if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "break") {
                     var PgTitle = document.getElementById("PgTitle");
                     PgTitle.innerHTML = "Short Break";
                     const enabled = false;
@@ -134,7 +148,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     pauseBtn.style.display = "inline-block";
                 }
                 //check if in long break state
-                if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "Long break"){
+                if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "Long break") {
                     var PgTitle = document.getElementById("PgTitle");
                     PgTitle.innerHTML = "Long Break";
                     const enabled = false;
@@ -145,7 +159,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     pauseBtn.style.display = "inline-block";
                 }
                 //check if in main page menu state
-                if(!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "mainpg"){
+                if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "mainpg") {
                     var PgTitle = document.getElementById("PgTitle");
                     PgTitle.innerHTML = "Main Menu";
                     const enabled = false;
@@ -157,22 +171,22 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     endButton.style.display = "none";
                 }
 
-                if(!(popupState.newBlockedPg === undefined || popupState.newBlockedPg === null || popupState.newBlockedPg.length === 0)){
-                    if (popupState.newBlockedPg == true){
+                if (!(popupState.newBlockedPg === undefined || popupState.newBlockedPg === null || popupState.newBlockedPg.length === 0)) {
+                    if (popupState.newBlockedPg == true) {
                         var url = popupState.lastBlockedPage;
                         //get the domain from the url
                         var domain = (new URL(url)).hostname;
-                        message = "Access to the following page is not permitted during study mode:\n" + url 
-                                    + "\nAllow this domain? " + domain;
+                        message = "Access to the following page is not permitted during study mode:\n" + url
+                            + "\nAllow this domain? " + domain;
                         popupState.newBlockedPg = false;
                         timer.newBlockedPg = false;
                         popupState.lastBlockedPage = "";
                         timer.lastBlockedPage = "";
                         saveToStorage(timer);
                         answer = confirm(message);
-                        if(answer){
+                        if (answer) {
                             //Add it to the whitelist
-                            
+
                             //get list from storage
                             chrome.storage.local.get(["blocked"], function (local) {
                                 const blocked = local;
@@ -186,50 +200,70 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     }
                 }
                 //Populate choices for custom timer
-                if(!(popupState.choiceid === undefined || popupState.choiceid === null || popupState.choiceid.length === 0)){
+                if (!(popupState.choiceid === undefined || popupState.choiceid === null || popupState.choiceid.length === 0)) {
                     //choice is the id of the element to set to be checked
                     document.getElementById(popupState.choiceid).checked = true;
                 }
-                if(!(popupState.studyMinCust === undefined || popupState.studyMinCust === null || popupState.studyMinCust.length === 0)){
+                if (!(popupState.studyMinCust === undefined || popupState.studyMinCust === null || popupState.studyMinCust.length === 0)) {
                     document.getElementById("studyMin").value = popupState.studyMinCust;
                 }
-                if(!(popupState.shortBkMinCust === undefined || popupState.shortBkMinCust === null || popupState.shortBkMinCust.length === 0)){
+                if (!(popupState.shortBkMinCust === undefined || popupState.shortBkMinCust === null || popupState.shortBkMinCust.length === 0)) {
                     document.getElementById("shortBkMin").value = popupState.shortBkMinCust;
                 }
-                if(!(popupState.cycleNumCust === undefined || popupState.cycleNumCust === null || popupState.cycleNumCust.length === 0)){
+                if (!(popupState.cycleNumCust === undefined || popupState.cycleNumCust === null || popupState.cycleNumCust.length === 0)) {
                     document.getElementById("cycleNum").value = popupState.cycleNumCust;
                 }
-                if(!(popupState.longBkMinCust === undefined || popupState.longBkMinCust === null || popupState.longBkMinCust.length === 0)){
+                if (!(popupState.longBkMinCust === undefined || popupState.longBkMinCust === null || popupState.longBkMinCust.length === 0)) {
                     document.getElementById("longBkMin").value = popupState.longBkMinCust;
                 }
-                
+
             }
-            
-        } 
+
+        }
     });
     //saves the list of blocked sites to localstorage
     save.addEventListener("click", () => {
-        const blocked = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
+        var domains = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
+        //check that each is a valid address
+        var blocked = [];
+        regex = /(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,256}\b(\.[a-z, A-Z]*)/;
+        var removedString = "The following domains are invalid and have been removed: <br>";
+        for (var i = 0; i < domains.length; i++) {
+
+            if (domains[i].match(regex)) {
+                blocked.push(domains[i]);
+                console.log("valid: " + blocked);
+            } else {
+                removedString += domains[i] + "<br>";
+                console.log("removedString: " + removedString);
+            }
+        }
+        //update list with only approved
+        textarea.value = blocked.join("\n");
+        //tell user which were removed
+        var removedPara = document.getElementById("removedDomains");
+        removedPara.innerHTML = removedString;
+        console.log(blocked);
         chrome.storage.local.set({ blocked });
     });
 
     //if a button is selected, save selection in storage
-    radioButtons.addEventListener('click', e =>{
-        if(e.target && e.target.matches("input[type='radio']")){
+    radioButtons.addEventListener('click', e => {
+        if (e.target && e.target.matches("input[type='radio']")) {
             timer.choiceid = e.target.getAttribute("id");
-            if(!(timer.choiceid.includes("opt"))){
+            if (!(timer.choiceid.includes("opt"))) {
                 var studyMin = document.getElementById("studyMin").value;
                 var shortBkMin = document.getElementById("shortBkMin").value;
                 var cycleNum = document.getElementById("cycleNum").value;
                 var longBkMin = document.getElementById("longBkMin").value;
                 //check if any inputs
-                if(studyMin != ""){
+                if (studyMin != "") {
                     timer.studyMin = studyMin;
-                }if(shortBkMin != ""){
+                } if (shortBkMin != "") {
                     timer.shortBkMin = shortBkMin;
-                }if(cycleNum != ""){
+                } if (cycleNum != "") {
                     timer.cycleNum = cycleNum;
-                }if(longBkMin != ""){
+                } if (longBkMin != "") {
                     timer.longBkMin = longBkMin;
                 }
             }
@@ -238,21 +272,21 @@ document.addEventListener("DOMContentLoaded", ()=>{
     });
 
     //if a cust value is input, save input in storage
-    custSessionInputs.addEventListener('input', e =>{
+    custSessionInputs.addEventListener('input', e => {
         //set separate values for keeping the custom timer for later use
-        if(e.target && e.target.matches("input[type='number']")){
+        if (e.target && e.target.matches("input[type='number']")) {
             var studyMinCust = document.getElementById("studyMin").value;
             var shortBkMinCust = document.getElementById("shortBkMin").value;
             var cycleNumCust = document.getElementById("cycleNum").value;
             var longBkMinCust = document.getElementById("longBkMin").value;
             //check if any inputs
-            if(studyMinCust != ""){
+            if (studyMinCust != "") {
                 timer.studyMinCust = studyMinCust;
-            }if(shortBkMinCust != ""){
+            } if (shortBkMinCust != "") {
                 timer.shortBkMinCust = shortBkMinCust;
-            }if(cycleNumCust != ""){
+            } if (cycleNumCust != "") {
                 timer.cycleNumCust = cycleNumCust;
-            }if(longBkMinCust != ""){
+            } if (longBkMinCust != "") {
                 timer.longBkMinCust = longBkMinCust;
             }
             saveToStorage(timer);
@@ -263,7 +297,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     beginButton.addEventListener('click', () => {
         validateTimerChoice();
     });
-    
+
     //End session //end session button not working
     endButton.addEventListener('click', () => {
         //set up the Main Menu
@@ -286,18 +320,18 @@ document.addEventListener("DOMContentLoaded", ()=>{
         //stop blocking
         const enabled = false;
         chrome.storage.local.set({ enabled });
-        if(timer.state == "study"){
+        if (timer.state == "study") {
             answer = confirm("Reload page for timer to stop?");
-            if(answer){
+            if (answer) {
                 chrome.tabs.reload();
             }
         }
-                
+
     });
 
     //Show / hide whitelisting options 
     optionsBtn.addEventListener('click', () => {
-        if(optionsBtn.innerHTML == "Whitelist Options"){
+        if (optionsBtn.innerHTML == "Whitelist Options") {
             //show the options
             var options = document.getElementById("options");
             options.style.display = "block";
@@ -311,7 +345,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     textarea.value = blocked.blocked.join("\n");
                 }
             });
-        }else{
+        } else {
+            //clear removed message
+            var removedPara = document.getElementById("removedDomains");
+            removedPara.innerHTML = "";
             //hide the options
             var options = document.getElementById("options");
             options.style.display = "none";
@@ -327,17 +364,17 @@ document.addEventListener("DOMContentLoaded", ()=>{
         save.click();
     });
 
-    pauseBtn.addEventListener('click', ()=>{
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, {message: "pause"}, function(response) {
-              console.log(response.farewell);
+    pauseBtn.addEventListener('click', () => {
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, { message: "pause" }, function (response) {
+                console.log(response.farewell);
             });
         });
     });
 
-    nextStep.addEventListener('click', ()=>{
+    nextStep.addEventListener('click', () => {
         //figure out if the next step is to study or break
-        if(timer.numStudy == innerCycleNum && timer.numBreak == innerCycleNum){
+        if (timer.numStudy == innerCycleNum && timer.numBreak == innerCycleNum) {
             //long break time
             //display study mode
             PgTitle.innerHTML = "Long Break";
@@ -352,7 +389,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
             saveToStorage(timer);
             startTimer(timer.LBtime);
         }
-        else if(timer.numStudy > timer.numBreak){
+        else if (timer.numStudy > timer.numBreak) {
             //short break
             //display study mode
             PgTitle.innerHTML = "Short Break";
@@ -362,7 +399,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
             const enabled = false;
             chrome.storage.local.set({ enabled });
             startTimer(timer.Btime);
-        }else if(timer.numStudy == timer.numBreak){
+        } else if (timer.numStudy == timer.numBreak) {
             //study time
             //display study mode
             PgTitle.innerHTML = "Study Mode";
@@ -377,18 +414,18 @@ document.addEventListener("DOMContentLoaded", ()=>{
 });
 
 //Begin Session Functions
-function validateTimerChoice(){
+function validateTimerChoice() {
     //Get which timer choice is selected
     var timerOp = document.querySelector('input[name="timerOp"]:checked');
     //Figure out if none, custom, or standard
-    if(!timerOp){ //if no choice selected
+    if (!timerOp) { //if no choice selected
         alert("Please select a timer type to begin");
-    }else if (!timerOp.getAttribute("id").includes("opt")){
+    } else if (!timerOp.getAttribute("id").includes("opt")) {
         validateCustomTimer();
-    }else{
+    } else {
         //Extract information from choice
         var timerInfoArray = timerOp.value.split("/");
-        var studyMin = timerInfoArray[0]; 
+        var studyMin = timerInfoArray[0];
         var shortBkMin = timerInfoArray[1];
         var cycleNum = timerInfoArray[2];
         var longBkMin = timerInfoArray[3];
@@ -408,21 +445,21 @@ function validateTimerChoice(){
     }
 }
 
-function validateCustomTimer(){
+function validateCustomTimer() {
     var studyMin = document.getElementById("studyMin").value;
     var shortBkMin = document.getElementById("shortBkMin").value;
     var cycleNum = document.getElementById("cycleNum").value;
     var longBkMin = document.getElementById("longBkMin").value;
     //check if all the inputs have been filled
-    if(studyMin == ""){
+    if (studyMin == "") {
         alert("Please fill all customer time fields to begin");
-    }else if(shortBkMin == ""){
+    } else if (shortBkMin == "") {
         alert("Please fill all customer time fields to begin");
-    }else if(cycleNum == ""){
+    } else if (cycleNum == "") {
         alert("Please fill all customer time fields to begin");
-    }else if(longBkMin == ""){
+    } else if (longBkMin == "") {
         alert("Please fill all customer time fields to begin");
-    }else{
+    } else {
         timer.studyMin = studyMin;
         timer.shortBkMin = shortBkMin;
         timer.cycleNum = cycleNum;
@@ -440,13 +477,13 @@ function validateCustomTimer(){
     }
 }
 
-function startTimer(minutes){
+function startTimer(minutes) {
     var answer = confirm("Ready to reload page for timer to begin? Press cancel to ask again in 30 seconds.");
-    while(!answer){ //TODO: come back to this, not a good way because it probably wont work when the popup is opened again. try adding a prompt when it loads
+    while (!answer) { //TODO: come back to this, not a good way because it probably wont work when the popup is opened again. try adding a prompt when it loads
         //wait 30 seconds and ask again
-        var intervalID = setInterval(function() {
+        var intervalID = setInterval(function () {
             answer = confirm("Ready to reload page for timer to begin? Press cancel to ask again in 30 seconds.");
-        }, 30*1000);
+        }, 30 * 1000);
     }
     //Remove timer options and begin session button, add end session button
     timerDiv.style.display = "none";
@@ -460,18 +497,18 @@ function startTimer(minutes){
     //reload to start timer on the tab
     chrome.tabs.reload();
 }
-function calcEndTime(mins){
+function calcEndTime(mins) {
     //returns a string represenation of the time to send as a message
     var countDownTime = new Date().getTime();
-    endTimeDate = new Date(countDownTime + mins*60000);
+    endTimeDate = new Date(countDownTime + mins * 60000);
     var endTimeString = endTimeDate.getHours() + " " + endTimeDate.getMinutes() + " " + endTimeDate.getSeconds();
     timer.endTime = endTimeString;
     saveToStorage(timer);
 }
 
-function saveToStorage(obj){
+function saveToStorage(obj) {
     let serialized = JSON.stringify(obj);
-    chrome.storage.sync.set({"popupState": serialized}, function() {
+    chrome.storage.sync.set({ "popupState": serialized }, function () {
         console.log('Value is set to ' + serialized);
     });
 }
