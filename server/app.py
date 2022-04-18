@@ -12,6 +12,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+DB_PATH = "./server/users.db"
 
 
 @app.route("/")
@@ -46,7 +47,7 @@ def greet():
     password = hash_password(password)
     all_names: list[tuple[int, str, str]] = []
 
-    with sqlite3.connect("./StudyAssist/server/users.db") as con:
+    with sqlite3.connect(DB_PATH) as con:
         cur = con.cursor()
         all_names = db_tools.get_users_rows(cur)
 
@@ -76,7 +77,7 @@ def new_user():
     password = flask.request.form.get("password")
     password = hash_password(password)
 
-    with sqlite3.connect("./StudyAssist/server/users.db") as con:
+    with sqlite3.connect(DB_PATH) as con:
         cur = con.cursor()
         is_existing_user = db_tools.is_existing_user(cur=cur, name=name)
         if is_existing_user:
@@ -100,7 +101,7 @@ def hash_password(pswd: str) -> str:
 
 
 def main():
-    with sqlite3.connect("./StudyAssist/server/users.db") as con:
+    with sqlite3.connect(DB_PATH) as con:
         cur = con.cursor()
         db_tools.create_table(cur)
         # cur.execute("DROP TABLE users")
