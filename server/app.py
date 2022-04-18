@@ -24,7 +24,7 @@ def index():
 
 @app.route("/home")
 def home():
-    return render_template("home.html", title="Homepage")
+    return render_template("home-site.html", title="Homepage")
 
 
 @app.route("/signup")
@@ -93,6 +93,11 @@ def new_user():
 def logout():
     flask.session["name"] = None
     return flask.redirect("/")
+
+
+@app.route("/stats")
+def stats():
+    return "stats not yet implemented."
 
 
 def hash_password(pswd: str) -> str:
