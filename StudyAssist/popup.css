@@ -39,7 +39,7 @@ body {
     padding: 0;
     font-family: 'Comfortaa', sans-serif;
     box-sizing: border-box;
-    background: #0c002b;
+    background: #808080;
     /* page background color */
 }
 
@@ -57,7 +57,7 @@ h3 {
 table,
 th,
 td {
-    border: 1px solid aqua;
+    border: 1px solid #ffbe30;
     border-collapse: collapse;
     text-align: center;
 }
@@ -102,7 +102,7 @@ td {
 /* }  */
 
 h3 {
-    color: aqua;
+    color: #ffbe30;
     /* font-family:'Aquire', sans-serif; */
 }
 
@@ -128,9 +128,9 @@ h3 {
     margin-left: 6%;
     float: left;  */
 
-    color: cyan;
+    color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
-    background-color: rgb(58, 1, 122);
+    background-color: #137575cc;
     text-align: left;
     margin-left: 2.5em;
     margin-top: 10%;
@@ -138,9 +138,9 @@ h3 {
 }
 
 #pauseBtn {
-    color: cyan;
+    color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
-    background-color: rgb(58, 1, 122);
+    background-color: #137575cc;
     text-align: left;
     margin-left: 2.5em;
     /* position: absolute;
@@ -152,9 +152,9 @@ h3 {
 
 
 #nextStep {
-    color: cyan;
+    color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
-    background-color: rgb(58, 1, 122);
+    background-color: #137575cc;
     text-align: left;
     margin-left: 2.5em;
     /* position: absolute;
@@ -166,9 +166,9 @@ h3 {
 
 #save,
 #popWebsites {
-    color: cyan;
+    color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
-    background-color: rgb(58, 1, 122);
+    background-color: #137575cc;
     margin-bottom: 10px;
 }
 
@@ -187,9 +187,9 @@ h3 {
     margin-left: 25%; */
 
     /* same as begin btn */
-    color: cyan;
+    color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
-    background-color: rgb(58, 1, 122);
+    background-color: #137575cc;
     text-align: left;
     margin-left: 2.5em;
     /* position: absolute; */
@@ -204,8 +204,8 @@ h3 {
 #websiteBtn {
     font-family: 'Michroma', sans-serif;
     /* left: 0%; */
-    color: cyan;
-    background-color: rgb(58, 1, 122);
+    color: rgb(255, 255, 255);
+    background-color: #137575cc;
     text-align: left;
     margin-top: 5%;
     margin-left: 6%;
@@ -216,8 +216,8 @@ h3 {
     padding-top: 11em;
     font-family: 'Michroma', sans-serif;
     /* left: 0%; */
-    color: cyan;
-    background-color: rgb(58, 1, 122);
+    color: rgb(255, 255, 255);
+    background-color: #137575cc;
     text-align: left;
     margin-left: 2.5em;
     margin-top: 5%;
@@ -228,9 +228,9 @@ h3 {
     padding-top: 14em;
     font-family: 'Michroma', sans-serif;
     /* left: 0%; */
-    color: cyan;
+    color: rgb(255, 255, 255);
     /* position: absolute; */
-    background-color: rgb(58, 1, 122);
+    background-color: #137575cc;
     text-align: left;
     /* margin-left: 6.5%; */
     margin-top: 5%;
@@ -241,17 +241,17 @@ h3 {
 input[type=submit] {
     /* margin-left: -10%; */
     font-family: 'Michroma', sans-serif;
-    color: cyan;
+    color: rgb(255, 255, 255);
     /* position: absolute; */
-    background-color: rgb(58, 1, 122);
+    background-color: #137575cc;
 }
 
 .buttonInfo {
     /* margin-left: -10%; */
     font-family: 'Michroma', sans-serif;
-    color: cyan;
+    color: rgb(255, 255, 255);
     /* position: absolute; */
-    background-color: rgb(58, 1, 122);
+    background-color: #137575cc;
 
 }
 
@@ -287,7 +287,7 @@ input[type=submit]:hover,
 #pauseBtn:hover,
 #popWebsites:hover,
 #save:hover {
-    background-color: #ff1764;
+    background-color: #ffbe30;
 }
 
 #beginSession:active,
@@ -300,8 +300,8 @@ input[type=submit]:active,
 #pauseBtn:active,
 #popWebsites:active,
 #save:active {
-    background-color: #ff178b;
-    box-shadow: 0 5px #910e4f;
+    background-color: #ffbe30;
+    box-shadow: 0 5px #eaa613;
     transform: translateY(4px);
 }
 
@@ -328,7 +328,7 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked {
-    background: #ff178b;
+    background: #ffbe30;
 }
 
 input[type="radio"]::before {
@@ -365,8 +365,8 @@ input[type="radio"]::after {
 
 input[type="radio"]:checked::after {
     left: calc(65px - 20px);
-    background: #63cdff;
-    box-shadow: 0 0 5px #63cdff,
-        0 0 15px #63cdff,
-        0 0 30px #63cdff;
+    background: #ffbe30;
+    box-shadow: 0 0 5px #ffbe30,
+        0 0 15px #ffbe30,
+        0 0 30px #ffbe30;
 }

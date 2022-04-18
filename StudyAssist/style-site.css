@@ -187,7 +187,7 @@ animation: bubbleAnim2 10s linear infinite;
 .welcome:hover span:nth-child(3)
 {
 border: none;
-background: rgba(19, 117, 117, 0.8);
+background: #137575cc;
 }
 
 @keyframes bubbleAnim 
@@ -246,7 +246,7 @@ border-radius: 73% 27% 44% 56% / 49% 44% 56% 51%;
 .button1, .button2, .buttonMouse, .buttonKey, .buttonTotalTime, .buttonDaysStudied
 {
   background-color: #004e55;
-  color: rgb(0, 0, 0);
+  color: #fff;
 }
 
 /* Start Button 1 */
