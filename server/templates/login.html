@@ -1,20 +1,7 @@
 {% extends 'layout.html' %} {% block title %} {{ title }} {% endblock title %}
 {% block head %}
 <link rel="stylesheet" href="/static/login-style.css" />
-<script src="home-site.js"></script>
 {% endblock head %} {% block body %}
-
-<!-- Start Nav Bar -->
-<div class="menu">
-    <a href="{{ url_for('home') }}" class="brand"><img src="logo1.png" /></a>
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('stats') }}">Stats</a></li>
-            <li><a href="{{ url_for('login') }}">Login</a></li>
-        </ul>
-    </nav>
-</div>
 
 <section>
     <div class="color"></div>
