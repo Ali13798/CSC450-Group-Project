@@ -1,23 +1,45 @@
 {% extends 'layout.html' %} {% block title %} {{ title }} {% endblock title %}
-{% block body %}
+{% block head %}
+<link rel="stylesheet" href="/static/login-style.css" />
+{% endblock head %} {% block body %}
 
-<form action="/greetNewUser" method="post">
-    <input
-        autocomplete="off"
-        autofocus
-        name="name"
-        placeholder="Name"
-        type="text"
-        required
-    />
-    <input
-        autocomplete="off"
-        name="password"
-        placeholder="Password"
-        type="password"
-        require
-    />
-    <input type="submit" text="submit" />
-</form>
+<section>
+    <div class="color"></div>
+    <div class="color"></div>
+    <div class="color"></div>
+    <div class="box">
+        <div class="square" style="--i: 0"></div>
+        <div class="square" style="--i: 1"></div>
+        <div class="square" style="--i: 2"></div>
+        <div class="square" style="--i: 3"></div>
+        <div class="square" style="--i: 4"></div>
+
+        <div class="container">
+            <div class="form">
+                <h2>Signup Form</h2>
+                <form action="/greetNewUser" method="post">
+                    <div class="inputBox">
+                        <input
+                            autocomplete="off"
+                            autofocus
+                            name="name"
+                            placeholder="Name"
+                            type="text"
+                            required
+                        />
+                        <input
+                            autocomplete="off"
+                            name="password"
+                            placeholder="Password"
+                            type="password"
+                            require
+                        />
+                        <input type="submit" text="Signup" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock body %}
