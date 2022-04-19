@@ -19,12 +19,13 @@ DB_PATH = "./server/users.db"
 def index():
     if not flask.session.get("name"):
         return flask.redirect("/login")
-    return render_template("index.html", title="Index")
+    name = flask.session.get("name")
+    return render_template("home-site.html", title="Homepage", name=name)
 
 
-@app.route("/home")
-def home():
-    return render_template("home-site.html", title="Homepage")
+# @app.route("/home")
+# def home():
+#     return render_template("home-site.html", title="Homepage")
 
 
 @app.route("/signup")
@@ -61,7 +62,7 @@ def greet():
                         "greet.html", name=name, names=all_names
                     )
                 else:
-                    return render_template("greet.html", name=name)
+                    return render_template("home-site.html", name=name)
             else:
                 flask.flash("Incorrect Password. Try again.")
                 return flask.redirect(flask.url_for("login"))
@@ -86,7 +87,7 @@ def new_user():
 
         db_tools.add_user(cur=cur, name=name, pswd=password)
 
-    return render_template("greet.html", name=name)
+    return render_template("home-site.html", name=name)
 
 
 @app.route("/logout")
