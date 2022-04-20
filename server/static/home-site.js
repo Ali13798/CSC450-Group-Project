@@ -1,8 +1,10 @@
 let number = document.getElementById("number");
 let counter = 0;
 
-let mCounter = 2;
-let kCounter = 2;
+let mCounter = 2; // total
+let mCounterToday = 0; // daily and adds to total
+let kCounter = 2; // total
+let kCounterToday = 0; // daily and adds to total
 let studyCounter = 2;
 let dayCounter = 2;
 
@@ -14,17 +16,46 @@ while(true)
 {
     if (click (onClick) == True)
     {
-        mCounter += 1;
+        mCounterToday += 1; // add counter to mouse counter
     }
 
     if (document.addEventListener('keydown', (event)))
     {
-        kCounter += 1;
+        kCounterToday += 1;
     }
 
-    studyCounter += 30 // time
+    // if session is ended, add time to studyCounter, add 1 because of day used
+    studyCounter += 30 * 1.5 // time. Should be 1-1 then multiply by 1.5.
 
     dayCounter += 1;
+    
+    exp = exp + studyCOunter + (mCOunterToday * .15) + (kCounterToday * 0.15) + 1;
+    
+    mCounter += mCounter + mCounterToday; // update running total for stats
+    
+    kCounter += mCounter + mCounterToday; // update running total for stats
+    
+    
+    
+    // Check if level up, if so, add level and modulo exp
+    if (exp > 300)
+    {
+        exp = exp % 300;
+        curLevel += 3;
+    }
+    
+    else if (exp > 200)
+    {
+        exp = exp % 200;
+        curLevel += 2;
+    }
+    
+    else if (exp > 100)
+    {
+        exp = exp % 100;
+        curLevel += 1;
+    }
+    
 
 }
 
