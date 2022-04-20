@@ -37,23 +37,78 @@ while(true)
     
     
     
-    // Check if level up, if so, add level and modulo exp
+    // Check if level up, if so, add level and modulo exp. Also check each levelup for a reward alert!
     if (exp > 300)
     {
         exp = exp % 300;
-        curLevel += 3;
+        curLevel += 1;
+        if (curLevel % 10 == 0)
+        {
+            alert("You achieved a level milestone! You deserve an ice cream!")
+        }
+        else
+        {
+            alert("You leveled up! Reach a multiple of 10 and you can ask for a reward!")
+        }
+        
+        curLevel += 1;
+        if (curLevel % 10 == 0)
+        {
+            alert("You achieved a level milestone! You deserve an ice cream!")
+        }
+        else
+        {
+            alert("You leveled up! Reach a multiple of 10 and you can ask for a reward!")
+        }
+        
+        curLevel += 1;
+        if (curLevel % 10 == 0)
+        {
+            alert("You achieved a level milestone! You deserve an ice cream!")
+        }
+        else
+        {
+            alert("You leveled up! Reach a multiple of 10 and you can ask for a reward!")
+        }
     }
     
     else if (exp > 200)
     {
         exp = exp % 200;
-        curLevel += 2;
+        
+        curLevel += 1;
+        if (curLevel % 10 == 0)
+        {
+            alert("You achieved a level milestone! You deserve an ice cream!")
+        }
+        else
+        {
+            alert("You leveled up! Reach a multiple of 10 and you can ask for a reward!")
+        }
+        
+        curLevel += 1;
+        if (curLevel % 10 == 0)
+        {
+            alert("You achieved a level milestone! You deserve an ice cream!")
+        }
+        else
+        {
+            alert("You leveled up! Reach a multiple of 10 and you can ask for a reward!")
+        }
     }
     
     else if (exp > 100)
     {
         exp = exp % 100;
         curLevel += 1;
+        if (curLevel % 10 == 0)
+        {
+            alert("You achieved a level milestone! You deserve an ice cream!")
+        }
+        else
+        {
+            alert("You leveled up! Reach a multiple of 10 and you can ask for a reward!")
+        }
     }
     
 
