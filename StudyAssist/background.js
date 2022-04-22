@@ -1,4 +1,4 @@
-
+//Check for existing whitelist variables in storage, create if none
 chrome.runtime.onInstalled.addListener(function () {
   chrome.storage.local.get(["blocked", "enabled"], function (local) {
     if (!Array.isArray(local.blocked)) {
@@ -11,6 +11,7 @@ chrome.runtime.onInstalled.addListener(function () {
   });
 });
 
+//When a tab is changed, called to check whitelist
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
   const url = changeInfo.pendingUrl || changeInfo.url;
   if (!url || !url.startsWith("http")) {

@@ -39,6 +39,24 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
+//When a key is pressed, add to count
+document.addEventListener('keydown', (event) => {
+    console.log("key press");
+      //get count
+      // chrome.storage.sync.get(['keyPressCount'], function (result) {
+      //   if (!(result === undefined || result === null || result.length === 0)) {
+          
+      //add
+      //store 
+});
+document.addEventListener('click', (event) => {
+    console.log("click");
+      //get count
+          
+      //add
+      //store 
+});
+
 if(!pause){
     //Get the time out of storage
     chrome.storage.sync.get(['popupState'], function(result) {
