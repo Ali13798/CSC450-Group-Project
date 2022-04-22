@@ -311,13 +311,19 @@ History: Displays information on previous sessions such as date, time began and 
 \textbf{Gamification:} Provides incentives for the users to study more through a game-like system where the total amount studied is translated to points and then to levels and titles.\\\\
 \section{Implementation and Testing}
 \subsection{Development environment and tools}
+The Google Chrome extension was developed in Visual Studio Code with JavaScript
+and was tested using the Developer Mode in the Extensions page of the Google Chrome browser.
+\\The first step in developing the extension was to create a JSON file titled "manifest" which 
+defines different aspects of the extension such as the name, description, version, scripts for the popup menu,
+scripts for the background service worker, content scripts, and various permissions. 
 
 \subsection{Reused components}
-\subsection{Testing scenarios and results}
 To implement the whitelist, an article titled "Learn the most useful Chrome APIs by 
 creating Block Site Chrome extension" by Pavel Bucka contained example code that was 
 tweaked and implemented in the extension. The article shows how to implement a blacklist, 
 so we flipped the logic to block any site not in the list and added input validation for the textbox.
+\\
+\subsection{Testing scenarios and results}
 
 \section{References}
 
