@@ -243,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
         //tell user which were removed
         var removedPara = document.getElementById("removedDomains");
         removedPara.innerHTML = removedString;
-        console.log(blocked);
+        // console.log(blocked);
         chrome.storage.local.set({ blocked });
     });
 
