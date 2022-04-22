@@ -311,17 +311,32 @@ History: Displays information on previous sessions such as date, time began and 
 \textbf{Gamification:} Provides incentives for the users to study more through a game-like system where the total amount studied is translated to points and then to levels and titles.\\\\
 \section{Implementation and Testing}
 \subsection{Development environment and tools}
-The Google Chrome extension was developed in Visual Studio Code with JavaScript
-and was tested using the Developer Mode in the Extensions page of the Google Chrome browser.
-\\The first step in developing the extension was to create a JSON file titled "manifest" which 
-defines different aspects of the extension such as the name, description, version, scripts for the popup menu,
+The Google Chrome extension was developed in Visual Studio Code with JavaScript 
+and was tested using the Developer Mode in the Extensions page of the Google Chrome browser. 
+\\The first step in developing the extension was to create a JSON file titled "manifest" which  
+defines different aspects of the extension such as the name, description, version, scripts for the popup menu, 
 scripts for the background service worker, content scripts, and various permissions. 
+\\The popup script contains the main control menu for the extension. This script runs each time the popup page 
+is opened and firsts checks shared storage to see what state the popup menu should be in. The possible states 
+are the main page, which displays when there is no study session started, a study state which displays when 
+the user is in study mode, an intermission state for between study and break, and break state for during short breaks, 
+and a long break state for during long breaks. The short and long break states are functionally the same, they just 
+have a different title. Once the script determines which state it is supposed to be in, it shows or hides the 
+approprite elements so that it looks the same as the last time the user looked at it, unless the state changed when the timer ended. 
+\\Along side checking and updating the state, the script also pulls the relevent timer variables from storage such as 
+the number of times studied this session, number of short and long breaks taken, number of cycles left, and the chosen number of minutes 
+for studying, each break, and the total number of cycles. All of this information is used to display some progress information at the top of 
+the page while in a session. The information is written as a few fractions such as the number of breaks taken out of how many more there are left. 
+\\When the popup is in the main page state, it also refills the choices and inputs that the user made 
+in the timer choices menu so they do not have to reenter the information. Additionally, the customer timer inputs are saved between sessions to 
+allow for easily repeated custom sessions. 
+\\(I sent an email asking if the amount of detail I am including is correct, so this might change if it is not correct)
 
 \subsection{Reused components}
 To implement the whitelist, an article titled "Learn the most useful Chrome APIs by 
 creating Block Site Chrome extension" by Pavel Bucka contained example code that was 
 tweaked and implemented in the extension. The article shows how to implement a blacklist, 
-so we flipped the logic to block any site not in the list and added input validation for the textbox.
+so we flipped the logic to block any site not in the list and added input validation for the textbox. 
 \\
 \subsection{Testing scenarios and results}
 
