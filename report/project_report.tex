@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\\documentclass[12pt]{article}
 \usepackage{url}
 \usepackage{setspace}
 \usepackage[superscript]{cite}
@@ -167,7 +167,7 @@ Req-07: During study time, send an alarm and alert to the user if the Google Chr
 Req-08: Implement a whitelist for only previously approved websites.
 \begin{itemize}
     \item Description: During study time, the user is only allowed to visit previously approved websites as specified in the whitelist.
-    \item Rationale: If the user is allowed to access non-educational sites such as social media or games, then they will not be focused on studying and will be wasting time. 
+    \item Rationale: If the user is allowed to access non-educational sites such as social media or games, then they will not be focused on studying and will be wasting time. 
     \item Input(s): Can accept new additions to the whitelist from the user’s parental figure with their pin.
     \item Output(s): N/A.
     \item Dependency: May receive input from Req-09 if a new site is added.
@@ -175,7 +175,7 @@ Req-08: Implement a whitelist for only previously approved websites.
 Req-09: During study time, access to a non-approved site will result in access to the site being blocked. Option to add the site to the whitelist is displayed with the alert.
 \begin{itemize}
     \item Description: Access to a site not on the whitelist will be blocked and a message will show explaining that it has been blocked. An option to add the site to the whitelist will also show but will require a parent pin to add it.
-    \item Rationale: Sites not on the approved whitelist should be blocked when attempted to access because the user will not be studying if they are trying to access social media. But, if the site is a new educational resource, then the parent should be able to add it to the list of approved sites. 
+    \item Rationale: Sites not on the approved whitelist should be blocked when attempted to access because the user will not be studying if they are trying to access social media. But, if the site is a new educational resource, then the parent should be able to add it to the list of approved sites. 
     \item Input(s): The whitelist so that the function can see if a site is not allowed.
     \item Output(s): Block the site, send an alert, add a new website to whitelist if they choose to do so.
     \item Dependency: Receives the whitelist form Req-08.
@@ -224,7 +224,7 @@ Req-15: At the end of the break, display an alert to begin the next session, and
 \begin{itemize}
     \item Description:  Asks user at the end of their break if they would like to begin their session again and ask if they want to resume, stop, or start a new session. Plays an audio alert after a minute if no response.
     \item Rationale: Allows user to decide their next steps after a break.
-    \item Input(s): User says: resume, stop, start new. 
+    \item Input(s): User says: resume, stop, start new. 
     \item Output(s): Repeats user’s input and reacts with the appropriate action. Resumes where user left off, stops the program, or starts a new session.
     \item Dependency:  Input from Req-10 and timer from Req-03.
 \end{itemize}
@@ -319,7 +319,18 @@ The first step in developing the extension was to create a JSON file titled "man
 defines different aspects of the extension such as the name, description, version, scripts for the popup menu, 
 scripts for the background service worker, content scripts, and various permissions. The permissions requested were storage, tabs, activeTab, and scripting.
 \\\\
-\underline{Popup Menu} \\
+
+\noindent \underline{Website} \\
+Our website contains 3 pages, a Home page, a Stats page, and a Login page. The Home page consists of a welcome box for the dynamic user and instructions on the site. It also contains the user’s dynamic name, current level and rank, next level and rank as well as rewards (if the level is a multiple of 5), and a progress wheel / percentage to show their current level.
+\\\\The Stats page works by displaying the variables we use for our experience system in boxes. These boxes are split for what variables they represent: the mouse clicks, key presses, time spent studying, and days studied. Time spent studying is based on the amount of time the timer runs, and days spent studying is a simple counter that checks the date. Mouse clicks and key presses are collected while the extension is running. 
+\\\\When the popup is in the main page state, it also refills the choices and inputs that the user made 
+in the timer choices menu so they do not have to reenter the information. Additionally, the customer timer inputs are saved between sessions to 
+allow for easily repeated custom sessions. 
+\\\\The Login page works as a typical login page where it checks the database for a matching username and password and logs the user in, displaying their personalized stats and levels for gamification.
+\\\\All of the variables listed above are tied to the user in the database, and are displayed based off of the profile that is signed in.
+\\\\
+
+\noindent \underline{Popup Menu} \\
 The popup script contains the main control menu for the extension. This script runs each time the popup page 
 is opened and first checks shared storage to see what state the popup menu should be in. The possible states 
 are the main page, which displays when there is no study session started, a study state which displays when 
@@ -351,6 +362,7 @@ Then it calls a function to get the end time for the timer and finally reloads t
 \\\\The calculation function gets the current time, gets the end time by adding the current time and the number of minutes to study multiplied by 60000 since the getTime function 
 returns miliseconds. Then turns the time into a string of the form HH:MM:SS and saves it to shared storage. 
 \\\\
+
 \underline{Content Script}\\
 When the current tab is reloaded, the content script is run on the current tab's page. The content script first creates a div HTML element, and adds styling to prepare 
 for the timer to be shown on screen. There is a message listener that responds to a message sent from the popup script 
@@ -380,9 +392,8 @@ is added and will not be blocked the next time they ask to open it.
 \\\\
 \subsubsection{Database}
 
-\subsubsection{Website}
 
-
+\\\\
 \subsection{Reused components}
 To implement the timer, a page from W3Schools titled "How TO - JavaScript Countdown Timer" was used for the set interval function logic. 
 The majority of the reused logic is in the distance calculation and the calculation to get the hours, minutes, and seconds of the remaining time. 
