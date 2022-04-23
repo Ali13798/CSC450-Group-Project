@@ -1,0 +1,71 @@
+{% extends 'layout.html' %}
+
+{% block title %} {{title}} {% endblock title %}
+
+{% block body %}
+
+<!-- Start Welcome User -->
+
+<div class = "welcome">
+    <span></span>
+    <span></span>
+    <span></span>
+    <div class="content">
+        <h2>Welcome {{ name }}!</h2>
+            <p>
+                Please look around and check your level and stats!
+            </p>
+    </div>
+</div>
+
+<!-- End Welcome User -->
+
+
+<!-- Start Progress Buttons -->
+    <button class="button1" href="">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Current Level <br> 3 <br> Mage </br>
+    </button>
+
+    <button class="button2" href="">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Next Level <br> 4 <br> Warlock </br>
+    </button>
+
+    <p class="CurLevelExplain">This is your current level!</p>
+    <p class="ExpBarExplain">Your Percent to next level! <br>Keep studying to level up!</p>
+    <p class="NextLevelExplain">This is your next level!</p>
+<!-- End Progress Buttons -->
+
+<!-- Start EXP Bar -->
+        <!-- Do and then adjust for the fancy light effects -->
+
+<div class = progWheel>
+    <div class = "outer">
+        <div class = "inner">
+            <div id="number">
+                65%
+            </div>
+        </div>
+    </div>
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="160px" height="160px">
+        <defs>
+        <linearGradient id="GradientColor">
+            <stop offset="0%" stop-color="#013236" /> <!-- #14ffe9 // blue : #ffeb3b // yellow : #8317ff // purple : #ff17f7 // pink -->
+            <stop offset="100%" stop-color="#ffbe30" />
+
+            <!--<stop offset="51%" stop-color="#fff" />
+            <stop offset="100%" stop-color="#fff" /> -->
+        </linearGradient>
+        </defs>
+        <circle cx="80" cy="80" r="70" stroke-linecap="round" />
+</svg>
+
+{% endblock body %}

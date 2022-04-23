@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\\documentclass[12pt]{article}
 \usepackage{url}
 \usepackage{setspace}
 \usepackage[superscript]{cite}
@@ -107,8 +107,7 @@ The user's keyboard and mouse inputs will be monitored to measure if they are ac
 
 \section{Requirements Specification}
 \subsection{Functional Requirements}
-\begin{itemize} %this is to fix the tab that is being added automatically
-\end{itemize}
+\noindent
 Req-01: On the first run, get information from the user.
 \begin{itemize}
     \item Description: The function makes the user provide their chosen username and a parent pin. 
@@ -168,7 +167,7 @@ Req-07: During study time, send an alarm and alert to the user if the Google Chr
 Req-08: Implement a whitelist for only previously approved websites.
 \begin{itemize}
     \item Description: During study time, the user is only allowed to visit previously approved websites as specified in the whitelist.
-    \item Rationale: If the user is allowed to access non-educational sites such as social media or games, then they will not be focused on studying and will be wasting time. 
+    \item Rationale: If the user is allowed to access non-educational sites such as social media or games, then they will not be focused on studying and will be wasting time. 
     \item Input(s): Can accept new additions to the whitelist from the user’s parental figure with their pin.
     \item Output(s): N/A.
     \item Dependency: May receive input from Req-09 if a new site is added.
@@ -176,7 +175,7 @@ Req-08: Implement a whitelist for only previously approved websites.
 Req-09: During study time, access to a non-approved site will result in access to the site being blocked. Option to add the site to the whitelist is displayed with the alert.
 \begin{itemize}
     \item Description: Access to a site not on the whitelist will be blocked and a message will show explaining that it has been blocked. An option to add the site to the whitelist will also show but will require a parent pin to add it.
-    \item Rationale: Sites not on the approved whitelist should be blocked when attempted to access because the user will not be studying if they are trying to access social media. But, if the site is a new educational resource, then the parent should be able to add it to the list of approved sites. 
+    \item Rationale: Sites not on the approved whitelist should be blocked when attempted to access because the user will not be studying if they are trying to access social media. But, if the site is a new educational resource, then the parent should be able to add it to the list of approved sites. 
     \item Input(s): The whitelist so that the function can see if a site is not allowed.
     \item Output(s): Block the site, send an alert, add a new website to whitelist if they choose to do so.
     \item Dependency: Receives the whitelist form Req-08.
@@ -225,7 +224,7 @@ Req-15: At the end of the break, display an alert to begin the next session, and
 \begin{itemize}
     \item Description:  Asks user at the end of their break if they would like to begin their session again and ask if they want to resume, stop, or start a new session. Plays an audio alert after a minute if no response.
     \item Rationale: Allows user to decide their next steps after a break.
-    \item Input(s): User says: resume, stop, start new. 
+    \item Input(s): User says: resume, stop, start new. 
     \item Output(s): Repeats user’s input and reacts with the appropriate action. Resumes where user left off, stops the program, or starts a new session.
     \item Dependency:  Input from Req-10 and timer from Req-03.
 \end{itemize}
@@ -254,8 +253,7 @@ Req-18: User has the ability to stop the session at any time (emergency stop, ma
     \item Dependency: N/A.
 \end{itemize}
 \subsection{Non-Functional requirements}
-\begin{itemize} %this is to fix the tab that is being added automatically
-\end{itemize}
+\noindent
 Req-19: Moderate level of responsiveness
 \begin{itemize}
     \item Description: The extension's features should have a moderate level of responsiveness, at no less than 2 seconds for any action that does not depend on data transfer over The Internet.
@@ -291,17 +289,139 @@ Req-25: Web-based features will update within a day
     \item Description: When any changes are submitted after a session, those updates should be visible to the user within 24 hours.
     \item Rationale: Users will need to see their overall progress in their studies within a reasonable amount of time. Since this will be dependent on a web server, some time should be allowed for data transfer and potential outages.
 \end{itemize}
-% \section{References}
+\pagebreak
+\section{Design}
+\subsection{Design Diagram}
+\begin{figure}[h]
+\includegraphics[width=15.0cm, height=10.0cm]{images/Design.png}
+\end{figure}
+\subsection{Module Descriptions}
+\textbf{Study Extension:} A google chrome extension to help users focus on studying and remember to take breaks. Users have the option to log in which gives access to the website. The extension stores data about the study sessions in the database. \\\\
+\textbf{User Interface:} The popup menu where users control the session, make choices about the timer, provide information, and can access the Progress Website.\\\\
+\textbf{Storage:} Storage provided by the chrome.storage API that is shared among the scripts in the extension.\\\\
+Background: Monitors the content pages to implement the whitelist and closes tabs that violate it. Continuously checks for mouse or keyboard inputs for statistics.\\\\
+\textbf{Content:} Makes changes to the current tab's content such as running the Timer.\\\\
+\textbf{Timer:} Displays a timer on the screen and counts down to the provided time. Contained and executed in the Content Script. Timer accesses storage when finished.\\\\
+\textbf{Database:} Database that stores information about the study sessions such as total time studied and keyboard and mouse input frequencies. Verifies user login in the extension or the website before allowing access to the website information. \\\\
+Progress Website: A locally hosted website which allows users to view information and progress on their study sessions. \\\\
+\textbf{Statistics:} Displays information such as total time spent studying and input frequency. 
+History: Displays information on previous sessions such as date, time began and ended, and total time studied for the session. \\\\
+\textbf{Gamification:} Provides incentives for the users to study more through a game-like system where the total amount studied is translated to points and then to levels and titles.\\\\
+\section{Implementation and Testing}
+\subsection{Development environment and tools}
+\subsubsection{Google Chrome Extension}
+\noindent \underline{Overview} \\
+The Google Chrome extension was developed in Visual Studio Code with JavaScript, HTML, and CSS
+and was tested using the Developer Mode in the Extensions page of the Google Chrome browser. 
+\\\\
+\underline{Manifest JSON}\\
+The first step in developing the extension was to create a JSON file titled "manifest" which  
+defines different aspects of the extension such as the name, description, version, scripts for the popup menu, 
+scripts for the background service worker, content scripts, and various permissions. The permissions requested were storage, tabs, activeTab, and scripting.
+\\\\
 
-% \begingroup
-% \renewcommand{\section}[2]{}
-% \begin{thebibliography}{10}
+\noindent \underline{Website} \\
+Our website contains 3 pages, a Home page, a Stats page, and a Login page. The Home page consists of a welcome box for the dynamic user and instructions on the site. It also contains the user’s dynamic name, current level and rank, next level and rank as well as rewards (if the level is a multiple of 5), and a progress wheel / percentage to show their current level.
+\\\\The Stats page works by displaying the variables we use for our experience system in boxes. These boxes are split for what variables they represent: the mouse clicks, key presses, time spent studying, and days studied. Time spent studying is based on the amount of time the timer runs, and days spent studying is a simple counter that checks the date. Mouse clicks and key presses are collected while the extension is running. 
+\\\\When the popup is in the main page state, it also refills the choices and inputs that the user made 
+in the timer choices menu so they do not have to reenter the information. Additionally, the customer timer inputs are saved between sessions to 
+allow for easily repeated custom sessions. 
+\\\\The Login page works as a typical login page where it checks the database for a matching username and password and logs the user in, displaying their personalized stats and levels for gamification.
+\\\\All of the variables listed above are tied to the user in the database, and are displayed based off of the profile that is signed in.
+\\\\
 
-%     \bigskip
-% https://dev.to/penge/learn-the-most-useful-chrome-apis-by-creating-block-site-chrome-extension-2de8 
+\noindent \underline{Popup Menu} \\
+The popup script contains the main control menu for the extension. This script runs each time the popup page 
+is opened and first checks shared storage to see what state the popup menu should be in. The possible states 
+are the main page, which displays when there is no study session started, a study state which displays when 
+the user is in study mode, an intermission state for between study and break, and break state for during short breaks, 
+and a long break state for during long breaks. The short and long break states are functionally the same, they just 
+have a different title. Once the script determines which state it is supposed to be in, it shows or hides the 
+approprite elements so that it looks the same as the last time the user looked at it, unless the state changed when the timer ended. 
+\\\\Along side checking and updating the state, the script also pulls the relevent timer variables from storage such as 
+the number of times studied this session, number of short and long breaks taken, number of cycles left, and the chosen number of minutes 
+for studying, each break, and the total number of cycles. All of this information is used to display some progress information at the top of 
+the page while in a session. The information is written as a few fractions such as the number of breaks taken out of how many more there are left. 
+\\\\When the popup is in the main page state, it also refills the choices and inputs that the user made 
+in the timer choices menu so they do not have to reenter the information. Additionally, the customer timer inputs are saved between sessions to 
+allow for easily repeated custom sessions. 
+\\\\When the user accesses and edits the textbox that contains the list of domains for the whitelist, 
+the function uses a regular expression to check if it is in the valid from of a domain such as www.google.com or en.wikipedia.org. 
+This check will not allow strings of just letters to get through which would mess up the whitelist. If the domain is valid, it is kept and stored. 
+If not, it is removed and a message is shown beneth the textbox listing the entries that were removed. 
+\\\\When the begin timer button is clicked, it checks that a radiobutton has been selected and sends an alert telling 
+the user to make a selection before trying to begin. If an option is selected, it checks to see if it was a premade timer option or the custom. 
+If the custom timer was chosen, the script also checks if all of the inputs are filled in before allowing the sessoin to begin, and sends an alert if any are empty. 
+\\\\Once the choices are deemed valid, the session begins by saving all of the timer choice information to shared storage. 
+Then the state of the page is set to study, the whitelist blocking is enabled, and the start timer function is called. 
+\\\\The function to start the timer begins by asking the user if they are ready to reload the current tab to allow the timer to show up. 
+If they are not ready, then the state stays on the main page until they come back to press begin, and choose to allow the page to reload. 
+This is to allow the user to make any necessary changes to the current page such as saving their work. Once the user is ready, the page is transitioned 
+to the study state by hiding the timer options and end button, and showing the end button and pause button. 
+Then it calls a function to get the end time for the timer and finally reloads the current page. 
+\\\\The calculation function gets the current time, gets the end time by adding the current time and the number of minutes to study multiplied by 60000 since the getTime function 
+returns miliseconds. Then turns the time into a string of the form HH:MM:SS and saves it to shared storage. 
+\\\\
 
-% \end{thebibliography}
-% \endgroup
+\underline{Content Script}\\
+When the current tab is reloaded, the content script is run on the current tab's page. The content script first creates a div HTML element, and adds styling to prepare 
+for the timer to be shown on screen. There is a message listener that responds to a message sent from the popup script 
+when the user presses the pause button. When a pause message is recieved, the content script flips the paused value on or off, and saves the time the timer was paused or unpaused. 
+When the content script is run without a message being sent, it first checks if the timer is supposed to be paused. If paused, it does nothing. Once it is unpaused, then 
+the script accesses shared storage to get the end time for the timer and parses out the hour, minutes, and seconds and then stores it in a date object. 
+\\\\The script then enters a set interval function which runs every second. The logic of this function was found in an article and its reuse is described in the later section "Reused components". 
+This function first checks if there is any value stored for the pause start time. If there is, 
+then it subtracts the start pause from the end pause time to get the amount of real time that passed while paused, and adds that to the timer end time. 
+The start and end pause times are reset to null. For each second that this function is called, it gets the current time and subtracts it from the 
+end time to find how much is left. Then gets the hours, minutes, and seconds values of the difference and displays the string to the screen in the div created earlier. 
+It then checks if the difference is less than or equal to 0, which means the timer is done. 
+\\\\If the timer is done, it checks what state the popup is in, increments the count for that corresponding state, stores the count, and changes the state to intermission. 
+For example, if the popup was in the study state, then the number of study times completed is incremented. The timer display is then set to an empty string and the whitelist blocking is turned off. 
+\\\\
+\underline{Background Script}\\
+The whitelist blocking is handled in the background script, also called the service worker. The logic of this portion came from an article, and the extent of reuse is described in the "Reused components" section of this report. 
+When the extension is ran, the background first checks if there is an existing whitelist in storage. If not, then it creates an empty array as a placholder. 
+It also checks if there is a value called "enabled" of type boolean and creates and sets it to false if there is not one. 
+\\\\Also in the background script is an event listener for when any tab in the browser window requests for a page to load. This is refered to as the tab being updated. 
+When the script recieves the notice, it grabs the tab id and information about the change. These paramaters allow the function 
+to grab the url from the new tab and test it. First, it tests if it exists, or if it starts with "http". If either of these things are false, then the function returns and does not block it. 
+This is so that pages that begin with "chrome" are allowed through and never blocked becuase they could be important settings pages. 
+If it passes the first test, it moves on to the second test where the script looks through the list of allowed domains and looks for the domain of the current url. If the domain is founc, then the tab is removed, and the url is saved to shared memory and a flag that says a page was recently blocked is set. 
+This is so that when the user goes back into the popup page, the script checks for these values and askes the use if they want to add that domain to the whitelist. If they choose yes and a valid pin is provided, then the domain 
+is added and will not be blocked the next time they ask to open it.
+\\\\
+\subsubsection{Database}
+
+
+\\\\
+\subsection{Reused components}
+To implement the timer, a page from W3Schools titled "How TO - JavaScript Countdown Timer" was used for the set interval function logic. 
+The majority of the reused logic is in the distance calculation and the calculation to get the hours, minutes, and seconds of the remaining time. 
+The portions which we changed for our project are that we stored the time to count down to and therefore had to retrieve it from storage 
+and continually update it so that other tabs opened would show the same time. 
+\\\\
+To implement the whitelist, an article titled "Learn the most useful Chrome APIs by 
+creating Block Site Chrome extension" by Pavel Bucka contained example code that was 
+tweaked and implemented in the extension. The article shows how to implement a blacklist, 
+so we flipped the logic to block any site not in the list and added input validation for the textbox. 
+\\\\
+\subsection{Testing scenarios and results}
+
+\section{References}
+
+\begingroup
+\renewcommand{\section}[2]{}
+\begin{thebibliography}{10}
+    \bibitem{Bucka2020}
+    Bucka, P. (30 July 2020) \textit{Learn the most useful Chrome APIs by creating Block Site Chrome extension}. 
+    DEV. https://dev.to/penge/learn-the-most-useful-chrome-apis-by-creating-block-site-chrome-extension-2de8
+    
+    \bibitem{W3S}
+    W3Schools. (n.d.)\textit{How TO - JavaScript Countdown Timer}. https://www.w3schools.com/howto/howto_js_countdown.asp
+    
+    \bigskip
+\end{thebibliography}
+\endgroup
 
 
 \end{document}

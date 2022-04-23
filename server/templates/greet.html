@@ -1,0 +1,21 @@
+{% extends 'layout.html' %} {% block body %}
+
+<div>Hello, {{name }}</div>
+
+{% if names %}
+<div>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Password</th>
+        </tr>
+
+        {% for name in names %}
+        <tr>
+            <th>{{ name[1] }}</th>
+            <th>{{ name[2] }}</th>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endif %} {% endblock body %}
