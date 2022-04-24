@@ -11,16 +11,24 @@ var popCont, timerDiv, custSessionInputs, textarea, messages;
 var websiteBtn, save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep;
 
 //Get User information
+
+//Button for user to enter name
 var buttonInfo;
 window.addEventListener("DOMContentLoaded", () => {
     buttonInfo = document.getElementById("buttonInfo");
     buttonInfo.addEventListener("click", submitForm);
-
     function submitForm() {
         let data = {};
         data.fname = document.getElementById("fname").value;
         data.lname = document.getElementById("lname").value;
-        alert("Hello, " + fname.value + " " + lname.value);
+        if (document.getElementById("fname").value == "") {
+            alert("Please, enter your first name.")
+        } else if (document.getElementById("lname").value == "") {
+            alert("Please, enter your last name.")
+        }
+        else {
+            alert("Hello, " + fname.value + " " + lname.value);
+        }
     }
 })
 
