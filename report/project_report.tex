@@ -387,7 +387,7 @@ is added and will not be blocked the next time they ask to open it.
 
 
 \noindent \underline{Server} \\
-The server was developed in the Visual Studio Code IDE with python 3.10 using The Flask and Flask-Sessions modules. The server is composed of an app.py file, which serves the website on the localhost. If desired, this can be later configured to deploy the server on a purchased domain, however, this step was omitted since there are no budgets allocated to this group project by MSU or the CS department. FLask sessions are used to facilitate a user's login actions. The server currently has support for various endpoints, such as "/", "/login", "/signup", "/logout", etc. \\
+The server was developed in the Visual Studio Code IDE with python 3.10 using The Flask and Flask-Sessions modules. The server is composed of an app.py file, which serves the website on the localhost. If desired, this can be later configured to deploy the server on a purchased domain, however, this step was omitted since there are no budgets allocated to this group project by MSU or the CS department. Flask sessions are used to facilitate a user's login actions. The server currently has support for various endpoints, such as "/", "/login", "/signup", "/logout", etc. \\
 The server employs a database to store user's username and hashed password. Currently, for demonstration purposes only, these passwords can be temporarily acquired by the admin login credentials. The python class db\_tools facilitates executing common SQL queries, such as creating a new users table, adding users to the database, retrieving passwords for comparison, etc.\\\\\\
 A variety of tests were performed to ensure the system behaves as expected, such as:
 \begin{itemize}
