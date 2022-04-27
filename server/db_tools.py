@@ -42,3 +42,35 @@ class db_tools:
         return cur.execute(
             "SELECT password FROM users WHERE user_name=?", (name,)
         ).fetchall()
+
+class users_info_table:
+    def create_table(cur:sqlite3.Cursor) -> None:
+        cur.execute(
+            """CREATE TABLE IF NOT EXISTS users (
+                id          INTEGER PRIMARY KEY,
+                user_fname   TEXT NOT NULL,
+                user_lname    TEXT NOT NULL
+            )"""
+        )
+    def add_userName(cur: sqlite3.Cursor, fname: str, lname: str) -> None:
+        if not fname or not lname:
+            print("Error: Missing  First name or Last Name.")
+            return
+
+        cur.execute(
+            "INSERT INTO users (user_fname, user_lname) VALUES (?, ?)",
+            (fname, lname),
+        )
+
+    def get_users_rows(cur: sqlite3.Cursor) -> list[tuple[int, str, str]]:
+        return cur.execute("SELECT * FROM users").fetchall()
+
+    def is_existing_user(cur: sqlite3.Cursor, name: str) -> bool:
+        rows = db_tools.get_users_rows(cur=cur)
+        existing_names = [n[1] for n in rows]
+
+        if name in existing_names:
+            return True
+
+        return False
+
