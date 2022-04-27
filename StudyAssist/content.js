@@ -106,16 +106,12 @@ if(!pause){
                                     if(popupState.state === "study"){
                                         popupState.numStudy = (popupState.numStudy) ? (parseInt(popupState.numStudy) + 1) : 1;
                                         //TODO: Store the time the timer went for in the DB
-
+                                        
                                     }else if (popupState.state === "break"){
                                         popupState.numBreak = (popupState.numBreak) ? (parseInt(popupState.numBreak) + 1) : 1;
                                     }else if (popupState.state === "Long break"){
                                         popupState.numLongBreak = (popupState.numLongBreak) ? (parseInt(popupState.numLongBreak) + 1) : 1;
                                     }
-
-                                    
-
-                                    //console.log("counters(s,b,lb): " + popupState.numStudy + " " + popupState.numBreak + " " + popupState.numLongBreak);
                                     //set popup state to be between study/break
                                     popupState.state = "intermission";
                                     popupState.endTime = undefined;

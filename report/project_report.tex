@@ -321,39 +321,7 @@ defines different aspects of the extension such as the name, description, versio
 scripts for the background service worker, content scripts, and various permissions. The permissions requested were storage, tabs, activeTab, and scripting.
 \\\\
 
-\noindent \underline{Website} \\
-Our website contains 3 pages, a Home page, a Stats page, and a Login page. The Home page consists of a welcome box for the dynamic user and instructions on the site. It also contains the user’s dynamic name, current level and rank, next level and rank as well as rewards (if the level is a multiple of 5), and a progress wheel / percentage to show their current level.
-\\\\The Stats page works by displaying the variables we use for our experience system in boxes. These boxes are split for what variables they represent: the mouse clicks, key presses, time spent studying, and days studied. Time spent studying is based on the amount of time the timer runs, and days spent studying is a simple counter that checks the date. Mouse clicks and key presses are collected while the extension is running.
-\\\\The Login page works as a typical login page where it checks the database for a matching username and password and logs the user in, displaying their personalized stats and levels for gamification.
-\\\\All of the variables listed above are tied to the user in the database, and are displayed based off of the profile that is signed in.
-\\\\
 
-\noindent \underline{Server} \\
-The server was developed in the Visual Studio Code IDE with python 3.10 using The Flask and Flask-Sessions modules. The server is composed of an app.py file, which serves the website on the localhost. If desired, this can be later configured to deploy the server on a purchased domain, however, this step was omitted since there are no budgets allocated to this group project by MSU or the CS department. FLask sessions are used to facilitate a user's login actions. The server currently has support for various endpoints, such as "/", "/login", "/signup", "/logout", etc. \\
-The server employs a database to store user's username and hashed password. Currently, for demonstration purposes only, these passwords can be temporarily acquired by the admin login credentials. The python class db\_tools facilitates executing common SQL queries, such as creating a new users table, adding users to the database, retrieving passwords for comparison, etc.\\\\\\
-A variety of tests were performed to ensure the system behaves as expected, such as:
-\begin{itemize}
-    \item User visiting the "/" endpoint without signing in.
-    \begin{itemize}
-        \item The user is rerouted to the login page.
-    \end{itemize}
-    \item User attempting to sign in without having signed up before.
-    \begin{itemize}
-        \item The user is redirected to the signup page.
-    \end{itemize}
-    \item User attempting to sign up with existing username.
-    \begin{itemize}
-        \item The user is redirected to the login page.
-    \end{itemize}
-    \item User attempting to sign in with an incorrect password.
-    \begin{itemize}
-        \item The user is redirected to the login page and advised the password is incorrect.
-    \end{itemize}
-    \item The user attempts to manually access the "/logout" endpoint.
-    \begin{itemize}
-        \item If the user is logged in, the session name is removed and user is logged out. Regardless, the user is redirected to the login page.
-    \end{itemize}
-\end{itemize}\\\\
 
 
 \noindent \underline{Popup Menu} \\
@@ -416,10 +384,43 @@ If it passes the first test, it moves on to the second test where the script loo
 This is so that when the user goes back into the popup page, the script checks for these values and asks the use if they want to add that domain to the whitelist. If they choose yes and a valid pin is provided, then the domain 
 is added and will not be blocked the next time they ask to open it.
 \\\\
-\underline{Database}\\
 
 
+\noindent \underline{Server} \\
+The server was developed in the Visual Studio Code IDE with python 3.10 using The Flask and Flask-Sessions modules. The server is composed of an app.py file, which serves the website on the localhost. If desired, this can be later configured to deploy the server on a purchased domain, however, this step was omitted since there are no budgets allocated to this group project by MSU or the CS department. FLask sessions are used to facilitate a user's login actions. The server currently has support for various endpoints, such as "/", "/login", "/signup", "/logout", etc. \\
+The server employs a database to store user's username and hashed password. Currently, for demonstration purposes only, these passwords can be temporarily acquired by the admin login credentials. The python class db\_tools facilitates executing common SQL queries, such as creating a new users table, adding users to the database, retrieving passwords for comparison, etc.\\\\\\
+A variety of tests were performed to ensure the system behaves as expected, such as:
+\begin{itemize}
+    \item User visiting the "/" endpoint without signing in.
+    \begin{itemize}
+        \item The user is rerouted to the login page.
+    \end{itemize}
+    \item User attempting to sign in without having signed up before.
+    \begin{itemize}
+        \item The user is redirected to the signup page.
+    \end{itemize}
+    \item User attempting to sign up with existing username.
+    \begin{itemize}
+        \item The user is redirected to the login page.
+    \end{itemize}
+    \item User attempting to sign in with an incorrect password.
+    \begin{itemize}
+        \item The user is redirected to the login page and advised the password is incorrect.
+    \end{itemize}
+    \item The user attempts to manually access the "/logout" endpoint.
+    \begin{itemize}
+        \item If the user is logged in, the session name is removed and user is logged out. Regardless, the user is redirected to the login page.
+    \end{itemize}
+\end{itemize}\\\\
+
+\noindent \underline{Website} \\
+Our website contains 3 pages, a Home page, a Stats page, and a Login page. The Home page consists of a welcome box for the dynamic user and instructions on the site. It also contains the user’s dynamic name, current level and rank, next level and rank as well as rewards (if the level is a multiple of 5), and a progress wheel / percentage to show their current level.
+\\\\The Stats page works by displaying the variables we use for our experience system in boxes. These boxes are split for what variables they represent: the mouse clicks, key presses, time spent studying, and days studied. Time spent studying is based on the amount of time the timer runs, and days spent studying is a simple counter that checks the date. Mouse clicks and key presses are collected while the extension is running.
+\\\\The Login page works as a typical login page where it checks the database for a matching username and password and logs the user in, displaying their personalized stats and levels for gamification.
+\\\\All of the variables listed above are tied to the user in the database, and are displayed based off of the profile that is signed in.
 \\\\
+
+\\\\\noindent
 \underline{Needs Implementation}\\
 \begin{itemize}
     \item Connect the log in form in the popup page to the database for validation
