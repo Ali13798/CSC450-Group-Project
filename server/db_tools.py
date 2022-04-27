@@ -43,7 +43,7 @@ class db_tools:
             "SELECT password FROM users WHERE user_name=?", (name,)
         ).fetchall()
 
-class users_info:
+class users_info_table:
     def create_table(cur:sqlite3.Cursor) -> None:
         cur.execute(
             """CREATE TABLE IF NOT EXISTS users (
