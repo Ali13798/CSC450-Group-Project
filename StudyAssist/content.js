@@ -12,7 +12,7 @@ timerPlace.style.padding = "10px";
 timerPlace.style.opacity = "0.5";
 timerPlace.innerHTML="";
 
-var endTime;
+var endTime, snoozeTime= 0;
 var pause = false;
 var pauseStart = null;
 var pauseEnd = null;
@@ -94,37 +94,65 @@ if(!pause){
                         document.body.prepend(timerPlace);
                         //when timer is over
                         if(dist <= 0){
-                            //set timer end flag
-                            // timerEnd = true;
-                            clearInterval(stID);
-                            timerPlace.innerHTML = "";
-                            document.body.prepend(timerPlace);
-                            //Store that the time has ended
-                            chrome.storage.sync.get(['popupState'], function(result) {
-                                if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
-                                    var popupState = JSON.parse(result.popupState);
-                                    if(popupState.state === "study"){
-                                        popupState.numStudy = (popupState.numStudy) ? (parseInt(popupState.numStudy) + 1) : 1;
-                                        //TODO: Store the time the timer went for in the DB
-                                        
-                                    }else if (popupState.state === "break"){
-                                        popupState.numBreak = (popupState.numBreak) ? (parseInt(popupState.numBreak) + 1) : 1;
-                                    }else if (popupState.state === "Long break"){
-                                        popupState.numLongBreak = (popupState.numLongBreak) ? (parseInt(popupState.numLongBreak) + 1) : 1;
+                            answer = confirm("Timer has ended. Continue to next stage of your session? Cancel will postpone this message and continue the timer.");
+                            if(answer){ //Stop the timer, continue to next stage
+                                clearInterval(stID);
+                                timerPlace.innerHTML = "";
+                                document.body.prepend(timerPlace);
+                                //Store that the time has ended
+                                chrome.storage.sync.get(['popupState'], function(result) {
+                                    if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
+                                        var popupState = JSON.parse(result.popupState);
+                                        if(popupState.state === "study"){
+                                            popupState.numStudy = (popupState.numStudy) ? (parseInt(popupState.numStudy) + 1) : 1;
+                                            popupState.timeStudied = snoozeTime + timeStudied; //TODO: figure out how to get the timeStudied
+                                            //store start time from popup, keep track of time spent pausing
+                                            //take end time minus start minus pause + snooze and save that
+                                        }else if (popupState.state === "break"){
+                                            popupState.numBreak = (popupState.numBreak) ? (parseInt(popupState.numBreak) + 1) : 1;
+                                        }else if (popupState.state === "Long break"){
+                                            popupState.numLongBreak = (popupState.numLongBreak) ? (parseInt(popupState.numLongBreak) + 1) : 1;
+                                        }
+                                        //set popup state to be between study/break
+                                        popupState.state = "intermission";
+                                        popupState.endTime = undefined;
+                                        let serializedTimer = JSON.stringify(popupState);
+                                        chrome.storage.sync.set({"popupState": serializedTimer}, function() {
+                                            console.log('Content: Value is set to ' + serializedTimer);
+                                        });
+                                        //stop blocking
+                                        const enabled = false;
+                                        chrome.storage.local.set({ enabled });
                                     }
-                                    //set popup state to be between study/break
-                                    popupState.state = "intermission";
-                                    popupState.endTime = undefined;
-                                    let serializedTimer = JSON.stringify(popupState);
-                                    chrome.storage.sync.set({"popupState": serializedTimer}, function() {
-                                        console.log('Content: Value is set to ' + serializedTimer);
-                                    });
-                                    //stop blocking
-                                    const enabled = false;
-                                    chrome.storage.local.set({ enabled });
-                                }
-                            })
-                            return;
+                                })
+                                return;
+                            }else{ 
+                                //add 2 minutes to the timer
+                                endTime.setMinutes(new Date().getMinutes() + 2);
+                                snoozeTime += 2;
+                                // but the state of popup is intermission becuase they can end any time and continue to the next state
+                                chrome.storage.sync.get(['popupState'], function(result) {
+                                    if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
+                                        var popupState = JSON.parse(result.popupState);
+                                        if(popupState.state === "study"){
+                                            popupState.numStudy = (popupState.numStudy) ? (parseInt(popupState.numStudy) + 1) : 1;
+                                        }else if (popupState.state === "break"){
+                                            popupState.numBreak = (popupState.numBreak) ? (parseInt(popupState.numBreak) + 1) : 1;
+                                        }else if (popupState.state === "Long break"){
+                                            popupState.numLongBreak = (popupState.numLongBreak) ? (parseInt(popupState.numLongBreak) + 1) : 1;
+                                        }
+                                        //set popup state to be between study/break
+                                        popupState.state = "intermission";
+                                        popupState.endTime = undefined;
+                                        let serializedTimer = JSON.stringify(popupState);
+                                        chrome.storage.sync.set({"popupState": serializedTimer}, function() {
+                                            console.log('Content: Value is set to ' + serializedTimer);
+                                        });
+                                    }
+                                })
+
+                            }
+                            
                         }
                     }else{
                         //do not display timer
