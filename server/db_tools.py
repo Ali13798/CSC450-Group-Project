@@ -41,14 +41,14 @@ class db_tools:
         return cur.execute("SELECT password FROM users WHERE user_name=?",
                            (name, )).fetchall()
 
-    def create_table_user_name(cur1: sqlite3.Cursor) -> None:
+    def create_table_username(cur1: sqlite3.Cursor) -> None:
         cur1.execute("""CREATE TABLE IF NOT EXISTS users (
                 id          INTEGER PRIMARY KEY,
                 user_lname   TEXT NOT NULL,
                 user_fname   TEXT NOT NULL
             )""")
 
-    def add_userName(cur1: sqlite3.Cursor, fname: str, lname: str) -> None:
+    def add_userInfo(cur1: sqlite3.Cursor, fname: str, lname: str) -> None:
         if not fname or not lname:
             print("Error: Missing first name or last name.")
             return
@@ -58,8 +58,7 @@ class db_tools:
             (fname, lname),
         )
 
-    def get_users_name_rows(
-            cur1: sqlite3.Cursor) -> list[tuple[int, str, str]]:
+    def get_usersName_rows(cur1: sqlite3.Cursor) -> list[tuple[int, str, str]]:
         return cur1.execute("SELECT * FROM users").fetchall()
 
     def create_table_parent_pin(cur2: sqlite3.Cursor) -> None:
