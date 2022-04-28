@@ -2,14 +2,13 @@ import sqlite3
 
 
 class db_tools:
+
     def create_table(cur: sqlite3.Cursor) -> None:
-        cur.execute(
-            """CREATE TABLE IF NOT EXISTS users (
+        cur.execute("""CREATE TABLE IF NOT EXISTS users (
                 id          INTEGER PRIMARY KEY,
                 user_name   TEXT NOT NULL UNIQUE,
                 password    TEXT NOT NULL
-            )"""
-        )
+            )""")
 
     def add_user(cur: sqlite3.Cursor, name: str, pswd: str) -> None:
         if not name or not pswd:
@@ -39,38 +38,29 @@ class db_tools:
         return False
 
     def get_user_password(cur: sqlite3.Cursor, name: str) -> str:
-        return cur.execute(
-            "SELECT password FROM users WHERE user_name=?", (name,)
-        ).fetchall()
+        return cur.execute("SELECT password FROM users WHERE user_name=?",
+                           (name, )).fetchall()
 
-class users_info_table:
-    def create_table(cur:sqlite3.Cursor) -> None:
-        cur.execute(
-            """CREATE TABLE IF NOT EXISTS users (
+    def create_table_user_name(cur1: sqlite3.Cursor) -> None:
+        cur1.execute("""CREATE TABLE IF NOT EXISTS users (
                 id          INTEGER PRIMARY KEY,
-                user_fname   TEXT NOT NULL,
-                user_lname    TEXT NOT NULL
-            )"""
-        )
-    def add_userName(cur: sqlite3.Cursor, fname: str, lname: str) -> None:
+                user_lname   TEXT NOT NULL,
+                user_fname   TEXT NOT NULL
+            )""")
+
+    def add_userName(cur1: sqlite3.Cursor, fname: str, lname: str) -> None:
         if not fname or not lname:
-            print("Error: Missing  First name or Last Name.")
+            print("Error: Missing first name or last name.")
             return
 
-        cur.execute(
+        cur1.execute(
             "INSERT INTO users (user_fname, user_lname) VALUES (?, ?)",
             (fname, lname),
         )
 
-    def get_users_rows(cur: sqlite3.Cursor) -> list[tuple[int, str, str]]:
-        return cur.execute("SELECT * FROM users").fetchall()
+    def get_users_name_rows(
+            cur1: sqlite3.Cursor) -> list[tuple[int, str, str]]:
+        return cur1.execute("SELECT * FROM users").fetchall()
 
-    def is_existing_user(cur: sqlite3.Cursor, name: str) -> bool:
-        rows = db_tools.get_users_rows(cur=cur)
-        existing_names = [n[1] for n in rows]
-
-        if name in existing_names:
-            return True
-
-        return False
-
+    def create_table_parent_pin(cur2: sqlite3.Cursor) -> None:
+        cur2.execute()
