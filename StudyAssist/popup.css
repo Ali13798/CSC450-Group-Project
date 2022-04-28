@@ -246,7 +246,7 @@ input[type=submit] {
     background-color: #137575cc;
 }
 
-.buttonInfo {
+#buttonInfo {
     /* margin-left: -10%; */
     font-family: 'Michroma', sans-serif;
     color: rgb(255, 255, 255);
@@ -262,6 +262,7 @@ input[type=submit] {
 #websiteBtn,
 #optionsBtn,
 #parentModeBtn,
+#buttonInfo,
 input[type=submit],
 #nextStep,
 #pauseBtn,
@@ -282,6 +283,7 @@ input[type=submit],
 #websiteBtn:hover,
 #optionsBtn:hover,
 #parentModeBtn:hover,
+#buttonInfo:hover,
 input[type=submit]:hover,
 #nextStep:hover,
 #pauseBtn:hover,
@@ -295,6 +297,7 @@ input[type=submit]:hover,
 #websiteBtn:active,
 #optionsBtn:active,
 #parentModeBtn:active,
+#buttonInfo:active,
 input[type=submit]:active,
 #nextStep:active,
 #pauseBtn:active,

@@ -13,10 +13,10 @@ var websiteBtn, save, radioButtons, beginButton, endButton, optionsBtn, popWebsi
 //Get User information
 
 //Button for user to enter name
-var buttonInfo;
+var infoBtn;
 window.addEventListener("DOMContentLoaded", () => {
-    buttonInfo = document.getElementById("buttonInfo");
-    buttonInfo.addEventListener("click", submitForm);
+    infoBtn = document.getElementById("buttonInfo");
+    infoBtn.addEventListener("click", submitForm);
     function submitForm() {
         let data = {};
         data.fname = document.getElementById("fname").value;
@@ -37,6 +37,7 @@ window.addEventListener("DOMContentLoaded", () => {
 //Clicking on the button starts the blocking session
 document.addEventListener("DOMContentLoaded", () => {
     //Variables 
+    userDiv = document.getElementById("userInfoInput");
     popCont = document.getElementById("popupContainer");
     websiteBtn = document.getElementById("websiteBtn");
     timerDiv = document.getElementById("timerOptions");
