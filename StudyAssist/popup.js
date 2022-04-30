@@ -31,8 +31,20 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
 })
-
-
+//Parent Mode Button
+var displayEnterPin;
+window.addEventListener("DOMContentLoaded", () => {
+    parentBtn = document.getElementById("parentModeBtn");
+    parentBtn.addEventListener("click", togglePinField);
+    parentInput = document.getElementById("parentInput");
+    function togglePinField() {
+        if (parentInput.style.display === "none") {
+            parentInput.style.display = "block";
+        } else {
+            parentInput.style.display = "none";
+        }
+    }
+})
 
 //Clicking on the button starts the blocking session
 document.addEventListener("DOMContentLoaded", () => {

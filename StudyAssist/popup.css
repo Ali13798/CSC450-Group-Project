@@ -225,17 +225,17 @@ h3 {
 }
 
 #parentModeBtn {
-    padding-top: 14em;
     font-family: 'Michroma', sans-serif;
     /* left: 0%; */
     color: rgb(255, 255, 255);
     /* position: absolute; */
     background-color: #137575cc;
-    text-align: left;
+    text-align: center;
     /* margin-left: 6.5%; */
+    margin-left: 5%;
     margin-top: 5%;
     margin-right: 15%;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
 }
 
 input[type=submit] {
@@ -254,6 +254,7 @@ input[type=submit] {
     background-color: #137575cc;
 
 }
+
 
 
 

@@ -109,11 +109,13 @@
 
         <!--Parent Mode Button-->
         <br>
-        <a href="">
-            <button type="button" id="parentModeBtn">
-                Click here to enter Parent Mode
-            </button>
-        </a>
+        <button type="button" id="parentModeBtn">
+            Click here to enter Parent Mode
+        </button>
+        <div id="parentInput">
+            <input type="password" name="pin" inputmode="numeric" maxlength="4" required>
+            <input type="submit" value="Submit">
+        </div>
     </div>
     <script src="popup.js"></script>
 </body>
