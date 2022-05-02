@@ -1,3 +1,85 @@
+window.onload = function()
+{
+    let number = document.getElementById("number");
+    let counter = 0;
+
+
+    var mouseHeaders = new Headers();
+    mouseHeaders.append('Mouse-Data', 'mCounter');
+    mouseHeaders.get('mouseClick.txt');
+    var mouseInit = 
+    {
+        method: 'GET',
+        headers: mouseHeaders,
+        mode: 'cors',
+        cache: 'default'
+    };
+    var mouseclickCount = new Request('mouseClick.txt', mouseInit);
+
+
+
+    var keyHeaders = new Headers();
+    keyHeaders.append('Key-Data', 'kCounter');
+    keyHeaders.get('keystroke.txt');
+    var keyInit = 
+    {
+        method: 'GET',
+        headers: keyHeaders,
+        mode: 'cors',
+        cache: 'default'
+    };
+    var keystrokeCount = new Request('keystroke.txt', keyInit);
+
+
+
+    var timeHeaders = new Headers();
+    timeHeaders.append('Time-Data', 'tCounter');
+    timeHeaders.get('keystroke.txt');
+    var timeInit = 
+    {
+        method: 'GET',
+        headers: timeHeaders,
+        mode: 'cors',
+        cache: 'default'
+    };
+    var timeCount = new Request('studyTime.txt', timeInit);
+
+
+
+    var streakHeaders = new Headers();
+    streakHeaders.append('Streak-Data', 'sCounter');
+    streakHeaders.get('streak.txt');
+    var streakInit = 
+    {
+        method: 'GET',
+        headers: streakHeaders,
+        mode: 'cors',
+        cache: 'default'
+    };
+    var streakCount = new Request('streak.txt', streakInit);
+
+
+    var expHeaders = new Headers();
+    expHeaders.append('Streak-Data', 'sCounter');
+    expHeaders.get('streak.txt');
+    var expInit = 
+    {
+        method: 'GET',
+        headers: expHeaders,
+        mode: 'cors',
+        cache: 'default'
+    };
+    var expCount = new Request('exp.txt', expInit);
+
+
+
+    let curLevel = 3;
+    let nextLevel = curLevel + 1;
+    
+/* END NEW REQUEST*/
+
+
+
 let number = document.getElementById("number");
 let counter = 0;
 
