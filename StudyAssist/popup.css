@@ -40,7 +40,8 @@ body {
     font-family: 'Comfortaa', sans-serif;
     box-sizing: border-box;
     background: #808080;
-    /* page background color */
+    background-image: url(bg3.jpg);
+    background-size: cover;
 }
 
 h3 {
@@ -52,6 +53,7 @@ h3 {
 #timerTable {
 
     width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 table,
