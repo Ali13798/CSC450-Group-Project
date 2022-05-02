@@ -49,7 +49,7 @@ class db_tools:
             return
 
         cur.execute(
-            "INSERT INTO users (user_name, password) VALUES (?, ?)",
+            "INSERT INTO user_credentials (user_name, password) VALUES (?, ?)",
             (name, pswd),
         )
 
@@ -69,7 +69,7 @@ class db_tools:
 
     def get_user_password(cur: sqlite3.Cursor, name: str) -> str:
         return cur.execute(
-            "SELECT password FROM users WHERE user_name=?", (name,)
+            "SELECT password FROM user_credentials WHERE user_name=?", (name,)
         ).fetchall()
 
     def add_userInfo(cur1: sqlite3.Cursor, fname: str, lname: str) -> None:
