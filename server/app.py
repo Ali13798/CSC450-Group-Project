@@ -2,8 +2,7 @@ import hashlib
 import sqlite3
 
 import flask
-from flask import render_template
-from flask import request
+from flask import render_template, request
 from flask_session import Session
 
 from db_tools import db_tools
@@ -13,7 +12,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-DB_PATH = "./server/users.db"
+DB_PATH = "./server/database.db"
 
 
 @app.route("/")
@@ -106,23 +105,24 @@ def hash_password(pswd: str) -> str:
     pswd = pswd.encode("utf-8")
     return hashlib.sha256(pswd).hexdigest()
 
+
 # Mackensie testing endpoint for saving data from extension
-@app.route('/saveStudyData', methods=["POST"])
+@app.route("/saveStudyData", methods=["POST"])
 def saveStudyData():
     request_data = request.get_json()
 
     time = "_"
     if request_data:
         if "timeStudied" in request_data:
-            time = request_data['timeStudied']
+            time = request_data["timeStudied"]
 
-    return "{ \"message\":\"recieved " + time + "\" }"
+    return '{ "message":"recieved ' + time + '" }'
 
 
 def main():
     with sqlite3.connect(DB_PATH) as con:
         cur = con.cursor()
-        db_tools.create_table(cur)
+        db_tools.create_tables(cur)
         # cur.execute("DROP TABLE users")
 
     app.run(debug=True)
