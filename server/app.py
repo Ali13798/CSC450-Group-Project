@@ -53,23 +53,20 @@ def greet():
         all_names = db_tools.get_user_credentials_rows(cur)
 
         is_existing_user = db_tools.is_existing_user(cur=cur, name=name)
-        if is_existing_user:
-            db_password = db_tools.get_user_password(cur=cur, name=name)[0]
-            if password in db_password:
-                flask.session["name"] = name
-                if name == "admin":
-                    return render_template(
-                        "greet.html", name=name, names=all_names
-                    )
-                else:
-                    return render_template("home-site.html", name=name)
-            else:
-                flask.flash("Incorrect Password. Try again.")
-                return flask.redirect(flask.url_for("login"))
-
-        else:
+        if not is_existing_user:
             flask.flash("Username not found. Sign up for a new account.")
             return flask.redirect(flask.url_for("signup"))
+
+        db_password = db_tools.get_user_password(cur=cur, name=name)[0]
+        if password not in db_password:
+            flask.flash("Incorrect Password. Try again.")
+            return flask.redirect(flask.url_for("login"))
+
+        flask.session["name"] = name
+        if name == "admin":
+            return render_template("greet.html", name=name, names=all_names)
+        else:
+            return render_template("home-site.html", name=name)
 
 
 @app.route("/greetNewUser", methods=["GET", "POST"])
