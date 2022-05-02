@@ -66,7 +66,7 @@ def greet():
         if name == "admin":
             return render_template("greet.html", name=name, names=all_names)
         else:
-            return render_template("home-site.html", name=name)
+            return flask.redirect(flask.url_for("index"))
 
 
 @app.route("/greetNewUser", methods=["GET", "POST"])
@@ -84,7 +84,8 @@ def new_user():
 
         db_tools.add_user(cur=cur, name=name, pswd=password)
 
-    return render_template("home-site.html", name=name)
+    flask.session["name"] = name
+    return flask.redirect(flask.url_for("index"))
 
 
 @app.route("/logout")
