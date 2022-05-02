@@ -53,13 +53,13 @@ class db_tools:
             (name, pswd),
         )
 
-    def get_users_rows(
+    def get_user_credentials_rows(
         cur: sqlite3.Cursor,
     ):  # -> list[tuple[int, str, str]] #This is causing errors for me -Mackensie
-        return cur.execute("SELECT * FROM users").fetchall()
+        return cur.execute("SELECT * FROM user_credentials").fetchall()
 
     def is_existing_user(cur: sqlite3.Cursor, name: str) -> bool:
-        rows = db_tools.get_users_rows(cur=cur)
+        rows = db_tools.get_user_credentials_rows(cur=cur)
         existing_names = [n[1] for n in rows]
 
         if name in existing_names:

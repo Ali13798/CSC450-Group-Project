@@ -50,7 +50,7 @@ def greet():
 
     with sqlite3.connect(DB_PATH) as con:
         cur = con.cursor()
-        all_names = db_tools.get_users_rows(cur)
+        all_names = db_tools.get_user_credentials_rows(cur)
 
         is_existing_user = db_tools.is_existing_user(cur=cur, name=name)
         if is_existing_user:
