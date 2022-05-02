@@ -3,6 +3,7 @@ import sqlite3
 
 import flask
 from flask import render_template
+from flask import request
 from flask_session import Session
 
 from db_tools import db_tools
@@ -104,6 +105,18 @@ def stats():
 def hash_password(pswd: str) -> str:
     pswd = pswd.encode("utf-8")
     return hashlib.sha256(pswd).hexdigest()
+
+# Mackensie testing endpoint for saving data from extension
+@app.route('/saveStudyData', methods=["POST"])
+def saveStudyData():
+    request_data = request.get_json()
+
+    time = "_"
+    if request_data:
+        if "timeStudied" in request_data:
+            time = request_data['timeStudied']
+
+    return "{ \"message\":\"recieved " + time + "\" }"
 
 
 def main():

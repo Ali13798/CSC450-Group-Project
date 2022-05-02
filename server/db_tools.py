@@ -25,7 +25,7 @@ class db_tools:
             (name, pswd),
         )
 
-    def get_users_rows(cur: sqlite3.Cursor) -> list[tuple[int, str, str]]:
+    def get_users_rows(cur: sqlite3.Cursor) : #-> list[tuple[int, str, str]] #This is causing errors for me -Mackensie
         return cur.execute("SELECT * FROM users").fetchall()
 
     def is_existing_user(cur: sqlite3.Cursor, name: str) -> bool:
@@ -58,7 +58,7 @@ class db_tools:
             (fname, lname),
         )
 
-    def get_usersName_rows(cur1: sqlite3.Cursor) -> list[tuple[int, str, str]]:
+    def get_usersName_rows(cur1: sqlite3.Cursor) : # -> list[tuple[int, str, str]]  #This is causing errors for me -Mackensie
         return cur1.execute("SELECT * FROM users").fetchall()
 
     def create_table_parent_pin(cur2: sqlite3.Cursor) -> None:

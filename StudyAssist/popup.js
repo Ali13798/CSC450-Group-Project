@@ -93,104 +93,144 @@ document.addEventListener("DOMContentLoaded", () => {
                 timer.Btime = parseFloat(popupState.shortBkMin);
                 timer.LBtime = parseFloat(popupState.longBkMin);
                 timer.Cnum = parseInt(popupState.cycleNum);
-                //Debug: // console.log("counters(s,b,lb): " + numStudy + " " + numBreak + " " + numLongBreak);
-                //detect if the session has finished
-                if (timer.numLongBreak == timer.Cnum) {
-                    //set back to main page and display session finished
-                    popupState.state = "mainpg";
-                    timer.state = "mainpg";
-                    messages.innerHTML = "Session Completed!";
-                    messages.style.display = "block";
-                    //reset counters
-                    timer.numStudy = 0;
-                    timer.numBreak = 0;
-                    timer.numLongBreak = 0;
-                } else if (popupState.state === "mainpg") {
-                    messages.innerHTML = "";
-                    messages.style.display = "block";
-                } else if (((popupState.state === "study") || (popupState.state === "intermission")) || ((popupState.state === "break") || (popupState.state === "Long break"))) {
-                    //display how many of each have been completed
-                    var progressMessage = "Study: " + timer.numStudy + "/" + innerCycleNum
-                        + ", Short Break: " + timer.numBreak + "/" + innerCycleNum
-                        + ", Long Break: " + timer.numLongBreak + "/" + timer.Cnum;
-                    messages.innerHTML = progressMessage;
-                    messages.style.display = "block";
-                }
 
-                //Check if in study state
-                if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "study") {
-                    //display it is in study mode
-                    var PgTitle = document.getElementById("PgTitle");
-                    PgTitle.innerHTML = "Study Mode";
-                    //hide timer options
-                    const enabled = true;
-                    chrome.storage.local.set({ enabled });
-                    console.log("in study state");
-                    timerDiv.style.display = "none";
-                    beginButton.style.display = "none";
-                    endButton.style.display = "inline-block";
-                    pauseBtn.style.display = "inline-block";
-                    nextStep.style.display = "none";
-                }
-                //check if in intermission state
-                if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "intermission") {
-                    var PgTitle = document.getElementById("PgTitle");
-                    PgTitle.innerHTML = "Intermission";
-                    const enabled = false;
-                    chrome.storage.local.set({ enabled });
-                    timerDiv.style.display = "none";
-                    beginButton.style.display = "none";
-                    endButton.style.display = "inline-block";
-                    pauseBtn.style.display = "none";
-                    //figure out what is next
-                    var nextStepMessage;
-                    if (timer.numStudy == innerCycleNum && timer.numBreak == innerCycleNum) {
-                        //long break time
-                        nextStepMessage = "Start Long Break";
-                    } else if (timer.numStudy > timer.numBreak) {
-                        //short break
-                        nextStepMessage = "Start Short Break";
-                    } else if (timer.numStudy == timer.numBreak) {
-                        //study time
-                        nextStepMessage = "Start Study Time";
+                if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0)){
+
+                    //detect if the session has finished
+                    if (timer.numLongBreak == timer.Cnum) {
+                        //set back to main page and display session finished
+                        popupState.state = "mainpg";
+                        timer.state = "mainpg";
+                        messages.innerHTML = "Session Completed!";
+                        messages.style.display = "block";
+                        //reset counters
+                        timer.numStudy = 0;
+                        timer.numBreak = 0;
+                        timer.numLongBreak = 0;
+
+                    } else if (popupState.state === "mainpg") {
+                        messages.innerHTML = "";
+                        messages.style.display = "block";
+
+                    } else if (((popupState.state === "study") || (popupState.state === "intermission")) || ((popupState.state === "break") || (popupState.state === "Long break"))) {
+                        //display how many of each have been completed
+                        var progressMessage = "Study: " + timer.numStudy + "/" + innerCycleNum
+                            + ", Short Break: " + timer.numBreak + "/" + innerCycleNum
+                            + ", Long Break: " + timer.numLongBreak + "/" + timer.Cnum;
+                        messages.innerHTML = progressMessage;
+                        messages.style.display = "block";
                     }
-                    nextStep.style.display = "inline";
-                    nextStep.innerHTML = nextStepMessage;
+                    //Check if in study state
+                    if ( popupState.state === "study") {
+                        //display it is in study mode
+                        var PgTitle = document.getElementById("PgTitle");
+                        PgTitle.innerHTML = "Study Mode";
+                        //hide timer options
+                        const enabled = true;
+                        chrome.storage.local.set({ enabled });
+                        console.log("in study state");
+                        timerDiv.style.display = "none";
+                        beginButton.style.display = "none";
+                        endButton.style.display = "inline-block";
+                        pauseBtn.style.display = "inline-block";
+                        nextStep.style.display = "none";
+                    }
+                    //check if in intermission state
+                    if ( popupState.state === "intermission") {
+                        var PgTitle = document.getElementById("PgTitle");
+                        PgTitle.innerHTML = "Intermission";
+                        const enabled = false;
+                        chrome.storage.local.set({ enabled });
+                        timerDiv.style.display = "none";
+                        beginButton.style.display = "none";
+                        endButton.style.display = "inline-block";
+                        pauseBtn.style.display = "none";
+                        //figure out what is next
+                        var nextStepMessage;
+                        if (timer.numStudy == innerCycleNum && timer.numBreak == innerCycleNum) {
+                            //long break time
+                            nextStepMessage = "Start Long Break";
+                        } else if (timer.numStudy > timer.numBreak) {
+                            //short break
+                            nextStepMessage = "Start Short Break";
+                        } else if (timer.numStudy == timer.numBreak) {
+                            //study time
+                            nextStepMessage = "Start Study Time";
+                        }
+                        nextStep.style.display = "inline";
+                        nextStep.innerHTML = nextStepMessage;
+                    }
+                    //check if in break state
+                    if (popupState.state === "break") {
+                        var PgTitle = document.getElementById("PgTitle");
+                        PgTitle.innerHTML = "Short Break";
+                        const enabled = false;
+                        chrome.storage.local.set({ enabled });
+                        timerDiv.style.display = "none";
+                        beginButton.style.display = "none";
+                        endButton.style.display = "inline-block";
+                        pauseBtn.style.display = "inline-block";
+                    }
+                    //check if in long break state
+                    if (popupState.state === "Long break") {
+                        var PgTitle = document.getElementById("PgTitle");
+                        PgTitle.innerHTML = "Long Break";
+                        const enabled = false;
+                        chrome.storage.local.set({ enabled });
+                        timerDiv.style.display = "none";
+                        beginButton.style.display = "none";
+                        endButton.style.display = "inline-block";
+                        pauseBtn.style.display = "inline-block";
+                    }
+                    //check if in main page menu state
+                    if (popupState.state === "mainpg") {
+                        var PgTitle = document.getElementById("PgTitle");
+                        PgTitle.innerHTML = "Main Menu";
+                        const enabled = false;
+                        chrome.storage.local.set({ enabled });
+                        timerDiv.style.display = "block";
+                        beginButton.style.display = "inline-block";
+                        pauseBtn.style.display = "none";
+                        nextStep.style.display = "none";
+                        endButton.style.display = "none";
+                        // check if there is data to save to the db
+                    }
+                    
                 }
-                //check if in break state
-                if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "break") {
-                    var PgTitle = document.getElementById("PgTitle");
-                    PgTitle.innerHTML = "Short Break";
-                    const enabled = false;
-                    chrome.storage.local.set({ enabled });
-                    timerDiv.style.display = "none";
-                    beginButton.style.display = "none";
-                    endButton.style.display = "inline-block";
-                    pauseBtn.style.display = "inline-block";
+                //If there is contents in timeStudied, then save it to the DB
+                if (!(popupState.timeStudied === undefined || popupState.timeStudied === null || popupState.timeStudied.length === 0)){
+                    // data to send //TODO: update later with more data
+                    data = {};
+                    data.timeStudied = popupState.timeStudied;
+                    // console.log("data recieved is : ", popupState.timeStudied);
+                    try{
+                        fetch("http://127.0.0.1:5000/saveStudyData", {
+                            method: "POST",
+                            body: JSON.stringify(data),
+                            headers: new Headers({
+                                "content-type": "application/json"
+                            })
+                        })
+                        .then(function(response) {
+                            if(response.ok){
+                                return response.json()
+                            }else{
+                                console.log("Response error status: ", response.status);
+                            }
+                        })
+                        .then(function(message){
+                            console.log("Message: ", message);
+                            timer.timeStudied = null;
+                            saveToStorage(timer)
+                        }).catch(function(error){
+                            console.log("Error on fetch: ", error); 
+                        })
+                    }catch(error){
+                        console.log("Error on try: ", error);  
+                    }
+                    
                 }
-                //check if in long break state
-                if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "Long break") {
-                    var PgTitle = document.getElementById("PgTitle");
-                    PgTitle.innerHTML = "Long Break";
-                    const enabled = false;
-                    chrome.storage.local.set({ enabled });
-                    timerDiv.style.display = "none";
-                    beginButton.style.display = "none";
-                    endButton.style.display = "inline-block";
-                    pauseBtn.style.display = "inline-block";
-                }
-                //check if in main page menu state
-                if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0) && popupState.state === "mainpg") {
-                    var PgTitle = document.getElementById("PgTitle");
-                    PgTitle.innerHTML = "Main Menu";
-                    const enabled = false;
-                    chrome.storage.local.set({ enabled });
-                    timerDiv.style.display = "block";
-                    beginButton.style.display = "inline-block";
-                    pauseBtn.style.display = "none";
-                    nextStep.style.display = "none";
-                    endButton.style.display = "none";
-                }
+                
 
                 if (!(popupState.newBlockedPg === undefined || popupState.newBlockedPg === null || popupState.newBlockedPg.length === 0)) {
                     if (popupState.newBlockedPg == true) {

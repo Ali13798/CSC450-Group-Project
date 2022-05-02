@@ -12,7 +12,7 @@ timerPlace.style.padding = "10px";
 timerPlace.style.opacity = "0.5";
 timerPlace.innerHTML="";
 
-var endTime, snoozeTime= 0;
+var endTime, additionalTime = 0;
 var pause = false;
 var pauseStart = null;
 var pauseEnd = null;
@@ -76,7 +76,7 @@ if(!pause){
                     //if not paused, continue timer
                     if(!(timerPlace.innerHTML == "Paused")){
                         //check if it has been paused previously
-                        if(pauseStart) {//if there is a date in start pause
+                        if(pauseStart) {//if there is a date in start pause, then it has been paused
                             //get how long it has been paused
                             timePaused = pauseEnd.getTime() - pauseStart.getTime();
                             //add to end timer time
@@ -105,9 +105,7 @@ if(!pause){
                                         var popupState = JSON.parse(result.popupState);
                                         if(popupState.state === "study"){
                                             popupState.numStudy = (popupState.numStudy) ? (parseInt(popupState.numStudy) + 1) : 1;
-                                            popupState.timeStudied = snoozeTime + timeStudied; //TODO: figure out how to get the timeStudied
-                                            //store start time from popup, keep track of time spent pausing
-                                            //take end time minus start minus pause + snooze and save that
+                                            popupState.timeStudied = popupState.studyMin + additionalTime;
                                         }else if (popupState.state === "break"){
                                             popupState.numBreak = (popupState.numBreak) ? (parseInt(popupState.numBreak) + 1) : 1;
                                         }else if (popupState.state === "Long break"){
@@ -129,7 +127,7 @@ if(!pause){
                             }else{ 
                                 //add 2 minutes to the timer
                                 endTime.setMinutes(new Date().getMinutes() + 2);
-                                snoozeTime += 2;
+                                additionalTime += 2;
                                 // but the state of popup is intermission becuase they can end any time and continue to the next state
                                 chrome.storage.sync.get(['popupState'], function(result) {
                                     if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
