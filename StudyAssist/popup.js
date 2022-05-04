@@ -6,10 +6,10 @@ var timeMessage; //Stores the string rep of the end timer time
 // var Stime, Btime, LBtime, Cnum;
 var innerCycleNum = 2;
 //Content areas
-var popCont, timerDiv, custSessionInputs, textarea, messages;
+var popCont, timerDiv, custSessionInputs, textarea, messages, healthyMsg;
 //Buttons
 var save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep;
-
+var healthyMessage = "<br><br>Healthy Break Tips: <br>-Drink water <br>-Have some fruit as a snack <br>-Get up and stretch <br>-Some light exercise";
 
 //Get User information
 // document.getElementById("buttonInfo").addEventListener("click", Login);
@@ -107,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
     pauseBtn = document.getElementById("pauseBtn");
     nextStep = document.getElementById("nextStep");
     messages = document.getElementById("messages");
+    healthyMsg = document.getElementById("healthy");
 
     //if the title is welcome, then clear some info from storage
     if (PgTitle.innerHTML == "Welcome!") {
@@ -203,6 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (popupState.state === "break") {
                         var PgTitle = document.getElementById("PgTitle");
                         PgTitle.innerHTML = "Short Break";
+                        healthyMsg.innerHTML += healthyMessage;
                         const enabled = false;
                         chrome.storage.local.set({ enabled });
                         timerDiv.style.display = "none";
@@ -214,6 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (popupState.state === "Long break") {
                         var PgTitle = document.getElementById("PgTitle");
                         PgTitle.innerHTML = "Long Break";
+                        healthyMsg.innerHTML += healthyMessage;
                         const enabled = false;
                         chrome.storage.local.set({ enabled });
                         timerDiv.style.display = "none";
@@ -482,6 +485,7 @@ document.addEventListener("DOMContentLoaded", () => {
             //long break time
             //display study mode
             PgTitle.innerHTML = "Long Break";
+            healthyMsg.innerHTML += healthyMessage;
             //save state to storage
             timer.state = "Long break";
             //begin blocking websites in the list
@@ -497,6 +501,7 @@ document.addEventListener("DOMContentLoaded", () => {
             //short break
             //display study mode
             PgTitle.innerHTML = "Short Break";
+            healthyMsg.innerHTML += healthyMessage;
             //save state to storage
             timer.state = "break";
             //begin blocking websites in the list
