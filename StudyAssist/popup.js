@@ -240,8 +240,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!(popupState.timeStudied === undefined || popupState.timeStudied === null || popupState.timeStudied.length === 0)){
                     // data to send //TODO: update later with more data
                     data = {};
+                    console.log("data = " + popupState.timeStudied + " " + popupState.clickCount + " " + popupState.keyCount);
                     data.timeStudied = popupState.timeStudied;
-                    // console.log("data recieved is : ", popupState.timeStudied);
+                    data.clickCount = popupState.clickCount
+                    data.keyCount = popupState.keyCount
                     try{
                         fetch("http://127.0.0.1:5000/saveStudyData", {
                             method: "POST",
@@ -260,6 +262,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         .then(function(message){
                             console.log("Message: ", message);
                             timer.timeStudied = null;
+                            timer.clickCount = null;
+                            timer.keyCount = null;
                             saveToStorage(timer)
                         }).catch(function(error){
                             console.log("Error on fetch: ", error); 

@@ -109,12 +109,15 @@ def hash_password(pswd: str) -> str:
 def saveStudyData():
     request_data = request.get_json()
 
-    time = "_"
     if request_data:
         if "timeStudied" in request_data:
-            time = request_data["timeStudied"]
+            timeStudied = request_data["timeStudied"]
+        if "clickCount" in request_data:
+            clickCount = request_data["clickCount"]
+        if "keyCount" in request_data:
+            keyCount = request_data["keyCount"]
 
-    return '{ "message":"recieved ' + time + '" }'
+    return '{ "message":"recieved ' + timeStudied + ' ' + str(clickCount) + ' ' +  str(keyCount) +'" }'
 
 
 def main():

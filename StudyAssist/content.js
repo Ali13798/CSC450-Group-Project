@@ -16,6 +16,7 @@ var endTime, additionalTime = 0;
 var pause = false;
 var pauseStart = null;
 var pauseEnd = null;
+var clickCount= 0, keyCount= 0;
 
 //Listen for message about pausing the timer
 chrome.runtime.onMessage.addListener(
@@ -42,19 +43,13 @@ chrome.runtime.onMessage.addListener(
 //When a key is pressed, add to count
 document.addEventListener('keydown', (event) => {
     console.log("key press");
-      //get count
-      // chrome.storage.sync.get(['keyPressCount'], function (result) {
-      //   if (!(result === undefined || result === null || result.length === 0)) {
-          
-      //add
-      //store 
+      //increase count
+      keyCount += 1;
 });
 document.addEventListener('click', (event) => {
     console.log("click");
-      //get count
-          
-      //add
-      //store 
+      //increase count
+      clickCount += 1;
 });
 
 if(!pause){
@@ -111,6 +106,22 @@ if(!pause){
                                         }else if (popupState.state === "Long break"){
                                             popupState.numLongBreak = (popupState.numLongBreak) ? (parseInt(popupState.numLongBreak) + 1) : 1;
                                         }
+                                        //add counts to current count
+                                        if (popupState.keyCount === null || popupState.keyCount === undefined){
+                                            popupState.keyCount = keyCount;
+                                        }else{
+                                            popupState.keyCount += parseInt(popupState.keyCount) + keyCount;
+                                        }
+                                        if (popupState.clickCount === null || popupState.clickCount === undefined){
+                                            popupState.clickCount = clickCount;
+                                        }else{
+                                            popupState.clickCount += parseInt(popupState.clickCount) + clickCount;
+                                        }
+                                        keyCount = 0;
+                                        clickCount = 0;
+                                        
+                                        console.log("popupState.keyCount and popupState.clickCount" + popupState.keyCount + popupState.clickCount);
+
                                         //set popup state to be between study/break
                                         popupState.state = "intermission";
                                         popupState.endTime = undefined;
@@ -118,6 +129,7 @@ if(!pause){
                                         chrome.storage.sync.set({"popupState": serializedTimer}, function() {
                                             console.log('Content: Value is set to ' + serializedTimer);
                                         });
+
                                         //stop blocking
                                         const enabled = false;
                                         chrome.storage.local.set({ enabled });
