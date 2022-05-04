@@ -17,6 +17,8 @@ var pause = false;
 var pauseStart = null;
 var pauseEnd = null;
 var clickCount= 0, keyCount= 0;
+var timeSinceClick = 0;
+var timetowaitforclick = 10;
 
 //Listen for message about pausing the timer
 chrome.runtime.onMessage.addListener(
@@ -25,20 +27,23 @@ chrome.runtime.onMessage.addListener(
                   "from a content script:" + sender.tab.url :
                   "from the extension");
       if (request.message === "pause"){
-        //flip pause
-        pause = !pause;
-        if(pause){
-            pauseStart = new Date();
-            //replace current timer with "paused"
-            timerPlace.innerHTML = "Paused";
-        }else{//pause end
-            pauseEnd = new Date();
-            timerPlace.innerHTML = "";
-        }
+        pauseFunc();
         sendResponse({farewell: "paused or unpaused"});
       }
     }
 );
+function pauseFunc(){
+    //flip pause
+    pause = !pause;
+    if(pause){
+        pauseStart = new Date();
+        //replace current timer with "paused"
+        timerPlace.innerHTML = "Paused";
+    }else{//pause end
+        pauseEnd = new Date();
+        timerPlace.innerHTML = "";
+    }
+}
 
 //When a key is pressed, add to count
 document.addEventListener('keydown', (event) => {
@@ -49,7 +54,8 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('click', (event) => {
     console.log("click");
       //increase count
-      clickCount += 1;
+    clickCount += 1;
+    timeSinceClick = 0;
 });
 
 if(!pause){
@@ -57,6 +63,15 @@ if(!pause){
     chrome.storage.sync.get(['popupState'], function(result) {
         if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
             var popupState = JSON.parse(result.popupState);
+            // if study timer white
+            if (popupState.state == "study"){
+                timerPlace.style.color = "#fff";
+            }
+            // if break timer orange
+            if (popupState.state == "break" || popupState.state === "Long break"){
+                timerPlace.style.color = "#11FFEF";
+            }   
+            
             //set end time
             var endTimeString = popupState.endTime;
             if(!(endTimeString === undefined || endTimeString === null || endTimeString.length === 0)){
@@ -68,6 +83,14 @@ if(!pause){
 
                 //run timer
                 var stID = setInterval(function() {
+                    //add time to click
+                    timeSinceClick += 1;
+                    if (timeSinceClick > timetowaitforclick){ //if more than 3 minutes have gone by
+                        pauseFunc();
+                        alert("No mouse clicks registered recently. Please keep working or pause.");
+                        pauseFunc();
+                        timeSinceClick = 0;
+                    }
                     //if not paused, continue timer
                     if(!(timerPlace.innerHTML == "Paused")){
                         //check if it has been paused previously
@@ -119,7 +142,7 @@ if(!pause){
                                         }
                                         keyCount = 0;
                                         clickCount = 0;
-                                        
+
                                         console.log("popupState.keyCount and popupState.clickCount" + popupState.keyCount + popupState.clickCount);
 
                                         //set popup state to be between study/break
@@ -140,6 +163,8 @@ if(!pause){
                                 //add 2 minutes to the timer
                                 endTime.setMinutes(new Date().getMinutes() + 2);
                                 additionalTime += 2;
+                                // turn red
+                                timerPlace.style.color = "#f00";
                                 // but the state of popup is intermission becuase they can end any time and continue to the next state
                                 chrome.storage.sync.get(['popupState'], function(result) {
                                     if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
