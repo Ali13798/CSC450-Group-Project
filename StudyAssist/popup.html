@@ -64,45 +64,25 @@
                         <!--  custom -->
                         <td><input type="radio" id="cust" name="timerOp" value="cust"></td>
                         <div id="custSessionInputs">
-                            <!-- <label for="studyMin">Study min:</label> -->
                             <td><input type="number" id="studyMin" name="studyMin" min="1" max="120"></td>
-                            <!-- <label for="shortBkMin">Short Break min: </label> -->
                             <td><input type="number" id="shortBkMin" name="shortBkMin" min="0.1" max="30"></td>
-                            <!-- <label for="cycleNum">Cycle number:</label> -->
                             <td><input type="number" id="cycleNum" name="cycleNum" min="1" max="10"></td>
-                            <!-- <label for="longBkMin">Long Break min:</label> -->
                             <td><input type="number" id="longBkMin" name="longBkMin" min="1" max="120"></td>
                         </div>
                     </tr>
                 </table>
-                <!-- <input type="radio" id="opt1" name="timerOp" value="25/5/3/20">
-                <label for="opt1">25 min study, 5 min short break, 3 cycles, 20 min long break</label> <br> -->
-                <!-- <input type="radio" id="opt2" name="timerOp" value="60/10/2/30">
-                <label for="opt2">60 min study, 10 min short break, 2 cycles, 30 min long break</label><br> -->
-                <!-- <input type="radio" id="opt3" name="timerOp" value="1/.5/2/1">
-                <label for="opt3">1 min study, .5 min short break, 2 cycles, 1 min long break (test)</label><br> -->
-
-                <!-- <input type="radio" id="cust" name="timerOp" value="cust">
-                <label for="cust">Custom session type</label> <br> -->
             </div>
-            <!-- <div id="custSessionInputs"> 
-                <label for="studyMin">Study min:</label>
-                <input type="number" id="studyMin" name="studyMin" min="1" max="120"><br>
-                <label for="shortBkMin">Short Break min: </label>
-                <input type="number" id="shortBkMin" name="shortBkMin" min="0.1" max="30"><br>
-                <label for="cycleNum">Cycle number:</label>
-                <input type="number" id="cycleNum" name="cycleNum" min="1" max="10"><br>
-                <label for="longBkMin">Long Break min:</label>
-                <input type="number" id="longBkMin" name="longBkMin" min="1" max="120"><br>
-            </div> -->
         </div>
         <br>
         <button id="beginSession">Begin Session</button>
         <button id="pauseBtn">Toggle Pause</button>
         <button id="nextStep">Next Step</button>
         <button id="endSession">End Session</button> <br />
-        <button id="websiteBtn">Go To Website</button>
-        <button id="optionsBtn">Whitelist Options</button>
+        <!-- <button id="websiteBtn">Go To Website</button> -->
+        <form  action="http://127.0.0.1:5000/login" target="_blank">
+            <input id="websiteBtn" type="submit" value="Go to Website" />
+        </form><br/>
+        <button id="optionsBtn">Whitelist Options</button> <br/>
         <div id="options">
             <h3>Allowed During Study Mode:</h3>
             <button id="popWebsites">Populate Recomended Websites</button>

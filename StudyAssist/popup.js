@@ -8,11 +8,11 @@ var innerCycleNum = 2;
 //Content areas
 var popCont, timerDiv, custSessionInputs, textarea, messages;
 //Buttons
-var websiteBtn, save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep;
+var save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep;
 
 
 //Get User information
-document.getElementById("buttonInfo").addEventListener("click", Login);
+// document.getElementById("buttonInfo").addEventListener("click", Login);
 // function Login() {
     
 //     var a = new Array();
@@ -95,7 +95,6 @@ window.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     //Variables
     popCont = document.getElementById("popupContainer");
-    websiteBtn = document.getElementById("websiteBtn");
     timerDiv = document.getElementById("timerOptions");
     textarea = document.getElementById("textarea");
     save = document.getElementById("save");
@@ -108,10 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
     pauseBtn = document.getElementById("pauseBtn");
     nextStep = document.getElementById("nextStep");
     messages = document.getElementById("messages");
-    //Website    
-    websiteBtn.addEventListener("click", () => {
-        chrome.tabs.create({ url: chrome.runtime.getURL("home-site.html") });
-    });
 
     //if the title is welcome, then clear some info from storage
     if (PgTitle.innerHTML == "Welcome!") {
