@@ -116,6 +116,10 @@ document.addEventListener("DOMContentLoaded", () => {
         //for now, just make sure blocking is off
         const enabled = false;
         chrome.storage.local.set({ enabled });
+
+        //turn off breakTime
+        const breakTime = false;
+        chrome.storage.local.set({ breakTime });
     }
 
     //Load previous session data if any
@@ -168,6 +172,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         //hide timer options
                         const enabled = true;
                         chrome.storage.local.set({ enabled });
+
+                        //turn off breakTime
+                        const breakTime = false;
+                        chrome.storage.local.set({ breakTime });
+
                         console.log("in study state");
                         timerDiv.style.display = "none";
                         beginButton.style.display = "none";
@@ -179,12 +188,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     if ( popupState.state === "intermission") {
                         var PgTitle = document.getElementById("PgTitle");
                         PgTitle.innerHTML = "Intermission";
+
                         const enabled = false;
                         chrome.storage.local.set({ enabled });
+
+                        //turn off breakTime
+                        const breakTime = false;
+                        chrome.storage.local.set({ breakTime });
+
                         timerDiv.style.display = "none";
                         beginButton.style.display = "none";
                         endButton.style.display = "inline-block";
                         pauseBtn.style.display = "none";
+
                         //figure out what is next
                         var nextStepMessage;
                         if (timer.numStudy == innerCycleNum && timer.numBreak == innerCycleNum) {
@@ -205,8 +221,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         var PgTitle = document.getElementById("PgTitle");
                         PgTitle.innerHTML = "Short Break";
                         healthyMsg.innerHTML += healthyMessage;
+
                         const enabled = false;
                         chrome.storage.local.set({ enabled });
+                        //turn on breakTime
+                        const breakTime = true;
+                        chrome.storage.local.set({ breakTime });
+
                         timerDiv.style.display = "none";
                         beginButton.style.display = "none";
                         endButton.style.display = "inline-block";
@@ -217,8 +238,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         var PgTitle = document.getElementById("PgTitle");
                         PgTitle.innerHTML = "Long Break";
                         healthyMsg.innerHTML += healthyMessage;
+
                         const enabled = false;
                         chrome.storage.local.set({ enabled });
+
+                        //turn on breakTime
+                        const breakTime = true;
+                        chrome.storage.local.set({ breakTime });
+
                         timerDiv.style.display = "none";
                         beginButton.style.display = "none";
                         endButton.style.display = "inline-block";
@@ -228,14 +255,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (popupState.state === "mainpg") {
                         var PgTitle = document.getElementById("PgTitle");
                         PgTitle.innerHTML = "Main Menu";
+
                         const enabled = false;
                         chrome.storage.local.set({ enabled });
+
+                        //turn off breakTime
+                        const breakTime = false;
+                        chrome.storage.local.set({ breakTime });
+
                         timerDiv.style.display = "block";
                         beginButton.style.display = "inline-block";
                         pauseBtn.style.display = "none";
                         nextStep.style.display = "none";
                         endButton.style.display = "none";
-                        // check if there is data to save to the db
                     }
                     
                 }
@@ -486,37 +518,58 @@ document.addEventListener("DOMContentLoaded", () => {
             //display study mode
             PgTitle.innerHTML = "Long Break";
             healthyMsg.innerHTML += healthyMessage;
+
             //save state to storage
             timer.state = "Long break";
-            //begin blocking websites in the list
+
+            //turn off enabled
             const enabled = false;
             chrome.storage.local.set({ enabled });
+
+            //turn on breakTime to blocking websites in the list during breaks
+            const breakTime = true;
+            chrome.storage.local.set({ breakTime });
+
             //reset count of study and short breaks
             timer.numStudy = 0;
             timer.numBreak = 0;
             saveToStorage(timer);
             startTimer(timer.LBtime);
-        }
-        else if (timer.numStudy > timer.numBreak) {
+        }else if (timer.numStudy > timer.numBreak) {
             //short break
             //display study mode
             PgTitle.innerHTML = "Short Break";
             healthyMsg.innerHTML += healthyMessage;
+
             //save state to storage
             timer.state = "break";
-            //begin blocking websites in the list
+
+            //turn off enabled
             const enabled = false;
             chrome.storage.local.set({ enabled });
+
+            //turn on breakTime to blocking websites in the list during breaks
+            const breakTime = true;
+            chrome.storage.local.set({ breakTime });
+
             startTimer(timer.Btime);
+
         } else if (timer.numStudy == timer.numBreak) {
             //study time
             //display study mode
             PgTitle.innerHTML = "Study Mode";
+
             //save state to storage
             timer.state = "study";
-            //begin blocking websites in the list
+            
+            //begin blocking websites not in the list
             const enabled = true;
             chrome.storage.local.set({ enabled });
+
+            //turn off breakTime
+            const breakTime = false;
+            chrome.storage.local.set({ breakTime });
+
             startTimer(timer.Stime);
         }
     });
@@ -550,6 +603,11 @@ function validateTimerChoice() {
         //begin blocking websites in the list
         const enabled = true;
         chrome.storage.local.set({ enabled });
+
+        //turn off breakTime
+        const breakTime = false;
+        chrome.storage.local.set({ breakTime });
+
         startTimer(studyMin);
     }
 }
@@ -582,6 +640,11 @@ function validateCustomTimer() {
         //begin blocking websites in the list
         const enabled = true;
         chrome.storage.local.set({ enabled });
+
+        //turn off breakTime
+        const breakTime = false;
+        chrome.storage.local.set({ breakTime });
+
         startTimer(studyMin);
     }
 }

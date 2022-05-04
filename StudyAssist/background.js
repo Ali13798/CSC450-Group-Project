@@ -1,11 +1,15 @@
 //Check for existing whitelist variables in storage, create if none
 chrome.runtime.onInstalled.addListener(function () {
-  chrome.storage.local.get(["blocked", "enabled"], function (local) {
+  chrome.storage.local.get(["blocked", "enabled", "breakTime"], function (local) {
     if (!Array.isArray(local.blocked)) {
       chrome.storage.local.set({ blocked: [] });
     }
 
     if (typeof local.enabled !== "boolean") {
+      chrome.storage.local.set({ enabled: false });
+    }
+
+    if (typeof local.enabled !== "breakTime") {
       chrome.storage.local.set({ enabled: false });
     }
   });
@@ -19,8 +23,10 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
   }
   const hostname = new URL(url).hostname;
 
-  chrome.storage.local.get(["blocked", "enabled"], function (local) {
-    const { blocked, enabled } = local;
+  chrome.storage.local.get(["blocked", "enabled", "breakTime"], function (local) {
+    const { blocked, enabled, breakTime} = local;
+
+    // Whitelist during study time
     if (Array.isArray(blocked) && enabled && !blocked.find(domain => hostname.includes(domain))) {
       console.log(blocked);
       //remove
@@ -36,6 +42,10 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
             });
         }
       });
+
+    //Black list during break time
+    }else if (Array.isArray(blocked) && breakTime && blocked.find(domain => hostname.includes(domain)))  {
+      chrome.tabs.remove(tabId);
     }
   });
 });
