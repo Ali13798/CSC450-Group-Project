@@ -18,7 +18,7 @@ var pauseStart = null;
 var pauseEnd = null;
 var clickCount= 0, keyCount= 0;
 var timeSinceClick = 0;
-var timetowaitforclick = 10;
+var timetowaitforclick = 180;
 
 //Listen for message about pausing the timer
 chrome.runtime.onMessage.addListener(
