@@ -10,7 +10,52 @@ var popCont, timerDiv, custSessionInputs, textarea, messages;
 //Buttons
 var websiteBtn, save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep;
 
+
 //Get User information
+document.getElementById("buttonInfo").addEventListener("click", Login);
+// function Login() {
+    
+//     var a = new Array();
+//     up1 = new Object();
+//     up2 = new Object();
+//     {
+//     const hash = Object.entries(
+//     a.map(e => [e.fusername, e.lusername])
+//     )
+//     var fusername = document.getElementById('fname').value;
+//     var lusername = document.getElementById('lname').value;
+//     for (let key of hash) {
+//         if(key[0] === fusername && key[1]=== lusername) { 
+//             alert('Login successful');
+//             }
+//         else {
+//             alert('Login fail');
+//             }
+//         }
+//     }
+//     var fusername = document.getElementById('fname').value;
+//     var lusername = document.getElementById('lname').value;
+//     sessionStorage.setItem("currentloggedin",fusername);
+//     sessionStorage.setItem("currentloggedin",lusername);
+//     localStorage.setItem('all_users',JSON.stringify(a));
+//     a=JSON.parse((localStorage.getItem("all_users")));
+//     a.push({fname: fusername, lname: lusername});
+//     localStorage.setItem('fname',JSON.stringify(a));
+//     for(var i=0; i<a.length; i++) {
+//         var li = document.createElement("li");
+//         li.innerHTML=a[i]['fname'];
+//         document.getElementById("listuser").appendChild(li);
+//     }
+//     localStorage.setItem('lname',JSON.stringify(a));
+//     for(var i=0; i<a.length; i++) {
+//         var li = document.createElement("li");
+//         li.innerHTML=a[i]['lname'];
+//         document.getElementById("listuser").appendChild(li);
+//     }
+// }
+
+
+
 
 //Button for user to enter name
 var infoBtn;
@@ -48,8 +93,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 //Clicking on the button starts the blocking session
 document.addEventListener("DOMContentLoaded", () => {
-    //Variables 
-    userDiv = document.getElementById("userInfoInput");
+    //Variables
     popCont = document.getElementById("popupContainer");
     websiteBtn = document.getElementById("websiteBtn");
     timerDiv = document.getElementById("timerOptions");

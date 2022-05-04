@@ -13,15 +13,21 @@
         <p id="messages"></p>
 
         <!--Get User information-->
-        <div id="userInfoInput">
-            <h4>Please Enter Your First name and Last name: </h4>
-            <label for="fname">First name: </label>
-            <input type="text" id="fname" name="fname"><br><br>
-            <label for="lname">Last name: </label>
-            <input type="text" id="lname" name="lname"><br><br>
-            <button id="buttonInfo">Save</button>
+        <div>
+            <ul id="listuser">
+                <h3>List of Users: </h3>
+            </ul>
         </div>
-
+        <!-- <form name = "myform" onsubmit="return loginfunc()"> -->
+            <div class="userInfoInput">
+                <h4>Please Enter Your First name and Last name: </h4>
+                <label for="fname">First name: </label>
+                <input type="text" id="fname" name="fname" required><br><br>
+                <label for="lname">Last name: </label>
+                <input type="text" id="lname" name="lname" required><br><br>
+                <button type= "submit" id="buttonInfo" >Login</button>
+            </div>
+        </form>
         <div id="timerOptions">
             <h3>Choose a study session type:</h3>
             <div id="radioButtons">
@@ -110,10 +116,10 @@
         <!--Parent Mode Button-->
         <br>
         <button type="button" id="parentModeBtn">
-            Click here to enter Parent Mode
+            Hide/Show Parent Mode Login
         </button>
         <div id="parentInput">
-            <input type="password" name="pin" inputmode="numeric" maxlength="4" required>
+            <input type="password" name="pin" inputmode="numeric" maxlength="4" required placeholder="4 digits of PIN number 1-9">
             <input type="submit" value="Submit">
         </div>
     </div>

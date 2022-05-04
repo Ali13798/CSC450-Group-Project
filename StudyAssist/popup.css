@@ -257,6 +257,9 @@ input[type=submit] {
 
 }
 
+#parentInput {
+    display:block;
+}
 
 
 
