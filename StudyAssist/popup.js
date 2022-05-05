@@ -161,14 +161,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         mainPageSettings();
 
                      } 
-                    //  else if (((popupState.state === "study") || (popupState.state === "intermission")) || ((popupState.state === "break") || (popupState.state === "Long break"))) {
-                    //     //display how many of each have been completed
-                    //     var progressMessage = "Study: " + timer.numStudy + "/" + innerCycleNum
-                    //         + ", Short Break: " + timer.numBreak + "/" + innerCycleNum
-                    //         + ", Long Break: " + timer.numLongBreak + "/" + timer.Cnum;
-                    //     messages.innerHTML = progressMessage;
-                    //     messages.style.display = "block";
-                    // }
 
                     //Check if in study state
                     if ( popupState.state === "study") {
@@ -257,16 +249,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         var domain = (new URL(url)).hostname;
                         message = "Access to the following page is not permitted during study mode:\n" + url
                             + "\nAllow this domain? " + domain;
-                        popupState.newBlockedPg = false;
+                        // popupState.newBlockedPg = false;
                         timer.newBlockedPg = false;
-                        popupState.lastBlockedPage = "";
+                        // popupState.lastBlockedPage = "";
                         timer.lastBlockedPage = "";
                         saveToStorage(timer);
                         answer = confirm(message);
                         if (answer) {
-                            //Add it to the whitelist
-
-                            //get list from storage
+                            //get list from storage, then add domain to list, then save
                             chrome.storage.local.get(["blocked"], function (local) {
                                 const blocked = local;
                                 if (Array.isArray(blocked.blocked)) {
@@ -322,7 +312,6 @@ document.addEventListener("DOMContentLoaded", () => {
         //tell user which were removed
         var removedPara = document.getElementById("removedDomains");
         removedPara.innerHTML = removedString;
-        // console.log(blocked);
         chrome.storage.local.set({ blocked });
     });
 
@@ -379,33 +368,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //End session //end session button not working
     endButton.addEventListener('click', () => {
-        //set up the Main Menu
-        var PgTitle = document.getElementById("PgTitle");
-        PgTitle.innerHTML = "Main Menu";
-        timerDiv.style.display = "block";
-        beginButton.style.display = "inline-block";
-        pauseBtn.style.display = "none";
-        nextStep.style.display = "none";
-        endButton.style.display = "none";
-        userInfoInput.style.display = "block" //change to show up if there is no user logged in
+        
+        answer = confirm("Reload page to remove timer?");
+        if (!answer) {
+            return;
+        }
+
+        mainPageSettings();
+        
         timer.state = "mainpg";
         messages.innerHTML = "";
+
         //reset count of study and short breaks
         timer.numStudy = 0;
         timer.numBreak = 0;
         timer.numLongBreak = 0;
-        // timer.inStudySession = false;
+
         timer.endTime = "";
+
         saveToStorage(timer);
-        //stop blocking
-        const enabled = false;
-        chrome.storage.local.set({ enabled });
-        if (timer.state == "study") {
-            answer = confirm("Reload page for timer to stop?");
-            if (answer) {
-                chrome.tabs.reload();
-            }
-        }
+        chrome.tabs.reload();
 
     });
 
@@ -453,6 +435,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     nextStep.addEventListener('click', () => {
+        var answer = confirm("Ready to reload page for timer to begin?");
+        if (!answer){
+            return;
+        }
         //figure out if the next step is to study or break
         if (timer.numStudy == innerCycleNum && timer.numBreak == innerCycleNum) {
             //long break time
@@ -505,7 +491,7 @@ function validateTimerChoice() {
     } else if (!timerOp.getAttribute("id").includes("opt")) {
         validateCustomTimer();
     } else {
-        var answer = confirm("Ready to reload page for timer to begin? Press cancel to ask again in 30 seconds.");
+        var answer = confirm("Ready to reload page for timer to begin?");
         if (!answer){
             return;
         }
@@ -523,7 +509,7 @@ function validateTimerChoice() {
         //save state to storage
         timer.state = "study";
         saveToStorage(timer);
-
+        studyPageSettings();
         startTimer(studyMin);
     }
 }
@@ -537,22 +523,13 @@ function validateCustomTimer() {
     if (studyMin == "") {
         alert("Please fill all customer time fields to begin");
     } else if (shortBkMin == "") {
-        timer.studyMin = studyMin;
-        saveToStorage(timer);
         alert("Please fill all customer time fields to begin");
     } else if (cycleNum == "") {
-        timer.studyMin = studyMin;
-        timer.shortBkMin = shortBkMin;
-        saveToStorage(timer);
         alert("Please fill all customer time fields to begin");
     } else if (longBkMin == "") {
-        timer.studyMin = studyMin;
-        timer.shortBkMin = shortBkMin;
-        timer.cycleNum = cycleNum;
-        saveToStorage(timer);
         alert("Please fill all customer time fields to begin");
     } else {
-        var answer = confirm("Ready to reload page for timer to begin? Press cancel to ask again in 30 seconds.");
+        var answer = confirm("Ready to reload page for timer to begin?");
         if (!answer){
             return;
         }
@@ -564,14 +541,12 @@ function validateCustomTimer() {
         //save state to storage
         timer.state = "study";
         saveToStorage(timer);
-
+        studyPageSettings();
         startTimer(studyMin);
     }
 }
 
 function startTimer(minutes) {
-    //Remove timer options and begin session button, add end session button
-    studyPageSettings();
 
     //calculate the end time
     calcEndTime(minutes);
@@ -639,7 +614,7 @@ function studyPageSettings(){
 
 function InterPageSettings(){
     displayProgress();
-    
+
     var PgTitle = document.getElementById("PgTitle");
     PgTitle.innerHTML = "Intermission";
 
