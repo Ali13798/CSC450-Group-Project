@@ -1,50 +1,234 @@
 {% extends 'layout.html' %} {% block title %} {{title}} {% endblock title %}
 {% block head %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+        <style>
+            #mousechart_material
+            {
+              position: absolute;
+              left: 33%;
+              top: 52.5%;
+              transform: translate(-50%, -50%);
+              /* border: 5px solid #FFFF00; */
+              padding: 10px;
+            }
+
+            #keychart_material
+            {
+              position: absolute;
+              left: 52.5%;
+              top: 102.5%;
+              transform: translate(-50%, -50%);
+              /* border: 5px solid #FFFF00; */
+              padding: 10px;
+            }
+
+
+            #studychart_material
+            {
+              position: absolute;
+              left: 73%;
+              top: 52.5%;
+              transform: translate(-50%, -50%);
+              /* border: 5px solid #FFFF00; */
+              padding: 10px;
+            }
+        </style>
 
 {% endblock head %}
 
 {% block body %}
-<!-- Start stat buttons -->
+
+
 <div id="content">
 
+        <!-- Start stat buttons -->
+        <button class="buttonMouse" href="">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Mouse Stats <br>
+        </button>
 
-<button class="buttonMouse" href="">
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    Mouse Stats <br />
-</button>
+        <!-- MOUSE GRAPH -->
+        <div class="container">
 
-<!--
-<p class="mouseExplain">Here are your Mouse Click Stats!</p>
-<p class="timeExplain">Here is your Time Spent Studying!</p>
-<p class="keyExplain">Here are your Key Click Stats!</p>
-<p class="studyExplain">Here are the number of days you have used us!</p>
-### This causes issues with the page ### -->
+            <div id="mousechart_material" style="width: 800px; height: 500px;"></div>
+          
+          </div>
+            
+          <script type="text/javascript">
+            google.charts.load('current', {'packages':['bar']});
+            google.charts.setOnLoadCallback(drawChart);
+          
+            function drawChart() {
+              // variables for the chart
+              // Labels
+              xTitle = "Session Date";
+              firstBarTitle = "Total Mouse Clicks";
+              labels = [xTitle, firstBarTitle];
+              // Data
+          
+              //SessionList will hold the data objects after recieving from DB and parsing through
+              SessionList = [ 
+                ['5/2/22', 100],
+                ['5/3/22', 200],
+                ['5/4/22', 150],
+                ['5/5/22', 250],
+              ]
+          
+              sessions = [labels];
+              SessionList.forEach(element => {
+                sessions.push(element)
+              });
+              
+              var data = google.visualization.arrayToDataTable(sessions);
+          
+              var options = {
+                width: 500,
+                height: 250,
+                chart: {
+                  title: 'Mouse Clicks',
+                  subtitle: 'Total Mouse Clicks for each previous session',
 
-<button class="buttonKey" href="">
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    Key Stats <br />
-</button>
+                }
+              };
+          
+              var chart = new google.charts.Bar(document.getElementById('mousechart_material'));
+          
+              chart.draw(data, google.charts.Bar.convertOptions(options));
+            }
+          </script>
 
-<button class="buttonTotalTime" href="">
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    Study Time
-</button>
+          <!-- END MOUSE GRAPH -->
 
-<button class="buttonDaysStudied" href="">
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    Days Studied <br />
-</button>
+
+
+          <!-- Start Button for Key Stats-->
+        <button class="buttonKey" href="">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Key Stats <br>
+        </button>
+
+        <!-- End Button for Key Stats-->
+        
+        <!-- Start Key Graph -->
+        <div class="container">
+
+            <div id="keychart_material" style="width: 800px; height: 500px;"></div>
+          
+          </div>
+            
+          <script type="text/javascript">
+            google.charts.load('current', {'packages':['bar']});
+            google.charts.setOnLoadCallback(drawChart);
+          
+            function drawChart() {
+              // variables for the chart
+              // Labels
+              xTitle = "Session Date";
+              BarTitle = "Total Key Presses";
+              labels = [xTitle, BarTitle];
+              // Data
+          
+              //SessionList will hold the data objects after recieving from DB and parsing through
+              SessionList = [ 
+                ['5/2/22', 150],
+                ['5/3/22', 175],
+                ['5/4/22', 125],
+                ['5/5/22', 115],
+              ]
+          
+              sessions = [labels];
+              SessionList.forEach(element => {
+                sessions.push(element)
+              });
+              
+              var data = google.visualization.arrayToDataTable(sessions);
+          
+              var options = {
+                width: 500,
+                height: 250,
+                chart: {
+                  title: 'Key Presses',
+                  subtitle: 'Total Key Presses for each previous session',
+                }
+              };
+          
+              var chart = new google.charts.Bar(document.getElementById('keychart_material'));
+          
+              chart.draw(data, google.charts.Bar.convertOptions(options));
+            }
+          </script>
+
+
+          <!-- END KEY CHART -->
+
+          <!-- START STUDY TIME BUTTON -->
+
+        <button class="buttonTotalTime" href="">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Study Time
+        </button>
+        
+        <!-- END STUDY TIME BUTTON -->
+
+        <!-- START STUDY TIME CHART -->
+
+        <div class="container">
+
+            <div id="studychart_material" style="width: 800px; height: 500px;"></div>
+          
+        </div>
+            
+          <script type="text/javascript">
+            google.charts.load('current', {'packages':['bar']});
+            google.charts.setOnLoadCallback(drawChart);
+          
+            function drawChart() {
+              // variables for the chart
+              // Labels
+              xTitle = "Session Date";
+              firstBarTitle = "Total Time Studied";
+              labels = [xTitle, firstBarTitle];
+              // Data
+          
+              //SessionList will hold the data objects after recieving from DB and parsing through
+              SessionList = [ 
+                ['5/2/22', 20],
+                ['5/3/22', 40],
+                ['5/4/22', 60],
+                ['5/5/22', 80],
+              ]
+          
+              sessions = [labels];
+              SessionList.forEach(element => {
+                sessions.push(element)
+              });
+              
+              var data = google.visualization.arrayToDataTable(sessions);
+          
+              var options = {
+                width: 500,
+                height: 250,
+                chart: {
+                  title: 'Time Spent Studying',
+                  subtitle: 'Total Time Spent Studying for each previous session',
+                }
+              };
+          
+              var chart = new google.charts.Bar(document.getElementById('studychart_material'));
+          
+              chart.draw(data, google.charts.Bar.convertOptions(options));
+            }
+          </script>
+
 </div>
 {% endblock body %}
