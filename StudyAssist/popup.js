@@ -6,7 +6,7 @@ var timeMessage; //Stores the string rep of the end timer time
 // var Stime, Btime, LBtime, Cnum;
 var innerCycleNum = 2;
 //Content areas
-var popCont, timerDiv, custSessionInputs, textarea, messages, healthyMsg;
+var popCont, timerDiv, custSessionInputs, textarea, messages, healthyMsg, userInfoInput;
 //Buttons
 var save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep;
 var healthyMessage = "<br><br>Healthy Break Tips: <br>-Drink water <br>-Have some fruit as a snack <br>-Get up and stretch <br>-Some light exercise";
@@ -108,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     nextStep = document.getElementById("nextStep");
     messages = document.getElementById("messages");
     healthyMsg = document.getElementById("healthy");
+    userInfoInput = document.getElementById("userInfoInput");
 
     //if the title is welcome, then clear some info from storage
     if (PgTitle.innerHTML == "Welcome!") {
@@ -183,6 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         endButton.style.display = "inline-block";
                         pauseBtn.style.display = "inline-block";
                         nextStep.style.display = "none";
+                        userInfoInput.style.display = "none";
                     }
                     //check if in intermission state
                     if ( popupState.state === "intermission") {
@@ -215,6 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                         nextStep.style.display = "inline";
                         nextStep.innerHTML = nextStepMessage;
+                        userInfoInput.style.display = "none";
                     }
                     //check if in break state
                     if (popupState.state === "break") {
@@ -232,6 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         beginButton.style.display = "none";
                         endButton.style.display = "inline-block";
                         pauseBtn.style.display = "inline-block";
+                        userInfoInput.style.display = "none";
                     }
                     //check if in long break state
                     if (popupState.state === "Long break") {
@@ -250,6 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         beginButton.style.display = "none";
                         endButton.style.display = "inline-block";
                         pauseBtn.style.display = "inline-block";
+                        userInfoInput.style.display = "none";
                     }
                     //check if in main page menu state
                     if (popupState.state === "mainpg") {
