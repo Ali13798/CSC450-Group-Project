@@ -96,7 +96,23 @@ def logout():
 
 @app.route("/stats")
 def stats():
-    return render_template("stats.html", title="Stats")
+    stats: list[dict[str, int]] = [
+        {
+            "id": 1,
+            "clickCount": 5,
+            "KeyCount": 20,
+            "timeStudied": 125,
+        },
+        {
+            "id": 2,
+            "clickCount": 41,
+            "KeyCount": 12,
+            "timeStudied": 310,
+        },
+    ]
+
+    return render_template("stats2.html", title="Stats", stats=stats)
+
 
 @app.route("/history")
 def history():
@@ -121,7 +137,15 @@ def saveStudyData():
         if "keyCount" in request_data:
             keyCount = request_data["keyCount"]
 
-    return '{ "message":"recieved ' + timeStudied + ' ' + str(clickCount) + ' ' +  str(keyCount) +'" }'
+    return (
+        '{ "message":"recieved '
+        + timeStudied
+        + " "
+        + str(clickCount)
+        + " "
+        + str(keyCount)
+        + '" }'
+    )
 
 
 def main():
