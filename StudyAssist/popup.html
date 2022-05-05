@@ -10,24 +10,27 @@
 <body>
     <div id="popupContainer">
         <h3 id="PgTitle">Welcome!</h3>
-        <p id="messages"><p id="healthy"></p></p>
+        <p id="messages">
+            <p id="healthy"></p>
+        </p>
 
         <!--Get User information-->
-        <div>
+        <!-- <div>
             <ul id="listuser">
                 <h3>List of Users: </h3>
             </ul>
-        </div>
-        <!-- <form name = "myform" onsubmit="return loginfunc()"> -->
-            <div id="userInfoInput" class="userInfoInput">
+        </div> -->
+        <div id="userInfoInput">
+            <form name = "myform" action="http://127.0.0.1:5000/login">
                 <h4>Please Enter Your First name and Last name: </h4>
                 <label for="fname">First name: </label>
                 <input type="text" id="fname" name="fname" required><br><br>
                 <label for="lname">Last name: </label>
                 <input type="text" id="lname" name="lname" required><br><br>
                 <button type= "submit" id="buttonInfo" >Login</button>
-            </div>
-        </form>
+            </form>
+        </div>
+
         <div id="timerOptions">
             <h3>Choose a study session type:</h3>
             <div id="radioButtons">
@@ -78,10 +81,11 @@
         <button id="pauseBtn">Toggle Pause</button>
         <button id="nextStep">Next Step</button>
         <button id="endSession">End Session</button> <br />
-        <!-- <button id="websiteBtn">Go To Website</button> -->
+
         <form  action="http://127.0.0.1:5000/login" target="_blank">
             <input id="websiteBtn" type="submit" value="Go to Website" />
         </form><br/>
+        
         <button id="optionsBtn">Whitelist Options</button> <br/>
         <div id="options">
             <h3>Allowed During Study Mode:</h3>

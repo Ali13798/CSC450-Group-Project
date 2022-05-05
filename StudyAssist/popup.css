@@ -15,16 +15,22 @@ body {
 #options,
 #pauseBtn,
 #nextStep,
-#messages {
+#messages, 
+#healthy {
     display: none;
+    color: #ffbe30;
 }
 #healthy{
     text-align: left;
     /* margin-left: px; */
     /* margin-top: -40px; */
-    background-color: rgba(0, 0, 0, 0.2);
+    /* background-color: rgba(0, 0, 0, 0.2); */
     display: inline-block;
     
+}
+#messages, 
+#healthy {
+    margin: 0;
 }
 
 #parentModeBtn {
@@ -205,7 +211,7 @@ h3 {
     /* position: absolute; */
     /* left: 0%; */
     /* padding-top: 3em; */
-    margin-top: 10%;
+    /* margin-top: 10%; */
     margin-left: 6%;
     /* float: left; */
 

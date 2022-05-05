@@ -76,6 +76,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
 })
+
 //Parent Mode Button
 var displayEnterPin;
 window.addEventListener("DOMContentLoaded", () => {
@@ -93,7 +94,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 //Clicking on the button starts the blocking session
 document.addEventListener("DOMContentLoaded", () => {
-    //Variables
+    //Element Variables
     popCont = document.getElementById("popupContainer");
     timerDiv = document.getElementById("timerOptions");
     textarea = document.getElementById("textarea");
@@ -130,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
             var popupState = JSON.parse(result.popupState);
             timer = popupState;
             if (popupState) {
-                //load vars keeping track of num of study and breaks
+                //Parse numbers to work with
                 timer.numStudy = (popupState.numStudy) ? parseInt(popupState.numStudy) : 0;
                 timer.numBreak = (popupState.numBreak) ? parseInt(popupState.numBreak) : 0;
                 timer.numLongBreak = (popupState.numLongBreak) ? parseInt(popupState.numLongBreak) : 0;
@@ -155,55 +156,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     } else if (popupState.state === "mainpg") {
                         messages.innerHTML = "";
-                        messages.style.display = "block";
+                        messages.style.display = "none";
+                        var PgTitle = document.getElementById("PgTitle");
+                        mainPageSettings();
 
-                    } else if (((popupState.state === "study") || (popupState.state === "intermission")) || ((popupState.state === "break") || (popupState.state === "Long break"))) {
-                        //display how many of each have been completed
-                        var progressMessage = "Study: " + timer.numStudy + "/" + innerCycleNum
-                            + ", Short Break: " + timer.numBreak + "/" + innerCycleNum
-                            + ", Long Break: " + timer.numLongBreak + "/" + timer.Cnum;
-                        messages.innerHTML = progressMessage;
-                        messages.style.display = "block";
-                    }
+                     } 
+                    //  else if (((popupState.state === "study") || (popupState.state === "intermission")) || ((popupState.state === "break") || (popupState.state === "Long break"))) {
+                    //     //display how many of each have been completed
+                    //     var progressMessage = "Study: " + timer.numStudy + "/" + innerCycleNum
+                    //         + ", Short Break: " + timer.numBreak + "/" + innerCycleNum
+                    //         + ", Long Break: " + timer.numLongBreak + "/" + timer.Cnum;
+                    //     messages.innerHTML = progressMessage;
+                    //     messages.style.display = "block";
+                    // }
+
                     //Check if in study state
                     if ( popupState.state === "study") {
-                        //display it is in study mode
-                        var PgTitle = document.getElementById("PgTitle");
-                        PgTitle.innerHTML = "Study Mode";
-                        //hide timer options
-                        const enabled = true;
-                        chrome.storage.local.set({ enabled });
-
-                        //turn off breakTime
-                        const breakTime = false;
-                        chrome.storage.local.set({ breakTime });
-
-                        console.log("in study state");
-                        timerDiv.style.display = "none";
-                        beginButton.style.display = "none";
-                        endButton.style.display = "inline-block";
-                        pauseBtn.style.display = "inline-block";
-                        nextStep.style.display = "none";
-                        userInfoInput.style.display = "none";
+                        studyPageSettings();
                     }
                     //check if in intermission state
                     if ( popupState.state === "intermission") {
-                        var PgTitle = document.getElementById("PgTitle");
-                        PgTitle.innerHTML = "Intermission";
-
-                        const enabled = false;
-                        chrome.storage.local.set({ enabled });
-
-                        //turn off breakTime
-                        const breakTime = false;
-                        chrome.storage.local.set({ breakTime });
-
-                        timerDiv.style.display = "none";
-                        beginButton.style.display = "none";
-                        endButton.style.display = "inline-block";
-                        pauseBtn.style.display = "none";
-
-                        //figure out what is next
+                        
+                        //figure out the next stage is, display it on the button
                         var nextStepMessage;
                         if (timer.numStudy == innerCycleNum && timer.numBreak == innerCycleNum) {
                             //long break time
@@ -215,65 +189,26 @@ document.addEventListener("DOMContentLoaded", () => {
                             //study time
                             nextStepMessage = "Start Study Time";
                         }
+
                         nextStep.style.display = "inline";
                         nextStep.innerHTML = nextStepMessage;
-                        userInfoInput.style.display = "none";
+
+                        InterPageSettings(); //set the rest of the settings
+                        
                     }
                     //check if in break state
                     if (popupState.state === "break") {
                         var PgTitle = document.getElementById("PgTitle");
                         PgTitle.innerHTML = "Short Break";
-                        healthyMsg.innerHTML += healthyMessage;
-
-                        const enabled = false;
-                        chrome.storage.local.set({ enabled });
-                        //turn on breakTime
-                        const breakTime = true;
-                        chrome.storage.local.set({ breakTime });
-
-                        timerDiv.style.display = "none";
-                        beginButton.style.display = "none";
-                        endButton.style.display = "inline-block";
-                        pauseBtn.style.display = "inline-block";
-                        userInfoInput.style.display = "none";
+                        breakPageSettings();
                     }
                     //check if in long break state
                     if (popupState.state === "Long break") {
                         var PgTitle = document.getElementById("PgTitle");
                         PgTitle.innerHTML = "Long Break";
-                        healthyMsg.innerHTML += healthyMessage;
-
-                        const enabled = false;
-                        chrome.storage.local.set({ enabled });
-
-                        //turn on breakTime
-                        const breakTime = true;
-                        chrome.storage.local.set({ breakTime });
-
-                        timerDiv.style.display = "none";
-                        beginButton.style.display = "none";
-                        endButton.style.display = "inline-block";
-                        pauseBtn.style.display = "inline-block";
-                        userInfoInput.style.display = "none";
+                        breakPageSettings();
                     }
-                    //check if in main page menu state
-                    if (popupState.state === "mainpg") {
-                        var PgTitle = document.getElementById("PgTitle");
-                        PgTitle.innerHTML = "Main Menu";
-
-                        const enabled = false;
-                        chrome.storage.local.set({ enabled });
-
-                        //turn off breakTime
-                        const breakTime = false;
-                        chrome.storage.local.set({ breakTime });
-
-                        timerDiv.style.display = "block";
-                        beginButton.style.display = "inline-block";
-                        pauseBtn.style.display = "none";
-                        nextStep.style.display = "none";
-                        endButton.style.display = "none";
-                    }
+                    
                     
                 }
                 //If there is contents in timeStudied, then save it to the DB
@@ -452,6 +387,7 @@ document.addEventListener("DOMContentLoaded", () => {
         pauseBtn.style.display = "none";
         nextStep.style.display = "none";
         endButton.style.display = "none";
+        userInfoInput.style.display = "block" //change to show up if there is no user logged in
         timer.state = "mainpg";
         messages.innerHTML = "";
         //reset count of study and short breaks
@@ -520,60 +456,39 @@ document.addEventListener("DOMContentLoaded", () => {
         //figure out if the next step is to study or break
         if (timer.numStudy == innerCycleNum && timer.numBreak == innerCycleNum) {
             //long break time
-            //display study mode
-            PgTitle.innerHTML = "Long Break";
-            healthyMsg.innerHTML += healthyMessage;
 
             //save state to storage
             timer.state = "Long break";
 
-            //turn off enabled
-            const enabled = false;
-            chrome.storage.local.set({ enabled });
-
-            //turn on breakTime to blocking websites in the list during breaks
-            const breakTime = true;
-            chrome.storage.local.set({ breakTime });
+            //display break mode
+            PgTitle.innerHTML = "Long Break";
+            breakPageSettings();
 
             //reset count of study and short breaks
             timer.numStudy = 0;
             timer.numBreak = 0;
             saveToStorage(timer);
             startTimer(timer.LBtime);
+
         }else if (timer.numStudy > timer.numBreak) {
             //short break
-            //display study mode
-            PgTitle.innerHTML = "Short Break";
-            healthyMsg.innerHTML += healthyMessage;
 
             //save state to storage
             timer.state = "break";
 
-            //turn off enabled
-            const enabled = false;
-            chrome.storage.local.set({ enabled });
-
-            //turn on breakTime to blocking websites in the list during breaks
-            const breakTime = true;
-            chrome.storage.local.set({ breakTime });
+            //display study mode
+            PgTitle.innerHTML = "Short Break";
+            breakPageSettings();
 
             startTimer(timer.Btime);
 
         } else if (timer.numStudy == timer.numBreak) {
             //study time
-            //display study mode
-            PgTitle.innerHTML = "Study Mode";
 
             //save state to storage
             timer.state = "study";
-            
-            //begin blocking websites not in the list
-            const enabled = true;
-            chrome.storage.local.set({ enabled });
 
-            //turn off breakTime
-            const breakTime = false;
-            chrome.storage.local.set({ breakTime });
+            studyPageSettings();
 
             startTimer(timer.Stime);
         }
@@ -590,6 +505,10 @@ function validateTimerChoice() {
     } else if (!timerOp.getAttribute("id").includes("opt")) {
         validateCustomTimer();
     } else {
+        var answer = confirm("Ready to reload page for timer to begin? Press cancel to ask again in 30 seconds.");
+        if (!answer){
+            return;
+        }
         //Extract information from choice
         var timerInfoArray = timerOp.value.split("/");
         var studyMin = timerInfoArray[0];
@@ -600,18 +519,10 @@ function validateTimerChoice() {
         timer.shortBkMin = shortBkMin;
         timer.cycleNum = cycleNum;
         timer.longBkMin = longBkMin;
-        //display study mode
-        PgTitle.innerHTML = "Study Mode";
+        
         //save state to storage
         timer.state = "study";
         saveToStorage(timer);
-        //begin blocking websites in the list
-        const enabled = true;
-        chrome.storage.local.set({ enabled });
-
-        //turn off breakTime
-        const breakTime = false;
-        chrome.storage.local.set({ breakTime });
 
         startTimer(studyMin);
     }
@@ -626,47 +537,41 @@ function validateCustomTimer() {
     if (studyMin == "") {
         alert("Please fill all customer time fields to begin");
     } else if (shortBkMin == "") {
+        timer.studyMin = studyMin;
+        saveToStorage(timer);
         alert("Please fill all customer time fields to begin");
     } else if (cycleNum == "") {
+        timer.studyMin = studyMin;
+        timer.shortBkMin = shortBkMin;
+        saveToStorage(timer);
         alert("Please fill all customer time fields to begin");
     } else if (longBkMin == "") {
+        timer.studyMin = studyMin;
+        timer.shortBkMin = shortBkMin;
+        timer.cycleNum = cycleNum;
+        saveToStorage(timer);
         alert("Please fill all customer time fields to begin");
     } else {
+        var answer = confirm("Ready to reload page for timer to begin? Press cancel to ask again in 30 seconds.");
+        if (!answer){
+            return;
+        }
         timer.studyMin = studyMin;
         timer.shortBkMin = shortBkMin;
         timer.cycleNum = cycleNum;
         timer.longBkMin = longBkMin;
 
-        //display study mode
-        PgTitle.innerHTML = "Study Mode";
         //save state to storage
         timer.state = "study";
         saveToStorage(timer);
-        //begin blocking websites in the list
-        const enabled = true;
-        chrome.storage.local.set({ enabled });
-
-        //turn off breakTime
-        const breakTime = false;
-        chrome.storage.local.set({ breakTime });
 
         startTimer(studyMin);
     }
 }
 
 function startTimer(minutes) {
-    var answer = confirm("Ready to reload page for timer to begin? Press cancel to ask again in 30 seconds.");
-    while (!answer) { //TODO: come back to this, not a good way because it probably wont work when the popup is opened again. try adding a prompt when it loads
-        //wait 30 seconds and ask again
-        var intervalID = setInterval(function () {
-            answer = confirm("Ready to reload page for timer to begin? Press cancel to ask again in 30 seconds.");
-        }, 30 * 1000);
-    }
     //Remove timer options and begin session button, add end session button
-    timerDiv.style.display = "none";
-    beginButton.style.display = "none";
-    endButton.style.display = "inline-block";
-    pauseBtn.style.display = "inline-block";
+    studyPageSettings();
 
     //calculate the end time
     calcEndTime(minutes);
@@ -674,6 +579,7 @@ function startTimer(minutes) {
     //reload to start timer on the tab
     chrome.tabs.reload();
 }
+
 function calcEndTime(mins) {
     //returns a string represenation of the time to send as a message
     var countDownTime = new Date().getTime();
@@ -688,4 +594,93 @@ function saveToStorage(obj) {
     chrome.storage.sync.set({ "popupState": serialized }, function () {
         console.log('Value is set to ' + serialized);
     });
+}
+
+function mainPageSettings(){
+    PgTitle.innerHTML = "Main Menu";
+    userInfoInput.style.display = "block"; //can choose to remove this later or make it depend on if the user is logged in
+
+    //no blocking
+    const enabled = false;
+    chrome.storage.local.set({ enabled });
+    const breakTime = false;
+    chrome.storage.local.set({ breakTime });
+
+    timerDiv.style.display = "block"; //show timer options
+    beginButton.style.display = "inline-block"; //show begin button
+    pauseBtn.style.display = "none"; //do not display the other buttons
+    nextStep.style.display = "none";
+    endButton.style.display = "none";
+    messages.style.display = "none";
+}
+
+function studyPageSettings(){
+    //display it is in study mode
+    var PgTitle = document.getElementById("PgTitle");
+    PgTitle.innerHTML = "Study Mode";
+
+    displayProgress();
+
+    //turn on blocking for study period
+    const enabled = true;
+    chrome.storage.local.set({ enabled });
+
+    //turn off breakTime blocking
+    const breakTime = false;
+    chrome.storage.local.set({ breakTime });
+
+    timerDiv.style.display = "none"; //hide timer options
+    beginButton.style.display = "none"; //hide begin
+    endButton.style.display = "inline-block"; //show endbutton and pause button
+    pauseBtn.style.display = "inline-block";
+    nextStep.style.display = "none";
+    userInfoInput.style.display = "none";
+}
+
+function InterPageSettings(){
+    displayProgress();
+    
+    var PgTitle = document.getElementById("PgTitle");
+    PgTitle.innerHTML = "Intermission";
+
+    //no blocking
+    const enabled = false;
+    chrome.storage.local.set({ enabled });
+    const breakTime = false;
+    chrome.storage.local.set({ breakTime });
+
+    timerDiv.style.display = "none";
+    beginButton.style.display = "none";
+    endButton.style.display = "inline-block"; //only show end button
+    pauseBtn.style.display = "none";
+    userInfoInput.style.display = "none";
+
+}
+
+function breakPageSettings(){
+    displayProgress();
+
+    healthyMsg.innerHTML += healthyMessage;
+
+    // turn of study blocking
+    const enabled = false;
+    chrome.storage.local.set({ enabled });
+    //turn on break blocking
+    const breakTime = true;
+    chrome.storage.local.set({ breakTime });
+
+    timerDiv.style.display = "none";
+    beginButton.style.display = "none";
+    endButton.style.display = "inline-block"; //show end and pause only
+    pauseBtn.style.display = "inline-block";
+    userInfoInput.style.display = "none";
+}
+
+function displayProgress(){
+    // display progress
+    var progressMessage = "Study: " + timer.numStudy + "/" + innerCycleNum
+    + ", Short Break: " + timer.numBreak + "/" + innerCycleNum
+    + ", Long Break: " + timer.numLongBreak + "/" + timer.Cnum;
+    messages.innerHTML = progressMessage;
+    messages.style.display = "block";
 }
