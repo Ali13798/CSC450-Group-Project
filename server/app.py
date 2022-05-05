@@ -98,6 +98,10 @@ def logout():
 def stats():
     return render_template("stats.html", title="Stats")
 
+@app.route("/history")
+def history():
+    return render_template("history.html", title="History")
+
 
 def hash_password(pswd: str) -> str:
     pswd = pswd.encode("utf-8")
