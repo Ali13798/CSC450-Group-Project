@@ -55,7 +55,7 @@ class db_tools:
 
     def get_user_credentials_rows(
         cur: sqlite3.Cursor,
-    ):  # -> list[tuple[int, str, str]] 
+    ):  # -> list[tuple[int, str, str]]
         return cur.execute("SELECT * FROM user_credentials").fetchall()
 
     def is_existing_user(cur: sqlite3.Cursor, name: str) -> bool:
@@ -72,6 +72,15 @@ class db_tools:
             "SELECT password FROM user_credentials WHERE user_name=?", (name,)
         ).fetchall()
 
+    def add_stats(
+        cur: sqlite3.Cursor,
+        username: str,
+        click_count: int,
+        keyboard_count: int,
+    ) -> None:
+        return
+        cur.execute("INSERT INTO user_sessions () VALUES (?)", ())
+
     def add_userInfo(cur1: sqlite3.Cursor, fname: str, lname: str) -> None:
         if not fname or not lname:
             print("Error: Missing first name or last name.")
@@ -84,7 +93,7 @@ class db_tools:
 
     def get_usersName_rows(
         cur1: sqlite3.Cursor,
-    ):  # -> list[tuple[int, str, str]] 
+    ):  # -> list[tuple[int, str, str]]
         return cur1.execute("SELECT * FROM users").fetchall()
 
     def create_table_parent_pin(cur2: sqlite3.Cursor) -> None:
