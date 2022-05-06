@@ -38,6 +38,8 @@ def login():
 
 @app.route("/greet", methods=["GET", "POST"])
 def greet():
+    if flask.session.get("name"):
+        return flask.redirect("/")
 
     name = flask.request.form.get("name")
     password = flask.request.form.get("password")
@@ -67,6 +69,9 @@ def greet():
 
 @app.route("/greetNewUser", methods=["GET", "POST"])
 def new_user():
+    if flask.session.get("name"):
+        return flask.redirect("/")
+
     name = flask.request.form.get("name")
     if " " in name:
         flask.flash('Username cannot contain empty spaces " ". Try again.')
