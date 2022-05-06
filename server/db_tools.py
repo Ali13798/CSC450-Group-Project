@@ -92,16 +92,16 @@ class db_tools:
             (user_id, date_time, duration, click_count, keyboard_count),
         )
 
-    # def get_user_id(cur: sqlite3.Cursor, username: str) -> int:
-    #     return int(
-    #         cur.execute(
-    #             "SELECT id FROM user_credentials WHERE user_name=?",
-    #             (username,),
-    #         ).fetchall()[0][0]
-    #     )
+    def get_user_id(cur: sqlite3.Cursor, username: str) -> int:
+        return int(
+            cur.execute(
+                "SELECT id FROM user_credentials WHERE user_name=?",
+                (username,),
+            ).fetchall()[0][0]
+        )
 
-    # def get_stats(cur: sqlite3.Cursor, username: str) -> list:
-    #     user_id = db_tools.get_user_id(cur=cur, username=username)
-    #     return cur.execute(
-    #         "SELECT * FROM user_sessions WHERE user_id=?", (user_id,)
-    #     ).fetchall()
+    def get_stats(cur: sqlite3.Cursor, username: str) -> list:
+        user_id = db_tools.get_user_id(cur=cur, username=username)
+        return cur.execute(
+            "SELECT * FROM user_sessions WHERE user_id=?", (user_id,)
+        ).fetchall()
