@@ -146,6 +146,8 @@ def stats():
 
 @app.route("/history")
 def history():
+    if not flask.session.get("name"):
+        return flask.redirect("/")
 
     # if you can send all of them, I can have the user provide a date 
     # range so they have the ability to see all of their history as our teacher asked
@@ -190,11 +192,18 @@ def saveStudyData():
         if "keyCount" in request_data:
             keyCount = request_data["keyCount"]
 
-    return ('{ "message":"recieved ' + str(timeStudied) + " " + str(clickCount) +
-            " " + str(keyCount) + '" }')
+    return (
+        '{ "message":"recieved '
+        + str(timeStudied)
+        + " "
+        + str(clickCount)
+        + " "
+        + str(keyCount)
+        + '" }'
+    )
 
 
-#Anh testing endpoint for saving users name
+# Anh testing endpoint for saving users name
 @app.route("/addUser", methods=["POST"])
 def addUser():
     request_info = request.get_json()
@@ -204,7 +213,7 @@ def addUser():
             fusername = request_info["fusername"]
         if "lusername" in request_info:
             lusername = request_info["lusername"]
-    return ('{ "message":"recived "' + fusername + " " + lusername + "}")
+    return '{ "message":"recived "' + fusername + " " + lusername + "}"
 
 
 def main():
