@@ -72,25 +72,25 @@ class db_tools:
             "SELECT password FROM user_credentials WHERE user_name=?", (name,)
         ).fetchall()[0]
 
-    # def add_stats(
-    #     cur: sqlite3.Cursor,
-    #     username: str,
-    #     date_time: str,
-    #     duration: int,
-    #     click_count: int,
-    #     keyboard_count: int,
-    # ) -> None:
-    #     user_id = db_tools.get_user_id(cur=cur, username=username)
-    #     cur.execute(
-    #         """INSERT INTO user_sessions (
-    #             user_id,
-    #             session_time,
-    #             session_duration,
-    #             click_count,
-    #             keyboard_count
-    #         ) VALUES (?, ?, ?, ?, ?)""",
-    #         (user_id, date_time, duration, click_count, keyboard_count),
-    #     )
+    def add_stats(
+        cur: sqlite3.Cursor,
+        username: str,
+        date_time: str,
+        duration: int,
+        click_count: int,
+        keyboard_count: int,
+    ) -> None:
+        user_id = db_tools.get_user_id(cur=cur, username=username)
+        cur.execute(
+            """INSERT INTO user_sessions (
+                user_id,
+                session_time,
+                session_duration,
+                click_count,
+                keyboard_count
+            ) VALUES (?, ?, ?, ?, ?)""",
+            (user_id, date_time, duration, click_count, keyboard_count),
+        )
 
     # def get_user_id(cur: sqlite3.Cursor, username: str) -> int:
     #     return int(
