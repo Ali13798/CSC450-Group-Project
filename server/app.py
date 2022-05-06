@@ -4,9 +4,9 @@ import sqlite3
 
 import flask
 from flask import render_template
-from flask_session import Session
 
 from db_tools import db_tools
+from flask_session import Session
 
 app = flask.Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -18,9 +18,9 @@ DB_PATH = "./server/database.db"
 
 @app.route("/")
 def index():
-    if not flask.session.get("name"):
+    if not flask.session.get("username"):
         return flask.redirect("/login")
-    name = flask.session.get("name")
+    name = flask.session.get("username")
     return render_template("home-site.html", title="Homepage", name=name)
 
 
@@ -31,7 +31,7 @@ def signup():
 
 @app.route("/login")
 def login():
-    if flask.session.get("name"):
+    if flask.session.get("username"):
         return flask.redirect("/")
     return render_template("login.html", title="Log In")
 
@@ -39,7 +39,7 @@ def login():
 @app.route("/greet", methods=["GET", "POST"])
 def greet():
 
-    name = flask.request.form.get("name")
+    name = flask.request.form.get("username").strip()
     password = flask.request.form.get("password")
     password = hash_password(password)
     all_names: list[tuple[int, str, str]] = []
@@ -58,7 +58,7 @@ def greet():
             flask.flash("Incorrect Password. Try again.")
             return flask.redirect(flask.url_for("login"))
 
-        flask.session["name"] = name
+        flask.session["username"] = name
         if name == "admin":
             return render_template("greet.html", name=name, names=all_names)
         else:
@@ -67,7 +67,7 @@ def greet():
 
 @app.route("/greetNewUser", methods=["GET", "POST"])
 def new_user():
-    name = flask.request.form.get("name")
+    name = flask.request.form.get("username").strip()
     if " " in name:
         flask.flash('Username cannot contain empty spaces " ". Try again.')
         return flask.redirect(flask.url_for("signup"))
@@ -97,13 +97,13 @@ def new_user():
 
         db_tools.add_user(cur=cur, name=name, pswd=password)
 
-    flask.session["name"] = name
+    flask.session["username"] = name
     return flask.redirect(flask.url_for("index"))
 
 
 @app.route("/logout")
 def logout():
-    flask.session["name"] = None
+    flask.session["username"] = None
     return flask.redirect("/")
 
 
@@ -131,7 +131,7 @@ def stats2():
 
 @app.route("/stats")
 def stats():
-    username = flask.session.get("name")
+    username = flask.session.get("username")
 
     if not username:
         return flask.redirect("/")
@@ -183,7 +183,7 @@ def stats():
 def history():
     # if you can send all of them, I can have the user provide a date
     # range so they have the ability to see all of their history as our teacher asked
-    if not flask.session.get("name"):
+    if not flask.session.get("username"):
         return flask.redirect("/")
 
     userHist: list[dict[str, int]] = [
@@ -221,7 +221,7 @@ def hash_password(pswd: str) -> str:
 # This is where the extension sends data to for each session
 @app.route("/saveStudyData", methods=["POST"])
 def saveStudyData():
-    username = flask.session.get("name")
+    username = flask.session.get("username")
 
     request_data = flask.request.get_json()
 
