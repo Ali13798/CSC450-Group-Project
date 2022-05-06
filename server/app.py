@@ -199,11 +199,11 @@ def saveStudyData():
 
     if request_data:
         if "timeStudied" in request_data:
-            timeStudied = request_data["timeStudied"]
+            timeStudied = int(request_data["timeStudied"])
         if "clickCount" in request_data:
-            clickCount = request_data["clickCount"]
+            clickCount = int(request_data["clickCount"])
         if "keyCount" in request_data:
-            keyCount = request_data["keyCount"]
+            keyCount = int(request_data["keyCount"])
 
     date_time = datetime.datetime.now().isoformat()
     with sqlite3.connect(DB_PATH) as con:
