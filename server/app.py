@@ -4,9 +4,9 @@ import sqlite3
 
 import flask
 from flask import render_template
-from flask_session import Session
 
 from db_tools import db_tools
+from flask_session import Session
 
 app = flask.Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -38,6 +38,8 @@ def login():
 
 @app.route("/greet", methods=["GET", "POST"])
 def greet():
+    if flask.session.get("name"):
+        return flask.redirect("/")
 
     name = flask.request.form.get("name")
     password = flask.request.form.get("password")
@@ -67,7 +69,25 @@ def greet():
 
 @app.route("/greetNewUser", methods=["GET", "POST"])
 def new_user():
+    if flask.session.get("name"):
+        return flask.redirect("/")
+
     name = flask.request.form.get("name")
+<<<<<<< HEAD
+=======
+    if " " in name:
+        flask.flash('Username cannot contain empty spaces " ". Try again.')
+        return flask.redirect(flask.url_for("signup"))
+
+    if not name[0].isalpha():
+        flask.flash("Username must begin with an alphabetic character.")
+        return flask.redirect(flask.url_for("signup"))
+
+    if not (name.isalnum() or any(x in name for x in ["_", "-", "."])):
+        flask.flash("Username cannot contain any special characters.")
+        return flask.redirect(flask.url_for("signup"))
+
+>>>>>>> a0ecc2be9dce02196267f95783db15cbc89b032f
     password = flask.request.form.get("password")
     password = hash_password(password)
 
@@ -166,32 +186,48 @@ def stats():
 def history():
     # if you can send all of them, I can have the user provide a date
     # range so they have the ability to see all of their history as our teacher asked
-    if not flask.session.get("name"):
+    username = flask.session.get("name")
+    if not username:
         return flask.redirect("/")
 
-    userHist: list[dict[str, int]] = [
-        {
-            "id": 1,
-            "date": "5/1/22",
-            "clickCount": 5,
-            "keyCount": 20,
-            "timeStudied": 125,
-        },
-        {
-            "id": 2,
-            "date": "5/2/22",
-            "clickCount": 41,
-            "keyCount": 12,
-            "timeStudied": 60,
-        },
-        {
-            "id": 3,
-            "date": "5/3/22",
-            "clickCount": 100,
-            "keyCount": 80,
-            "timeStudied": 310,
-        },
-    ]
+    with sqlite3.connect(DB_PATH) as con:
+        cur = con.cursor()
+        user_stats = db_tools.get_stats(cur=cur, username=username)
+
+    userHist: list[dict[str, int]] = []
+    for stat in user_stats:
+        temp_dict = {
+            "id": stat[0],
+            "date": stat[2],
+            "timeStudied": stat[3],
+            "clickCount": stat[4],
+            "keyCount": stat[5],
+        }
+        userHist.append(temp_dict)
+
+    # userHist: list[dict[str, int]] = [
+    #     {
+    #         "id": 1,
+    #         "date": "5/1/22",
+    #         "clickCount": 5,
+    #         "keyCount": 20,
+    #         "timeStudied": 125,
+    #     },
+    #     {
+    #         "id": 2,
+    #         "date": "5/2/22",
+    #         "clickCount": 41,
+    #         "keyCount": 12,
+    #         "timeStudied": 60,
+    #     },
+    #     {
+    #         "id": 3,
+    #         "date": "5/3/22",
+    #         "clickCount": 100,
+    #         "keyCount": 80,
+    #         "timeStudied": 310,
+    #     },
+    # ]
 
     return render_template("history.html", title="History", userHist=userHist)
 
