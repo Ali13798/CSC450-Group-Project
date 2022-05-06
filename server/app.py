@@ -1,4 +1,4 @@
-# import datetime
+import datetime
 import hashlib
 import sqlite3
 
@@ -210,17 +210,17 @@ def saveStudyData():
         if "keyCount" in request_data:
             keyCount = request_data["keyCount"]
 
-    # date_time = datetime.datetime.now().isoformat()
-    # with sqlite3.connect(DB_PATH) as con:
-    #     cur = con.cursor()
-    #     db_tools.add_stats(
-    #         cur=cur,
-    #         username=username,
-    #         date_time=date_time,
-    #         duration=timeStudied,
-    #         click_count=clickCount,
-    #         keyboard_count=keyCount,
-    #     )
+    date_time = datetime.datetime.now().isoformat()
+    with sqlite3.connect(DB_PATH) as con:
+        cur = con.cursor()
+        db_tools.add_stats(
+            cur=cur,
+            username=username,
+            date_time=date_time,
+            duration=timeStudied,
+            click_count=clickCount,
+            keyboard_count=keyCount,
+        )
 
     return (
         '{ "message":"recieved '
