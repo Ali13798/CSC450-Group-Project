@@ -20,37 +20,38 @@
 {% block body %}
 
 <!-- Start Welcome User -->
-<div class="container">
+<div class="container" id="hstDiv" data-userHist='{{ userHist }}'>
 
   <div id="columnchart_material" style="width: 800px; height: 500px;"></div>
 
 </div>
   
 <script type="text/javascript">
+
+  var userHist = document.getElementById("hstDiv").getAttribute('data-userHist');
+  console.log(userHist);
+  userHist = "{ 'data': " + userHist + "}";
+  userHist = userHist.replace(/\'/g, '"');
+  userHist = JSON.parse(userHist);
+  hstArray = userHist.data;
+  console.log(hstArray);
+
+
   google.charts.load('current', {'packages':['bar']});
   google.charts.setOnLoadCallback(drawChart);
 
   function drawChart() {
-    // variables for the chart
     // Labels
     xTitle = "Session Date";
     firstBarTitle = "Total Minutes Studied";
     secondBarTitle = "Total Key Presses";
     thirdBarTitle = "Total Mouse Clicks";
     labels = [xTitle, firstBarTitle, secondBarTitle, thirdBarTitle];
+
     // Data
-
-    //SessionList will hold the data objects after recieving from DB and parsing through
-    SessionList = [ 
-      ['5/2/22', 20, 50, 100],
-      ['5/3/22', 30, 100, 170],
-      ['5/4/22', 20, 20, 200],
-      ['5/5/22', 15, 10, 80],
-    ]
-
     sessions = [labels];
-    SessionList.forEach(element => {
-      sessions.push(element)
+    hstArray.forEach(elm => {
+      sessions.push([elm.date, elm.clickCount, elm.keyCount, elm.timeStudied]);
     });
     
     var data = google.visualization.arrayToDataTable(sessions);
