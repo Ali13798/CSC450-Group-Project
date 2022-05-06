@@ -34,13 +34,13 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
         console.log(blocked);
         //remove
         chrome.tabs.remove(tabId);
-        chrome.storage.sync.get(['popupState'], function(result) {
-          if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
-              var popupState = JSON.parse(result.popupState);
-              popupState.lastBlockedPage = url;
-              popupState.newBlockedPg = true;
-              let serialized = JSON.stringify(popupState);
-              chrome.storage.sync.set({"popupState": serialized}, function() {
+        chrome.storage.sync.get(['popupData'], function(result) {
+          if(!(result.popupData === undefined || result.popupData === null || result.popupData.length === 0)){
+              var popupData = JSON.parse(result.popupData);
+              popupData.lastBlockedPage = url;
+              popupData.newBlockedPg = true;
+              let serialized = JSON.stringify(popupData);
+              chrome.storage.sync.set({"popupData": serialized}, function() {
                   console.log('Value is set to ' + serialized);
               });
           }

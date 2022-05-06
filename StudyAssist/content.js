@@ -66,21 +66,21 @@ document.addEventListener('click', (event) => {
 
 if(!pause){
     //Get the time out of storage
-    chrome.storage.sync.get(['popupState'], function(result) {
-        if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
-            var popupState = JSON.parse(result.popupState);
+    chrome.storage.sync.get(['popupData'], function(result) {
+        if(!(result.popupData === undefined || result.popupData === null || result.popupData.length === 0)){
+            var popupData = JSON.parse(result.popupData);
             // if study timer white
-            if (popupState.state == "study"){
+            if (popupData.state == "study"){
                 timerPlace.style.color = "#fff";
                 state = "study";
             }
             // if break timer orange
-            if (popupState.state == "break" || popupState.state === "Long break"){
+            if (popupData.state == "break" || popupData.state === "Long break"){
                 timerPlace.style.color = "#11FFEF";
             }   
             
             //set end time
-            var endTimeString = popupState.endTime;
+            var endTimeString = popupData.endTime;
             if(!(endTimeString === undefined || endTimeString === null || endTimeString.length === 0)){
                 var endTimeArray = endTimeString.split(" ");
                 endTime = new Date();
@@ -127,41 +127,41 @@ if(!pause){
                                 timerPlace.innerHTML = "";
                                 document.body.prepend(timerPlace);
                                 //Store that the time has ended
-                                chrome.storage.sync.get(['popupState'], function(result) {
-                                    if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
-                                        var popupState = JSON.parse(result.popupState);
-                                        if(popupState.state === "study"){
-                                            popupState.numStudy = (popupState.numStudy) ? (parseInt(popupState.numStudy) + 1) : 1;
-                                            prevTime = popupState.timeStudied ? parseInt(popupState.timeStudied): 0;
+                                chrome.storage.sync.get(['popupData'], function(result) {
+                                    if(!(result.popupData === undefined || result.popupData === null || result.popupData.length === 0)){
+                                        var popupData = JSON.parse(result.popupData);
+                                        if(popupData.state === "study"){
+                                            popupData.numStudy = (popupData.numStudy) ? (parseInt(popupData.numStudy) + 1) : 1;
+                                            prevTime = popupData.timeStudied ? parseInt(popupData.timeStudied): 0;
                                             console.log("prev: ", prevTime);
-                                            popupState.timeStudied = prevTime + popupState.studyMin + additionalTime;
-                                            console.log(popupState.timeStudied);
-                                        }else if (popupState.state === "break"){
-                                            popupState.numBreak = (popupState.numBreak) ? (parseInt(popupState.numBreak) + 1) : 1;
-                                        }else if (popupState.state === "Long break"){
-                                            popupState.numLongBreak = (popupState.numLongBreak) ? (parseInt(popupState.numLongBreak) + 1) : 1;
+                                            popupData.timeStudied = prevTime + popupData.studyMin + additionalTime;
+                                            console.log(popupData.timeStudied);
+                                        }else if (popupData.state === "break"){
+                                            popupData.numBreak = (popupData.numBreak) ? (parseInt(popupData.numBreak) + 1) : 1;
+                                        }else if (popupData.state === "Long break"){
+                                            popupData.numLongBreak = (popupData.numLongBreak) ? (parseInt(popupData.numLongBreak) + 1) : 1;
                                         }
                                         //add counts to current count
-                                        if (popupState.keyCount === null || popupState.keyCount === undefined){
-                                            popupState.keyCount = keyCount;
+                                        if (popupData.keyCount === null || popupData.keyCount === undefined){
+                                            popupData.keyCount = keyCount;
                                         }else{
-                                            popupState.keyCount += parseInt(popupState.keyCount) + keyCount;
+                                            popupData.keyCount += parseInt(popupData.keyCount) + keyCount;
                                         }
-                                        if (popupState.clickCount === null || popupState.clickCount === undefined){
-                                            popupState.clickCount = clickCount;
+                                        if (popupData.clickCount === null || popupData.clickCount === undefined){
+                                            popupData.clickCount = clickCount;
                                         }else{
-                                            popupState.clickCount += parseInt(popupState.clickCount) + clickCount;
+                                            popupData.clickCount += parseInt(popupData.clickCount) + clickCount;
                                         }
                                         keyCount = 0;
                                         clickCount = 0;
 
-                                        console.log("popupState.keyCount and popupState.clickCount" + popupState.keyCount + popupState.clickCount);
+                                        console.log("popupData.keyCount and popupData.clickCount" + popupData.keyCount + popupData.clickCount);
 
                                         //set popup state to be between study/break
-                                        popupState.state = "intermission";
-                                        popupState.endTime = undefined;
-                                        let serializedTimer = JSON.stringify(popupState);
-                                        chrome.storage.sync.set({"popupState": serializedTimer}, function() {
+                                        popupData.state = "intermission";
+                                        popupData.endTime = undefined;
+                                        let serializedTimer = JSON.stringify(popupData);
+                                        chrome.storage.sync.set({"popupData": serializedTimer}, function() {
                                             console.log('Content: Value is set to ' + serializedTimer);
                                         });
 
@@ -178,21 +178,21 @@ if(!pause){
                                 // turn red
                                 timerPlace.style.color = "#f00";
                                 // but the state of popup is intermission becuase they can end any time and continue to the next state
-                                chrome.storage.sync.get(['popupState'], function(result) {
-                                    if(!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)){
-                                        var popupState = JSON.parse(result.popupState);
-                                        if(popupState.state === "study"){
-                                            popupState.numStudy = (popupState.numStudy) ? (parseInt(popupState.numStudy) + 1) : 1;
-                                        }else if (popupState.state === "break"){
-                                            popupState.numBreak = (popupState.numBreak) ? (parseInt(popupState.numBreak) + 1) : 1;
-                                        }else if (popupState.state === "Long break"){
-                                            popupState.numLongBreak = (popupState.numLongBreak) ? (parseInt(popupState.numLongBreak) + 1) : 1;
+                                chrome.storage.sync.get(['popupData'], function(result) {
+                                    if(!(result.popupData === undefined || result.popupData === null || result.popupData.length === 0)){
+                                        var popupData = JSON.parse(result.popupData);
+                                        if(popupData.state === "study"){
+                                            popupData.numStudy = (popupData.numStudy) ? (parseInt(popupData.numStudy) + 1) : 1;
+                                        }else if (popupData.state === "break"){
+                                            popupData.numBreak = (popupData.numBreak) ? (parseInt(popupData.numBreak) + 1) : 1;
+                                        }else if (popupData.state === "Long break"){
+                                            popupData.numLongBreak = (popupData.numLongBreak) ? (parseInt(popupData.numLongBreak) + 1) : 1;
                                         }
                                         //set popup state to be between study/break
-                                        popupState.state = "intermission";
-                                        popupState.endTime = undefined;
-                                        let serializedTimer = JSON.stringify(popupState);
-                                        chrome.storage.sync.set({"popupState": serializedTimer}, function() {
+                                        popupData.state = "intermission";
+                                        popupData.endTime = undefined;
+                                        let serializedTimer = JSON.stringify(popupData);
+                                        chrome.storage.sync.set({"popupData": serializedTimer}, function() {
                                             console.log('Content: Value is set to ' + serializedTimer);
                                         });
                                     }

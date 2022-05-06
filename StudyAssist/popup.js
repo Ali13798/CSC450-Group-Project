@@ -100,27 +100,27 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     //Load previous session data if any
-    chrome.storage.sync.get(['popupState'], function (result) {
-        if (!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)) {
+    chrome.storage.sync.get(['popupData'], function (result) {
+        if (!(result.popupData === undefined || result.popupData === null || result.popupData.length === 0)) {
             //if there is data load it in, get it as a string
-            var popupState = JSON.parse(result.popupState);
-            timer = popupState;
-            if (popupState) {
+            var popupData = JSON.parse(result.popupData);
+            timer = popupData;
+            if (popupData) {
                 //load vars keeping track of num of study and breaks
-                timer.numStudy = (popupState.numStudy) ? parseInt(popupState.numStudy) : 0;
-                timer.numBreak = (popupState.numBreak) ? parseInt(popupState.numBreak) : 0;
-                timer.numLongBreak = (popupState.numLongBreak) ? parseInt(popupState.numLongBreak) : 0;
-                timer.Stime = parseFloat(popupState.studyMin);
-                timer.Btime = parseFloat(popupState.shortBkMin);
-                timer.LBtime = parseFloat(popupState.longBkMin);
-                timer.cycleNum = parseInt(popupState.cycleNum);
+                timer.numStudy = (popupData.numStudy) ? parseInt(popupData.numStudy) : 0;
+                timer.numBreak = (popupData.numBreak) ? parseInt(popupData.numBreak) : 0;
+                timer.numLongBreak = (popupData.numLongBreak) ? parseInt(popupData.numLongBreak) : 0;
+                timer.Stime = parseFloat(popupData.studyMin);
+                timer.Btime = parseFloat(popupData.shortBkMin);
+                timer.LBtime = parseFloat(popupData.longBkMin);
+                timer.cycleNum = parseInt(popupData.cycleNum);
 
-                if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0)) {
+                if (!(popupData.state === undefined || popupData.state === null || popupData.state.length === 0)) {
 
                     //detect if the session has finished
                     if (timer.numLongBreak == timer.cycleNum) {
                         //set back to main page and display session finished
-                        popupState.state = "mainpg";
+                        popupData.state = "mainpg";
                         timer.state = "mainpg";
                         mainPageSettings();
                         messages.innerHTML = "Session Completed!";
@@ -133,14 +133,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         
 
                         //If there is contents in timeStudied, then save it to the DB
-                        if (!(popupState.timeStudied === undefined || 
-                            popupState.timeStudied === null || 
-                            popupState.timeStudied.length === 0)){
+                        if (!(popupData.timeStudied === undefined || 
+                            popupData.timeStudied === null || 
+                            popupData.timeStudied.length === 0)){
                             data = {};
-                            console.log("data = " + popupState.timeStudied + " " + popupState.clickCount + " " + popupState.keyCount);
-                            data.timeStudied = popupState.timeStudied;
-                            data.clickCount = popupState.clickCount
-                            data.keyCount = popupState.keyCount
+                            console.log("data = " + popupData.timeStudied + " " + popupData.clickCount + " " + popupData.keyCount);
+                            data.timeStudied = popupData.timeStudied;
+                            data.clickCount = popupData.clickCount
+                            data.keyCount = popupData.keyCount
                             try{
                                 fetch("http://127.0.0.1:5000/saveStudyData", {
                                     method: "POST",
@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             
                         }
 
-                    } else if (popupState.state === "mainpg") {
+                    } else if (popupData.state === "mainpg") {
                         messages.innerHTML = "";
                         messages.style.display = "none";
                         var PgTitle = document.getElementById("PgTitle");
@@ -180,11 +180,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                      
                     //Check if in study state
-                    if ( popupState.state === "study") {
+                    if ( popupData.state === "study") {
                         studyPageSettings();
                     }
                     //check if in intermission state
-                    if ( popupState.state === "intermission") {
+                    if ( popupData.state === "intermission") {
                         
                         //figure out the next stage is, display it on the button
                         var nextStepMessage;
@@ -206,13 +206,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         
                     }
                     //check if in break state
-                    if (popupState.state === "break") {
+                    if (popupData.state === "break") {
                         var PgTitle = document.getElementById("PgTitle");
                         PgTitle.innerHTML = "Short Break";
                         breakPageSettings();
                     }
                     //check if in long break state
-                    if (popupState.state === "Long break") {
+                    if (popupData.state === "Long break") {
                         var PgTitle = document.getElementById("PgTitle");
                         PgTitle.innerHTML = "Long Break";
                         breakPageSettings();
@@ -222,16 +222,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 
 
-                if (!(popupState.newBlockedPg === undefined || popupState.newBlockedPg === null || popupState.newBlockedPg.length === 0)) {
-                    if (popupState.newBlockedPg == true) {
-                        var url = popupState.lastBlockedPage;
+                if (!(popupData.newBlockedPg === undefined || popupData.newBlockedPg === null || popupData.newBlockedPg.length === 0)) {
+                    if (popupData.newBlockedPg == true) {
+                        var url = popupData.lastBlockedPage;
                         //get the domain from the url
                         var domain = (new URL(url)).hostname;
                         message = "Access to the following page is not permitted during study mode:\n" + url
                             + "\nAllow this domain? " + domain;
-                        // popupState.newBlockedPg = false;
+                        // popupData.newBlockedPg = false;
                         timer.newBlockedPg = false;
-                        // popupState.lastBlockedPage = "";
+                        // popupData.lastBlockedPage = "";
                         timer.lastBlockedPage = "";
                         saveToStorage(timer);
                         answer = confirm(message);
@@ -251,21 +251,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
                 //Populate choices for custom timer
-                if (!(popupState.choiceid === undefined || popupState.choiceid === null || popupState.choiceid.length === 0)) {
+                if (!(popupData.choiceid === undefined || popupData.choiceid === null || popupData.choiceid.length === 0)) {
                     //choice is the id of the element to set to be checked
-                    document.getElementById(popupState.choiceid).checked = true;
+                    document.getElementById(popupData.choiceid).checked = true;
                 }
-                if (!(popupState.studyMinCust === undefined || popupState.studyMinCust === null || popupState.studyMinCust.length === 0)) {
-                    document.getElementById("studyMin").value = popupState.studyMinCust;
+                if (!(popupData.studyMinCust === undefined || popupData.studyMinCust === null || popupData.studyMinCust.length === 0)) {
+                    document.getElementById("studyMin").value = popupData.studyMinCust;
                 }
-                if (!(popupState.shortBkMinCust === undefined || popupState.shortBkMinCust === null || popupState.shortBkMinCust.length === 0)) {
-                    document.getElementById("shortBkMin").value = popupState.shortBkMinCust;
+                if (!(popupData.shortBkMinCust === undefined || popupData.shortBkMinCust === null || popupData.shortBkMinCust.length === 0)) {
+                    document.getElementById("shortBkMin").value = popupData.shortBkMinCust;
                 }
-                if (!(popupState.cycleNumCust === undefined || popupState.cycleNumCust === null || popupState.cycleNumCust.length === 0)) {
-                    document.getElementById("cycleNum").value = popupState.cycleNumCust;
+                if (!(popupData.cycleNumCust === undefined || popupData.cycleNumCust === null || popupData.cycleNumCust.length === 0)) {
+                    document.getElementById("cycleNum").value = popupData.cycleNumCust;
                 }
-                if (!(popupState.longBkMinCust === undefined || popupState.longBkMinCust === null || popupState.longBkMinCust.length === 0)) {
-                    document.getElementById("longBkMin").value = popupState.longBkMinCust;
+                if (!(popupData.longBkMinCust === undefined || popupData.longBkMinCust === null || popupData.longBkMinCust.length === 0)) {
+                    document.getElementById("longBkMin").value = popupData.longBkMinCust;
                 }
 
             }
@@ -279,6 +279,7 @@ document.addEventListener("DOMContentLoaded", () => {
         //check that each is a valid address
         var blocked = [];
         regex = /(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,256}\b(\.[a-z, A-Z]*)/;
+        var atLeastOneRemoved = false;
         var removedString = "The following domains are invalid and have been removed: <br>";
         for (var i = 0; i < domains.length; i++) {
 
@@ -288,92 +289,122 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 removedString += domains[i] + "<br>";
                 console.log("removedString: " + removedString);
+                atLeastOneRemoved = true;
             }
         }
         //update list with only approved
         textarea.value = blocked.join("\n");
         //tell user which were removed
-        var removedPara = document.getElementById("removedDomains");
-        removedPara.innerHTML = removedString;
+        if (atLeastOneRemoved){
+            var removedPara = document.getElementById("removedDomains");
+            removedPara.innerHTML = removedString;
+        }
+        
         // console.log(blocked);
         chrome.storage.local.set({ blocked });
     });
+    
+ //if a button is selected, save selection in storage
+ radioButtons.addEventListener('click', e => {
+    if (e.target && e.target.matches("input[type='radio']")) {
+        timer.choiceid = e.target.getAttribute("id");
+        if (!(timer.choiceid.includes("opt"))) {
+            var studyMinCust = document.getElementById("studyMin").value;
+            var shortBkMinCust = document.getElementById("shortBkMin").value;
+            var cycleNumCust = document.getElementById("cycleNum").value;
+            var longBkMinCust = document.getElementById("longBkMin").value;
+            //check if any inputs
+            if (studyMinCust != "") {
+                console.log(studyMinCust);
+                if(parseFloat(studyMinCust) <= 0){
+                    console.log(parseFloat(studyMinCust));
+                    studyMinCust = 1;
+                    alert("Invalid value, only positive numbers. Saved as 1.");
+                }
+                timer.studyMinCust = studyMinCust;
+                
+                
+            } if (shortBkMinCust != "") {
+                if(parseFloat(shortBkMinCust) <= 0){
+                    shortBkMinCust = 1;
+                    alert("Invalid value, only positive numbers. Saved as 1.");
+                }
+                timer.shortBkMinCust = shortBkMinCust;
+                
+                
+            } if (cycleNumCust != "") {
+                if(!Number.isInteger(parseFloat(cycleNumCust))){
+                    cycleNumCust = 1;
+                    alert("Invalid value, only whole numbers. Saved as 1.");
+                }
+                timer.cycleNumCust = parseInt(cycleNumCust);
+                
 
-    //if a button is selected, save selection in storage
-    radioButtons.addEventListener('click', e => {
-        if (e.target && e.target.matches("input[type='radio']")) {
-            timer.choiceid = e.target.getAttribute("id");
-            if (!(timer.choiceid.includes("opt"))) {
-                validateCustInputs();
-                // var studyMin = document.getElementById("studyMin").value;
-                // var shortBkMin = document.getElementById("shortBkMin").value;
-                // var cycleNum = document.getElementById("cycleNum").value;
-                // var longBkMin = document.getElementById("longBkMin").value;
-                // //check if any inputs
-                // if (studyMin != "") {
-                //     timer.studyMin = studyMin;
-                // } if (shortBkMin != "") {
-                //     timer.shortBkMin = shortBkMin;
-                // } if (cycleNum != "") {
-                //     timer.cycleNum = cycleNum;
-                // } if (longBkMin != "") {
-                //     timer.longBkMin = longBkMin;
-                // }
+            } if (longBkMinCust != "") {
+                if(parseFloat(longBkMinCust) <= 0){
+                    longBkMinCust = 1;
+                    alert("Invalid value, only positive numbers. Saved as 1.");
+                }
+                timer.longBkMinCust = longBkMinCust;
+                
+                
             }
             saveToStorage(timer);
         }
-    });
-
-    //if a cust value is put in, save input in storage
-    var inputs = document.getElementsByClassName('custInput');
-    for (var inputIndex = 0; inputIndex < inputs.length; inputIndex++) {
-        inputs[inputIndex].addEventListener('change', function validateCustInputs(e) {
-            //set separate values for keeping the custom timer for later use
-            // if (e.target && e.target.matches("input[type='number']")) {
-                var studyMinCust = document.getElementById("studyMin").value;
-                var shortBkMinCust = document.getElementById("shortBkMin").value;
-                var cycleNumCust = document.getElementById("cycleNum").value;
-                var longBkMinCust = document.getElementById("longBkMin").value;
-                //check if any inputs
-                if (studyMinCust != "") {
-                    console.log(studyMinCust);
-                    if(parseFloat(studyMinCust) <= 0){
-                        console.log(parseFloat(studyMinCust));
-                        studyMinCust = 1;
-                        alert("Invalid value, only positive numbers. Saved as 1.");
-                    }
-                    timer.studyMinCust = studyMinCust;
-                    
-                    
-                } if (shortBkMinCust != "") {
-                    if(parseFloat(shortBkMinCust) <= 0){
-                        shortBkMinCust = 1;
-                        alert("Invalid value, only positive numbers. Saved as 1.");
-                    }
-                    timer.shortBkMinCust = shortBkMinCust;
-                    
-                    
-                } if (cycleNumCust != "") {
-                    if(!Number.isInteger(parseFloat(cycleNumCust))){
-                        cycleNumCust = 1;
-                        alert("Invalid value, only whole numbers. Saved as 1.");
-                    }
-                    timer.cycleNumCust = parseInt(cycleNumCust);
-                    
-
-                } if (longBkMinCust != "") {
-                    if(parseFloat(longBkMinCust) <= 0){
-                        longBkMinCust = 1;
-                        alert("Invalid value, only positive numbers. Saved as 1.");
-                    }
-                    timer.longBkMinCust = longBkMinCust;
-                    
-                    
-                }
-                saveToStorage(timer);
-            // }
-        });
+        saveToStorage(timer);
     }
+});
+
+//if a cust value is put in, save input in storage
+var inputs = document.getElementsByClassName('custInput');
+for (var inputIndex = 0; inputIndex < inputs.length; inputIndex++) {
+    inputs[inputIndex].addEventListener('change', function validateCustInputs(e) {
+        //set separate values for keeping the custom timer for later use
+        // if (e.target && e.target.matches("input[type='number']")) {
+            var studyMinCust = document.getElementById("studyMin").value;
+            var shortBkMinCust = document.getElementById("shortBkMin").value;
+            var cycleNumCust = document.getElementById("cycleNum").value;
+            var longBkMinCust = document.getElementById("longBkMin").value;
+            //check if any inputs
+            if (studyMinCust != "") {
+                console.log(studyMinCust);
+                if(parseFloat(studyMinCust) <= 0){
+                    console.log(parseFloat(studyMinCust));
+                    studyMinCust = 1;
+                    alert("Invalid value, only positive numbers. Saved as 1.");
+                }
+                timer.studyMinCust = studyMinCust;
+                
+                
+            } if (shortBkMinCust != "") {
+                if(parseFloat(shortBkMinCust) <= 0){
+                    shortBkMinCust = 1;
+                    alert("Invalid value, only positive numbers. Saved as 1.");
+                }
+                timer.shortBkMinCust = shortBkMinCust;
+                
+                
+            } if (cycleNumCust != "") {
+                if(!Number.isInteger(parseFloat(cycleNumCust))){
+                    cycleNumCust = 1;
+                    alert("Invalid value, only whole numbers. Saved as 1.");
+                }
+                timer.cycleNumCust = parseInt(cycleNumCust);
+                
+
+            } if (longBkMinCust != "") {
+                if(parseFloat(longBkMinCust) <= 0){
+                    longBkMinCust = 1;
+                    alert("Invalid value, only positive numbers. Saved as 1.");
+                }
+                timer.longBkMinCust = longBkMinCust;
+                
+                
+            }
+            saveToStorage(timer);
+        // }
+    });
+}
 
     //Begin session by getting timer informaiton
     beginButton.addEventListener('click', () => {
@@ -580,7 +611,7 @@ function calcEndTime(mins) {
 
 function saveToStorage(obj) {
     let serialized = JSON.stringify(obj);
-    chrome.storage.sync.set({ "popupState": serialized }, function () {
+    chrome.storage.sync.set({ "popupData": serialized }, function () {
         console.log('Value is set to ' + serialized);
     });
 }
