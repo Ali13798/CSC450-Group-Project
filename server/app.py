@@ -93,6 +93,7 @@ def logout():
     flask.session["name"] = None
     return flask.redirect("/")
 
+
 # Ali's example, keeping for reference
 @app.route("/stats2")
 def stats2():
@@ -114,15 +115,16 @@ def stats2():
 
     return render_template("stats2.html", title="Stats", stats=stats)
 
+
 @app.route("/stats")
 def stats():
     # Returns the totals for clickcount, keycount, and timestudied
-    
+
     stats: dict[str, int] = {
-            "clickCountTot": 5,
-            "KeyCountTot": 20,
-            "timeStudiedTot": 125,
-        }
+        "clickCountTot": 5,
+        "KeyCountTot": 20,
+        "timeStudiedTot": 125,
+    }
 
     # Returns records of the past 5 or 10 session counts for the graphs
 
@@ -168,7 +170,13 @@ def stats():
         },
     ]
 
-    return render_template("stats.html", title="Stats", stats=stats, mouseHst=mouseHst, keyHst = keyHst, minHst = minHst)
+    return render_template("stats.html",
+                           title="Stats",
+                           stats=stats,
+                           mouseHst=mouseHst,
+                           keyHst=keyHst,
+                           minHst=minHst)
+
 
 @app.route("/history")
 def history():
@@ -193,15 +201,21 @@ def saveStudyData():
         if "keyCount" in request_data:
             keyCount = request_data["keyCount"]
 
-    return (
-        '{ "message":"recieved '
-        + timeStudied
-        + " "
-        + str(clickCount)
-        + " "
-        + str(keyCount)
-        + '" }'
-    )
+    return ('{ "message":"recieved ' + timeStudied + " " + str(clickCount) +
+            " " + str(keyCount) + '" }')
+
+
+#Anh testing endpoint for saving users name
+@app.route("/addUser", methods=["POST"])
+def addUser():
+    request_info = request.get_json()
+
+    if request_info:
+        if "fusername" in request_info:
+            fusername = request_info["fusername"]
+        if "lusername" in request_info:
+            lusername = request_info["lusername"]
+    return ('{ "message":"recived "' + fusername + " " + lusername + "}")
 
 
 def main():
