@@ -1,3 +1,4 @@
+# import datetime
 import hashlib
 import sqlite3
 
@@ -57,7 +58,7 @@ def greet():
             flask.flash("Username not found. Sign up for a new account.")
             return flask.redirect(flask.url_for("signup"))
 
-        db_password = db_tools.get_user_password(cur=cur, name=name)[0]
+        db_password = db_tools.get_user_password(cur=cur, name=name)
         if password not in db_password:
             flask.flash("Incorrect Password. Try again.")
             return flask.redirect(flask.url_for("login"))
@@ -118,8 +119,16 @@ def stats2():
 
 @app.route("/stats")
 def stats():
-    if not flask.session.get("name"):
+    username = flask.session.get("name")
+
+    if not username:
         return flask.redirect("/")
+
+    # with sqlite3.connect(DB_PATH) as con:
+    #     cur = con.cursor()
+    #     user_stats = db_tools.get_stats(cur=cur, username=username)
+
+    # return str(user_stats)
 
     # Returns records of the past 5 or 10 session counts for the graphs
     # Mouse History
@@ -189,6 +198,8 @@ def hash_password(pswd: str) -> str:
 # Mackensie testing endpoint for saving data from extension
 @app.route("/saveStudyData", methods=["POST"])
 def saveStudyData():
+    username = flask.session.get("name")
+
     request_data = request.get_json()
 
     if request_data:
@@ -198,6 +209,18 @@ def saveStudyData():
             clickCount = request_data["clickCount"]
         if "keyCount" in request_data:
             keyCount = request_data["keyCount"]
+
+    # date_time = datetime.datetime.now().isoformat()
+    # with sqlite3.connect(DB_PATH) as con:
+    #     cur = con.cursor()
+    #     db_tools.add_stats(
+    #         cur=cur,
+    #         username=username,
+    #         date_time=date_time,
+    #         duration=timeStudied,
+    #         click_count=clickCount,
+    #         keyboard_count=keyCount,
+    #     )
 
     return (
         '{ "message":"recieved '
