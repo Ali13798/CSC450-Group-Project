@@ -212,7 +212,7 @@ def saveStudyData():
         if "keyCount" in request_data:
             keyCount = request_data["keyCount"]
 
-    return ('{ "message":"recieved ' + timeStudied + " " + str(clickCount) +
+    return ('{ "message":"recieved ' + str(timeStudied) + " " + str(clickCount) +
             " " + str(keyCount) + '" }')
 
 

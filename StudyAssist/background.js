@@ -24,11 +24,11 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
   const hostname = new URL(url).hostname;
 
   chrome.storage.local.get(["blocked", "enabled", "breakTime"], function (local) {
-    console.log(hostname, local);
+    // console.log(hostname, local);
     const { blocked, enabled, breakTime} = local;
 
     if(enabled === true){
-      console.log("in study time check");
+      // console.log("in study time check");
       // Whitelist during study time
       if (Array.isArray(blocked) && enabled && !blocked.find(domain => hostname.includes(domain))) {
         console.log(blocked);
@@ -41,7 +41,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
               popupData.newBlockedPg = true;
               let serialized = JSON.stringify(popupData);
               chrome.storage.sync.set({"popupData": serialized}, function() {
-                  console.log('Value is set to ' + serialized);
+                  // console.log('Value is set to ' + serialized);
               });
           }
         });
@@ -53,7 +53,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
 
         console.log("in break time if");
         if (!hostname.includes("google")){
-          console.log("in break time check for google");
+          // console.log("in break time check for google");
           chrome.tabs.remove(tabId);
         }
       }

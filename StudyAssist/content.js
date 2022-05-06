@@ -92,6 +92,7 @@ if(!pause){
                 var stID = setInterval(function() {
                     //add time to click
                     timeSinceClick += 1;
+
                     if (timeSinceClick > timetowaitforclick){ //if more than 3 minutes have gone by
                         pauseFunc();
                         alert("No mouse clicks registered recently. Please keep working or pause.");
@@ -100,6 +101,7 @@ if(!pause){
                     }
                     //if not paused, continue timer
                     if(!(timerPlace.innerHTML == "Paused")){
+
                         if (additionalTime == 1) additionalTime += 1; //count additional time used
 
                         //check if it has been paused previously
@@ -112,6 +114,7 @@ if(!pause){
                             pauseStart = null;
                             pauseEnd = null;
                         }
+
                         var now = new Date().getTime();
                         var dist = endTime - now;
                         var hours = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -119,44 +122,77 @@ if(!pause){
                         var seconds = Math.floor((dist % (1000 * 60)) / 1000);
                         timerPlace.innerHTML = hours + ":" + minutes + ":" + seconds;
                         document.body.prepend(timerPlace);
-                        //when timer is over
+
+                        //when timer ends
                         if(dist <= 0){
-                            answer = confirm("Timer has ended. Continue to next stage of your session? Cancel will postpone this message and continue the timer.");
+                            answer = confirm("Timer has ended. Continue to next stage of your session? Cancel will postpone this message and add two minutes.");
                             if(answer){ //Stop the timer, continue to next stage
+
                                 clearInterval(stID);
                                 timerPlace.innerHTML = "";
                                 document.body.prepend(timerPlace);
+
                                 //Store that the time has ended
                                 chrome.storage.sync.get(['popupData'], function(result) {
                                     if(!(result.popupData === undefined || result.popupData === null || result.popupData.length === 0)){
                                         var popupData = JSON.parse(result.popupData);
                                         if(popupData.state === "study"){
-                                            popupData.numStudy = (popupData.numStudy) ? (parseInt(popupData.numStudy) + 1) : 1;
-                                            prevTime = popupData.timeStudied ? parseInt(popupData.timeStudied): 0;
-                                            console.log("prev: ", prevTime);
-                                            popupData.timeStudied = prevTime + popupData.studyMin + additionalTime;
-                                            console.log(popupData.timeStudied);
+                                            if (additionalTime <= 1){//if no over time, then increment the state counts (because it has already been done in overtime check)
+                                                popupData.numStudy = (popupData.numStudy) ? (parseInt(popupData.numStudy) + 1) : 1; //get the current number of completed study periods and increment
+                                                
+                                                // save time without over time
+                                                prevTime = popupData.timeStudied ? parseFloat(popupData.timeStudied): 0;  //get the previous time studied //TODO: test accuracy with mutliple windows
+                                                
+                                                console.log("additionalTime <= 1 prev: ", prevTime); 
+
+                                                popupData.timeStudied = prevTime //add on the time for the session that just finished
+                                                                    + parseFloat(popupData.studyMin); //current amount for the timer
+
+                                                console.log(popupData.timeStudied);
+
+                                                //add saved counts to current count
+                                                popupData.keyCount = (popupData.keyCount) ? (parseInt(popupData.keyCount) + keyCount) : keyCount;
+                                                popupData.clickCount = (popupData.clickCount) ? (parseInt(popupData.clickCount) + clickCount) : clickCount;
+
+                                                // Reset the local counts
+                                                keyCount = 0;
+                                                clickCount = 0;
+
+                                                console.log("additionalTime <= 1 popupData.keyCount: " + popupData.keyCount + " and popupData.clickCount: " + popupData.clickCount);
+
+                                            }else{ //if there has been over time, only save the overtime becuase the timer amount has already been saved
+                                                prevTime = popupData.timeStudied ? parseFloat(popupData.timeStudied): 0;  //get the previous time studied //TODO: test accuracy with mutliple windows
+                                                
+                                                console.log("timer end else prev: ", prevTime); 
+
+                                                popupData.timeStudied = prevTime //add on the time for the session that just finished
+                                                                    + (additionalTime * 0.016667); //convert overtime to fractions of a minute
+
+                                                console.log(popupData.timeStudied);
+
+                                                //add saved counts to current count
+                                                popupData.keyCount = (popupData.keyCount) ? (parseInt(popupData.keyCount) + keyCount) : keyCount;
+                                                popupData.clickCount = (popupData.clickCount) ? (parseInt(popupData.clickCount) + clickCount) : clickCount;
+
+                                                // Reset the local counts
+                                                keyCount = 0;
+                                                clickCount = 0;
+
+                                                console.log("timer end else popupData.keyCount: " + popupData.keyCount + " and popupData.clickCount: " + popupData.clickCount);
+                                            }
                                         }else if (popupData.state === "break"){
-                                            popupData.numBreak = (popupData.numBreak) ? (parseInt(popupData.numBreak) + 1) : 1;
+
+                                            if (additionalTime <= 1){//if no over time, then increment the state counts (because it has already been done in overtime check)
+                                                popupData.numBreak = (popupData.numBreak) ? (parseInt(popupData.numBreak) + 1) : 1; //get the current number of completed short breaks and increment
+                                            }
+
                                         }else if (popupData.state === "Long break"){
-                                            popupData.numLongBreak = (popupData.numLongBreak) ? (parseInt(popupData.numLongBreak) + 1) : 1;
-                                        }
-                                        //add counts to current count
-                                        if (popupData.keyCount === null || popupData.keyCount === undefined){
-                                            popupData.keyCount = keyCount;
-                                        }else{
-                                            popupData.keyCount += parseInt(popupData.keyCount) + keyCount;
-                                        }
-                                        if (popupData.clickCount === null || popupData.clickCount === undefined){
-                                            popupData.clickCount = clickCount;
-                                        }else{
-                                            popupData.clickCount += parseInt(popupData.clickCount) + clickCount;
-                                        }
-                                        keyCount = 0;
-                                        clickCount = 0;
 
-                                        console.log("popupData.keyCount and popupData.clickCount" + popupData.keyCount + popupData.clickCount);
-
+                                            if (additionalTime <= 1){//if no over time, then increment the state counts (because it has already been done in overtime check)
+                                                popupData.numLongBreak = (popupData.numLongBreak) ? (parseInt(popupData.numLongBreak) + 1) : 1; //get the current number of completed long breaks and increment 
+                                            }
+                                        
+                                        }
                                         //set popup state to be between study/break
                                         popupData.state = "intermission";
                                         popupData.endTime = undefined;
@@ -175,25 +211,47 @@ if(!pause){
                                 //add 2 minutes to the timer
                                 endTime.setMinutes(new Date().getMinutes() + 2);
                                 additionalTime += 1; 
-                                // turn red
-                                timerPlace.style.color = "#f00";
+                                timerPlace.style.color = "#f00"; // turn red
                                 // but the state of popup is intermission becuase they can end any time and continue to the next state
                                 chrome.storage.sync.get(['popupData'], function(result) {
                                     if(!(result.popupData === undefined || result.popupData === null || result.popupData.length === 0)){
                                         var popupData = JSON.parse(result.popupData);
+                                        // Set the state of popup to be intermission so they can end any time and continue to the next state
                                         if(popupData.state === "study"){
                                             popupData.numStudy = (popupData.numStudy) ? (parseInt(popupData.numStudy) + 1) : 1;
+
+                                            prevTime = popupData.timeStudied ? parseFloat(popupData.timeStudied): 0;  //get the previous time studied //TODO: test accuracy with mutliple windows
+                                            
+                                            console.log("postpone save prev: ", prevTime); 
+
+                                            popupData.timeStudied = prevTime //add on the time for the session that just finished
+                                                                + popupData.studyMin; //current amount for the timer
+
+                                            console.log(popupData.timeStudied);
+
+                                            //add saved counts to current count
+                                            popupData.keyCount = (popupData.keyCount) ? (parseInt(popupData.keyCount) + keyCount) : keyCount;
+                                            popupData.clickCount = (popupData.clickCount) ? (parseInt(popupData.clickCount) + clickCount) : clickCount;
+
+                                            // Reset the local counts
+                                            keyCount = 0;
+                                            clickCount = 0;
+
+                                            console.log("postpone save popupData.keyCount: " + popupData.keyCount + " and popupData.clickCount: " + popupData.clickCount);
+
                                         }else if (popupData.state === "break"){
                                             popupData.numBreak = (popupData.numBreak) ? (parseInt(popupData.numBreak) + 1) : 1;
+
                                         }else if (popupData.state === "Long break"){
                                             popupData.numLongBreak = (popupData.numLongBreak) ? (parseInt(popupData.numLongBreak) + 1) : 1;
                                         }
+
                                         //set popup state to be between study/break
                                         popupData.state = "intermission";
                                         popupData.endTime = undefined;
-                                        let serializedTimer = JSON.stringify(popupData);
-                                        chrome.storage.sync.set({"popupData": serializedTimer}, function() {
-                                            console.log('Content: Value is set to ' + serializedTimer);
+                                        let serializedPopupData = JSON.stringify(popupData);
+                                        chrome.storage.sync.set({"popupData": serializedPopupData}, function() {
+                                            // console.log('Content: Value is set to ' + serializedTimer);
                                         });
                                     }
                                 })

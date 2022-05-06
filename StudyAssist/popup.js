@@ -131,7 +131,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         timer.numBreak = 0;
                         timer.numLongBreak = 0;
                         
-
                         //If there is contents in timeStudied, then save it to the DB
                         if (!(popupData.timeStudied === undefined || 
                             popupData.timeStudied === null || 
@@ -176,6 +175,46 @@ document.addEventListener("DOMContentLoaded", () => {
                         messages.style.display = "none";
                         var PgTitle = document.getElementById("PgTitle");
                         mainPageSettings();
+
+                        console.log("data: "+ popupData.timeStudied);
+                        //If there is contents in timeStudied, then save it to the DB
+                        if (!(popupData.timeStudied === undefined || 
+                            popupData.timeStudied === null || 
+                            popupData.timeStudied.length === 0)){
+                            data = {};
+                            console.log("data = " + popupData.timeStudied + " " + popupData.clickCount + " " + popupData.keyCount);
+                            data.timeStudied = popupData.timeStudied;
+                            data.clickCount = popupData.clickCount
+                            data.keyCount = popupData.keyCount
+                            try{
+                                fetch("http://127.0.0.1:5000/saveStudyData", {
+                                    method: "POST",
+                                    body: JSON.stringify(data),
+                                    headers: new Headers({
+                                        "content-type": "application/json"
+                                    })
+                                })
+                                .then(function(response) {
+                                    if(response.ok){
+                                        return response.json()
+                                    }else{
+                                        console.log("Response error status: ", response.status);
+                                    }
+                                })
+                                .then(function(message){
+                                    console.log("Message: ", message);
+                                    timer.timeStudied = null;
+                                    timer.clickCount = null;
+                                    timer.keyCount = null;
+                                    saveToStorage(timer)
+                                }).catch(function(error){
+                                    console.log("Error on fetch: ", error); 
+                                })
+                            }catch(error){
+                                console.log("Error on try: ", error);  
+                            }
+                            
+                        }
 
                     }
                      
@@ -303,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // console.log(blocked);
         chrome.storage.local.set({ blocked });
     });
-    
+
  //if a button is selected, save selection in storage
  radioButtons.addEventListener('click', e => {
     if (e.target && e.target.matches("input[type='radio']")) {
@@ -417,6 +456,44 @@ for (var inputIndex = 0; inputIndex < inputs.length; inputIndex++) {
         answer = confirm("Reload page to remove timer?");
         if (!answer) {
             return;
+        }
+
+        if (!(timer.timeStudied === undefined || 
+            timer.timeStudied === null || 
+            timer.timeStudied.length === 0)){
+            data = {};
+            console.log("data = " + timer.timeStudied + " " + timer.clickCount + " " + timer.keyCount);
+            data.timeStudied = timer.timeStudied;
+            data.clickCount = timer.clickCount
+            data.keyCount = timer.keyCount
+            try{
+                fetch("http://127.0.0.1:5000/saveStudyData", {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: new Headers({
+                        "content-type": "application/json"
+                    })
+                })
+                .then(function(response) {
+                    if(response.ok){
+                        return response.json()
+                    }else{
+                        console.log("Response error status: ", response.status);
+                    }
+                })
+                .then(function(message){
+                    console.log("Message: ", message);
+                    timer.timeStudied = null;
+                    timer.clickCount = null;
+                    timer.keyCount = null;
+                    saveToStorage(timer)
+                }).catch(function(error){
+                    console.log("Error on fetch: ", error); 
+                })
+            }catch(error){
+                console.log("Error on try: ", error);  
+            }
+            
         }
 
         mainPageSettings();
@@ -612,7 +689,7 @@ function calcEndTime(mins) {
 function saveToStorage(obj) {
     let serialized = JSON.stringify(obj);
     chrome.storage.sync.set({ "popupData": serialized }, function () {
-        console.log('Value is set to ' + serialized);
+        // console.log('Value is set to ' + serialized);
     });
 }
 
