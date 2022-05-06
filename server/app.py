@@ -123,32 +123,41 @@ def stats():
         cur = con.cursor()
         user_stats = db_tools.get_stats(cur=cur, username=username)
 
-    return str(user_stats)
+    stats: list[dict[str, int]] = []
+    for stat in user_stats:
+        temp_dict = {
+            "id": stat[0],
+            "date": stat[2],
+            "timeStudied": stat[3],
+            "clickCount": stat[4],
+            "keyCount": stat[5],
+        }
+        stats.append(temp_dict)
 
     # Please load in the past 5
-    stats: list[dict[str, int]] = [
-        {
-            "id": 1,
-            "date": "5/1/22",
-            "clickCount": 5,
-            "keyCount": 20,
-            "timeStudied": 125,
-        },
-        {
-            "id": 2,
-            "date": "5/2/22",
-            "clickCount": 41,
-            "keyCount": 12,
-            "timeStudied": 60,
-        },
-        {
-            "id": 3,
-            "date": "5/3/22",
-            "clickCount": 100,
-            "keyCount": 80,
-            "timeStudied": 310,
-        },
-    ]
+    # stats: list[dict[str, int]] = [
+    #     {
+    #         "id": 1,
+    #         "date": "5/1/22",
+    #         "clickCount": 5,
+    #         "keyCount": 20,
+    #         "timeStudied": 125,
+    #     },
+    #     {
+    #         "id": 2,
+    #         "date": "5/2/22",
+    #         "clickCount": 41,
+    #         "keyCount": 12,
+    #         "timeStudied": 60,
+    #     },
+    #     {
+    #         "id": 3,
+    #         "date": "5/3/22",
+    #         "clickCount": 100,
+    #         "keyCount": 80,
+    #         "timeStudied": 310,
+    #     },
+    # ]
 
     return render_template("stats.html", title="Stats", stats=stats)
 
