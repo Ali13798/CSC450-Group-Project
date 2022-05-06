@@ -73,8 +73,6 @@ def new_user():
         return flask.redirect("/")
 
     name = flask.request.form.get("name")
-<<<<<<< HEAD
-=======
     if " " in name:
         flask.flash('Username cannot contain empty spaces " ". Try again.')
         return flask.redirect(flask.url_for("signup"))
@@ -87,7 +85,6 @@ def new_user():
         flask.flash("Username cannot contain any special characters.")
         return flask.redirect(flask.url_for("signup"))
 
->>>>>>> a0ecc2be9dce02196267f95783db15cbc89b032f
     password = flask.request.form.get("password")
     password = hash_password(password)
 
