@@ -187,7 +187,7 @@ animation: bubbleAnim2 10s linear infinite;
 .welcome:hover span:nth-child(3)
 {
 border: none;
-background: rgba(19, 117, 117, 0.8);
+background: #137575cc;
 }
 
 @keyframes bubbleAnim 
@@ -589,8 +589,8 @@ stroke-dashoffset: 165;
 .buttonMouse
 {
 position: absolute;
-top: 30%;
-left: 25%;
+top: 20%;
+left: 17.5%;
 transform: translate(-50%,-50%);
 text-align: center;
 padding: 30px 60px;
@@ -717,8 +717,8 @@ animation-delay: .5s;
 .buttonKey
 {
 position: absolute;
-top: 60%;
-left: 25%;
+top: 20%;
+left: 50%;
 transform: translate(-50%,-50%);
 text-align: center;
 padding: 30px 60px;
@@ -846,8 +846,8 @@ animation-delay: .5s;
 .buttonTotalTime
 {
 position: absolute;
-top: 30%;
-left: 75%;
+top: 20%;
+left: 80.5%;
 transform: translate(-50%,-50%);
 text-align: center;
 padding: 30px 60px;
@@ -975,7 +975,7 @@ animation-delay: .5s;
 .buttonDaysStudied
 {
   position: absolute;
-  top: 60%;
+  top: 70%;
   left: 75%;
   transform: translate(-50%,-50%);
   text-align: center;
@@ -1157,3 +1157,10 @@ animation-delay: .5s;
   font-size: 1.5em;
   margin-top: -2.5%;
 }
+
+
+/* End Buttons*/
+
+/* Start Graphs */
+
+/* End Stats */
