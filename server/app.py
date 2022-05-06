@@ -3,7 +3,7 @@ import hashlib
 import sqlite3
 
 import flask
-from flask import render_template, request
+from flask import render_template
 from flask_session import Session
 
 from db_tools import db_tools
@@ -195,7 +195,7 @@ def hash_password(pswd: str) -> str:
 def saveStudyData():
     username = flask.session.get("name")
 
-    request_data = request.get_json()
+    request_data = flask.request.get_json()
 
     if request_data:
         if "timeStudied" in request_data:
@@ -231,7 +231,7 @@ def saveStudyData():
 # Anh testing endpoint for saving users name
 @app.route("/addUser", methods=["POST"])
 def addUser():
-    request_info = request.get_json()
+    request_info = flask.request.get_json()
 
     if request_info:
         if "fusername" in request_info:
