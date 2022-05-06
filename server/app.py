@@ -24,11 +24,6 @@ def index():
     return render_template("home-site.html", title="Homepage", name=name)
 
 
-# @app.route("/home")
-# def home():
-#     return render_template("home-site.html", title="Homepage")
-
-
 @app.route("/signup")
 def signup():
     return render_template("signup.html", title="Sign Up")
