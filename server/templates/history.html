@@ -18,6 +18,20 @@
   top: 20%;
   transform: translate(-50%, -50%);
   padding: 10px;
+  font-size: 20px;
+  color: #ffbe0c;
+}
+#start, #end {
+    font-size:25px;
+    
+}
+#subButton{
+  color: #137575cc;
+  font-family: 'Michroma', sans-serif;
+  background-color: #ffbe0c;
+  font-size: 20px;
+  padding: 10px;
+  border: 0;
 }
 
 </style>
@@ -29,13 +43,15 @@
 <div class="container" id="hstDiv" data-userHist='{{ userHist }}'>
   
   <div id="datePicker">
-    <label for="start">Start Date:</label>
-    <input type="date" id="start" name="startDate" value="2018-07-22">
+    <form id="submitDates" action="">
+      <label for="start">Start Date:</label>
+      <input type="date" id="start" name="startDate">
 
-    <label for="start">End Date:</label>
-    <input type="date" id="end" name="endDate" min="2022-01-01">
-
-    <button id="submitDates">Submit</button>
+      <label for="start">End Date:</label>
+      <input type="date" id="end" name="endDate">
+    
+      <button id="subButton">Submit</button>
+    </form>
   </div>
 
   <div id="columnchart_material" style="width: 800px; height: 500px;"></div>
@@ -43,27 +59,41 @@
 </div>
   
 <script type="text/javascript">
+  startD = new Date();
+  endD  = new Date();
   document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById('start').value = new Date().toDateInputValue();
-    document.getElementById('end').value = new Date().toDateInputValue();
-    document.getElementById('submitDates').addEventListener('click', ()=>{
+    
+    d = new Date();
+    year = d.getFullYear();
+    month = ((d.getMonth() + 1) < 10 ) ? "0"+(d.getMonth() + 1) : (d.getMonth() + 1);
+    day = (d.getDate() < 10 ) ? "0"+d.getDate() : d.getDate();
+
+    document.getElementById('start').value = year + "-" + month + "-" + day;
+    document.getElementById('end').value = year + "-" + month + "-" + day;
+    // document.reload();
+    form = document.getElementById('submitDates');
+
+    form.addEventListener("submit", (e)=>{
+
+      event.preventDefault();
+
       start = document.getElementById('start').value;
       end = document.getElementById('end').value;
-      console.log(start + " " + end);
+
+      startD = new Date(start +"T00:00:00");
+      endD = new Date(end+"T00:00:00");
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
     });
+
   });
 
   var userHist = document.getElementById("hstDiv").getAttribute('data-userHist');
-  console.log(userHist);
   userHist = "{ 'data': " + userHist + "}";
   userHist = userHist.replace(/\'/g, '"');
   userHist = JSON.parse(userHist);
   hstArray = userHist.data;
-  console.log(hstArray);
-
-
-  google.charts.load('current', {'packages':['bar']});
-  google.charts.setOnLoadCallback(drawChart);
 
   function drawChart() {
     // Labels
@@ -74,29 +104,37 @@
     labels = [xTitle, firstBarTitle, secondBarTitle, thirdBarTitle];
 
     // Data
+    itemAdded = false;
     sessions = [labels];
     hstArray.forEach(elm => {
-      
-      sessions.push([elm.date, elm.clickCount, elm.keyCount, elm.timeStudied]);
-    });
-    
-    var data = google.visualization.arrayToDataTable(sessions);
 
-    var options = {
-      chart: {
-        title: 'Session History',
-        subtitle: 'Totals for each previous session',
+      dateArray = elm.date.split("/");
+      dateObj = new Date("20" + dateArray[2] + "-" + dateArray[0] + "-" + dateArray[1]);
+
+      if (dateObj >= startD.getDate() && dateObj.getDate() <= endD.getDate() ){
+        sessions.push([elm.date, elm.clickCount, elm.keyCount, elm.timeStudied]);
+        itemAdded = true;
       }
-    };
+      
+    });
 
-    var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+    if(itemAdded){
 
-    chart.draw(data, google.charts.Bar.convertOptions(options));
+      var data = google.visualization.arrayToDataTable(sessions);
+
+      var options = {
+        chart: {
+          title: 'Session History',
+          subtitle: 'Totals for each previous session',
+        }
+      };
+
+      var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+      chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+    
   }
 </script>
 
-
-
 {% endblock body %}
-
-
