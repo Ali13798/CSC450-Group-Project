@@ -118,6 +118,8 @@ def stats2():
 
 @app.route("/stats")
 def stats():
+    if not flask.session.get("name"):
+        return flask.redirect("/")
     # Please load in the past 5
     stats: list[dict[str, int]] = [{
         "id": 1,

@@ -10,7 +10,13 @@
   left: 50%;
   top: 55%;
   transform: translate(-50%, -50%);
-  /* border: 5px solid #FFFF00; */
+  padding: 10px;
+}
+#datePicker {
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translate(-50%, -50%);
   padding: 10px;
 }
 
@@ -21,12 +27,31 @@
 
 <!-- Start Welcome User -->
 <div class="container" id="hstDiv" data-userHist='{{ userHist }}'>
+  
+  <div id="datePicker">
+    <label for="start">Start Date:</label>
+    <input type="date" id="start" name="startDate" value="2018-07-22">
+
+    <label for="start">End Date:</label>
+    <input type="date" id="end" name="endDate" min="2022-01-01">
+
+    <button id="submitDates">Submit</button>
+  </div>
 
   <div id="columnchart_material" style="width: 800px; height: 500px;"></div>
 
 </div>
   
 <script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById('start').value = new Date().toDateInputValue();
+    document.getElementById('end').value = new Date().toDateInputValue();
+    document.getElementById('submitDates').addEventListener('click', ()=>{
+      start = document.getElementById('start').value;
+      end = document.getElementById('end').value;
+      console.log(start + " " + end);
+    });
+  });
 
   var userHist = document.getElementById("hstDiv").getAttribute('data-userHist');
   console.log(userHist);
@@ -51,6 +76,7 @@
     // Data
     sessions = [labels];
     hstArray.forEach(elm => {
+      
       sessions.push([elm.date, elm.clickCount, elm.keyCount, elm.timeStudied]);
     });
     
