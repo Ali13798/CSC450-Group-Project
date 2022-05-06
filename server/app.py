@@ -76,7 +76,7 @@ def new_user():
         flask.flash("Username must begin with an alphabetic character.")
         return flask.redirect(flask.url_for("signup"))
 
-    if not name.isalnum():
+    if not (name.isalnum() or any(x in name for x in ["_", "-", "."])):
         flask.flash("Username cannot contain any special characters.")
         return flask.redirect(flask.url_for("signup"))
 
