@@ -93,9 +93,10 @@ def logout():
     flask.session["name"] = None
     return flask.redirect("/")
 
+# Ali's example, keeping for reference
+@app.route("/stats2")
+def stats2():
 
-@app.route("/stats")
-def stats():
     stats: list[dict[str, int]] = [
         {
             "id": 1,
@@ -113,6 +114,61 @@ def stats():
 
     return render_template("stats2.html", title="Stats", stats=stats)
 
+@app.route("/stats")
+def stats():
+    # Returns the totals for clickcount, keycount, and timestudied
+    
+    stats: dict[str, int] = {
+            "clickCountTot": 5,
+            "KeyCountTot": 20,
+            "timeStudiedTot": 125,
+        }
+
+    # Returns records of the past 5 or 10 session counts for the graphs
+
+    # Mouse History
+    mouseHst: list[dict[str, int]] = [
+        {
+            "id": 1,
+            "date": "5/2/22",
+            "clickCount": 5
+        },
+        {
+            "id": 2,
+            "date": "5/3/22",
+            "clickCount": 41
+        },
+    ]
+
+    # Key History
+    keyHst: list[dict[str, int]] = [
+        {
+            "id": 1,
+            "date": "5/2/22",
+            "keyCount": 20
+        },
+        {
+            "id": 2,
+            "date": "5/3/22",
+            "keyCount": 12
+        },
+    ]
+
+    # Minutes History
+    minHst: list[dict[str, int]] = [
+        {
+            "id": 1,
+            "date": "5/2/22",
+            "timeStudied": 125
+        },
+        {
+            "id": 2,
+            "date": "5/3/22",
+            "timeStudied": 310
+        },
+    ]
+
+    return render_template("stats.html", title="Stats", stats=stats, mouseHst=mouseHst, keyHst = keyHst, minHst = minHst)
 
 @app.route("/history")
 def history():

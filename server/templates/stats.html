@@ -3,11 +3,16 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
         <style>
+            .buttonMouse, .buttonKey, .buttonTotalTime {
+              top: 25%;
+              color: #ffbe0c;
+            }
             #mousechart_material
             {
               position: absolute;
-              left: 15%;
-              top: 45%;
+              left: 25%;
+              /* top: 45%; */
+              top: 75%;
               transform: translate(-50%, -50%);
               /* border: 5px solid #FFFF00; */
               padding: 10px;
@@ -16,8 +21,9 @@
             #keychart_material
             {
               position: absolute;
-              left: 47%;
-              top: 45%;
+              left: 58%;
+              /* top: 45%; */
+              top: 75%;
               transform: translate(-50%, -50%);
               /* border: 5px solid #FFFF00; */
               padding: 10px;
@@ -27,8 +33,9 @@
             #studychart_material
             {
               position: absolute;
-              left: 78%;
-              top: 45%;
+              left: 90%;
+              /* top: 45%; */
+              top: 75%;
               transform: translate(-50%, -50%);
               /* border: 5px solid #FFFF00; */
               padding: 10px;
@@ -38,7 +45,6 @@
 {% endblock head %}
 
 {% block body %}
-
 
 <div id="content">
 
@@ -52,35 +58,34 @@
         </button>
 
         <!-- MOUSE GRAPH -->
-        <div class="container">
+        <div class="container" id="mouseDiv" data-mouseHst='{{ mouseHst }}'>
 
             <div id="mousechart_material" style="width: 800px; height: 500px;"></div>
           
           </div>
-            
+          
           <script type="text/javascript">
+
+            var mouseHst = document.getElementById("mouseDiv").getAttribute('data-mouseHst');
+            mouseHst = "{ 'data': " + mouseHst + "}";
+            mouseHst = mouseHst.replace(/\'/g, '"');
+            mouseHst = JSON.parse(mouseHst);
+            mouseArray = mouseHst.data;
+
+
             google.charts.load('current', {'packages':['bar']});
             google.charts.setOnLoadCallback(drawChart);
           
             function drawChart() {
-              // variables for the chart
               // Labels
               xTitle = "Session Date";
               firstBarTitle = "Total Mouse Clicks";
               labels = [xTitle, firstBarTitle];
+
               // Data
-          
-              //SessionList will hold the data objects after recieving from DB and parsing through
-              SessionList = [ 
-                ['5/2/22', 100],
-                ['5/3/22', 200],
-                ['5/4/22', 150],
-                ['5/5/22', 250],
-              ]
-          
               sessions = [labels];
-              SessionList.forEach(element => {
-                sessions.push(element)
+              mouseArray.forEach(elm => {
+                sessions.push([elm.date, elm.clickCount]);
               });
               
               var data = google.visualization.arrayToDataTable(sessions);
@@ -117,35 +122,32 @@
         <!-- End Button for Key Stats-->
         
         <!-- Start Key Graph -->
-        <div class="container">
+        <div class="container" id="keyDiv" data-keyHst='{{ keyHst }}'> 
 
             <div id="keychart_material" style="width: 800px; height: 500px;"></div>
           
           </div>
             
           <script type="text/javascript">
+
+            var keyHst = document.getElementById("keyDiv").getAttribute('data-keyHst');
+            keyHst = "{ 'data': " + keyHst + "}";
+            keyHst = keyHst.replace(/\'/g, '"');
+            keyHst = JSON.parse(keyHst);
+            keyArray = keyHst.data;
+
             google.charts.load('current', {'packages':['bar']});
             google.charts.setOnLoadCallback(drawChart);
           
             function drawChart() {
-              // variables for the chart
               // Labels
               xTitle = "Session Date";
               BarTitle = "Total Key Presses";
               labels = [xTitle, BarTitle];
-              // Data
-          
-              //SessionList will hold the data objects after recieving from DB and parsing through
-              SessionList = [ 
-                ['5/2/22', 150],
-                ['5/3/22', 175],
-                ['5/4/22', 125],
-                ['5/5/22', 115],
-              ]
-          
+              // Data          
               sessions = [labels];
-              SessionList.forEach(element => {
-                sessions.push(element)
+              keyArray.forEach(elm => {
+                sessions.push([elm.date, elm.keyCount]);
               });
               
               var data = google.visualization.arrayToDataTable(sessions);
@@ -182,35 +184,32 @@
 
         <!-- START STUDY TIME CHART -->
 
-        <div class="container">
+        <div class="container" id="minDiv" data-minHst='{{ minHst }}'>
 
             <div id="studychart_material" style="width: 800px; height: 500px;"></div>
           
         </div>
             
           <script type="text/javascript">
+
+            var minHst = document.getElementById("minDiv").getAttribute('data-minHst');
+            minHst = "{ 'data': " + minHst + "}";
+            minHst = minHst.replace(/\'/g, '"');
+            minHst = JSON.parse(minHst);
+            minArray = minHst.data;
+
             google.charts.load('current', {'packages':['bar']});
             google.charts.setOnLoadCallback(drawChart);
           
             function drawChart() {
-              // variables for the chart
               // Labels
               xTitle = "Session Date";
               firstBarTitle = "Total Time Studied";
               labels = [xTitle, firstBarTitle];
               // Data
-          
-              //SessionList will hold the data objects after recieving from DB and parsing through
-              SessionList = [ 
-                ['5/2/22', 20],
-                ['5/3/22', 40],
-                ['5/4/22', 60],
-                ['5/5/22', 80],
-              ]
-          
               sessions = [labels];
-              SessionList.forEach(element => {
-                sessions.push(element)
+              minArray.forEach(elm => {
+                sessions.push([elm.date, elm.timeStudied]);
               });
               
               var data = google.visualization.arrayToDataTable(sessions);
