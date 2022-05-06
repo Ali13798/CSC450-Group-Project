@@ -1,99 +1,19 @@
 var timer = {}; //global object for storing information about the timer
 var timeMessage; //Stores the string rep of the end timer time
+var users = {} //Object for storing information of users
 //Session progress counters
 // var numStudy, numBreak, numLongBreak;
 //Timer choice values
 var innerCycleNum = 2;
 //Content areas
-var popCont, timerDiv, custSessionInputs, textarea, messages, healthyMsg, userInfoInput;
+var popCont, timerDiv, custSessionInputs, textarea, messages, healthyMsg, userInfoInput, displayEnterPin;
 //Buttons
-var save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep;
+var infoBtn, save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep;
 var healthyMessage = "<br><br>Healthy Break Tips: <br>-Drink water <br>-Have some fruit as a snack <br>-Get up and stretch <br>-Some light exercise";
-
-//Get User information
-// document.getElementById("buttonInfo").addEventListener("click", Login);
-// function Login() {
-    
-//     var a = new Array();
-//     up1 = new Object();
-//     up2 = new Object();
-//     {
-//     const hash = Object.entries(
-//     a.map(e => [e.fusername, e.lusername])
-//     )
-//     var fusername = document.getElementById('fname').value;
-//     var lusername = document.getElementById('lname').value;
-//     for (let key of hash) {
-//         if(key[0] === fusername && key[1]=== lusername) { 
-//             alert('Login successful');
-//             }
-//         else {
-//             alert('Login fail');
-//             }
-//         }
-//     }
-//     var fusername = document.getElementById('fname').value;
-//     var lusername = document.getElementById('lname').value;
-//     sessionStorage.setItem("currentloggedin",fusername);
-//     sessionStorage.setItem("currentloggedin",lusername);
-//     localStorage.setItem('all_users',JSON.stringify(a));
-//     a=JSON.parse((localStorage.getItem("all_users")));
-//     a.push({fname: fusername, lname: lusername});
-//     localStorage.setItem('fname',JSON.stringify(a));
-//     for(var i=0; i<a.length; i++) {
-//         var li = document.createElement("li");
-//         li.innerHTML=a[i]['fname'];
-//         document.getElementById("listuser").appendChild(li);
-//     }
-//     localStorage.setItem('lname',JSON.stringify(a));
-//     for(var i=0; i<a.length; i++) {
-//         var li = document.createElement("li");
-//         li.innerHTML=a[i]['lname'];
-//         document.getElementById("listuser").appendChild(li);
-//     }
-// }
-
-
-
-
-//Button for user to enter name
-var infoBtn;
-window.addEventListener("DOMContentLoaded", () => {
-    infoBtn = document.getElementById("buttonInfo");
-    infoBtn.addEventListener("click", submitForm);
-    function submitForm() {
-        let data = {};
-        data.fname = document.getElementById("fname").value;
-        data.lname = document.getElementById("lname").value;
-        if (document.getElementById("fname").value == "") {
-            alert("Please, enter your first name.")
-        } else if (document.getElementById("lname").value == "") {
-            alert("Please, enter your last name.")
-        }
-        else {
-            alert("Hello, " + fname.value + " " + lname.value);
-        }
-    }
-})
-
-//Parent Mode Button
-var displayEnterPin;
-window.addEventListener("DOMContentLoaded", () => {
-    parentBtn = document.getElementById("parentModeBtn");
-    parentBtn.addEventListener("click", togglePinField);
-    parentInput = document.getElementById("parentInput");
-    function togglePinField() {
-        if (parentInput.style.display === "none") {
-            parentInput.style.display = "block";
-        } else {
-            parentInput.style.display = "none";
-        }
-    }
-})
 
 //Clicking on the button starts the blocking session
 document.addEventListener("DOMContentLoaded", () => {
-    //Element Variables
+    //Variable
     popCont = document.getElementById("popupContainer");
     timerDiv = document.getElementById("timerOptions");
     textarea = document.getElementById("textarea");
@@ -109,6 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
     messages = document.getElementById("messages");
     healthyMsg = document.getElementById("healthy");
     userInfoInput = document.getElementById("userInfoInput");
+    infoBtn = document.getElementById("buttonInfo");
+    parentBtn = document.getElementById("parentModeBtn");
 
     //if the title is welcome, then clear some info from storage
     // if (PgTitle.innerHTML == "Welcome!") {
@@ -123,6 +45,60 @@ document.addEventListener("DOMContentLoaded", () => {
     //     chrome.storage.local.set({ breakTime });
     // }
 
+    //Get User information
+    //Button for user to enter name
+    // document.addEventListener("DOMContentLoaded", () => { //this is already being done on line 15
+        infoBtn.addEventListener("click", submitForm);
+        function submitForm() {
+            let data = {};
+            data.fusername = document.getElementById("fname").value;
+            data.lusername = document.getElementById("lname").value;
+            if (document.getElementById("fname").value == "") {
+                alert("Please, enter your first name.")
+            } else if (document.getElementById("lname").value == "") {
+                alert("Please, enter your last name.")
+            }
+            else {
+                alert("Hello, " + fname.value + " " + lname.value);
+            }
+            try {
+                fetch("http://127.0.0.1:5000/addUser", {
+                    method: 'POST',
+                    headers: new Headers({ 'Content-Type': 'application/json', }),
+                    body: JSON.stringify(data)
+                }).then(function (response) {
+                    if (response.ok) {
+                        return response.json()
+                    } else {
+                        console.log("User Information error: ", response.status)
+                    }
+                }).then(function (message) {
+                    consolse.log("Message: ", message);
+                    users.fusername = null;
+                    users.lusername = null;
+                    saveToStorage(users)
+                }).catch(function (error) {
+                    console.log("Error on fetch: ", error);
+                });
+            } catch (error) {
+                console.log("Error on try: ", error);
+            }
+        }
+    // })
+
+    //Parent Mode Button
+    document.addEventListener("DOMContentLoaded", () => {
+        parentBtn.addEventListener("click", togglePinField);
+        parentInput = document.getElementById("parentInput");
+        function togglePinField() {
+            if (parentInput.style.display === "none") {
+                parentInput.style.display = "block";
+            } else {
+                parentInput.style.display = "none";
+            }
+        }
+    })
+
     //Load previous session data if any
     chrome.storage.sync.get(['popupState'], function (result) {
         if (!(result.popupState === undefined || result.popupState === null || result.popupState.length === 0)) {
@@ -130,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
             var popupState = JSON.parse(result.popupState);
             timer = popupState;
             if (popupState) {
-                //Parse numbers to work with
+                //load vars keeping track of num of study and breaks
                 timer.numStudy = (popupState.numStudy) ? parseInt(popupState.numStudy) : 0;
                 timer.numBreak = (popupState.numBreak) ? parseInt(popupState.numBreak) : 0;
                 timer.numLongBreak = (popupState.numLongBreak) ? parseInt(popupState.numLongBreak) : 0;
@@ -139,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 timer.LBtime = parseFloat(popupState.longBkMin);
                 timer.cycleNum = parseInt(popupState.cycleNum);
 
-                if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0)){
+                if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0)) {
 
                     //detect if the session has finished
                     if (timer.numLongBreak == timer.cycleNum) {
@@ -201,9 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         var PgTitle = document.getElementById("PgTitle");
                         mainPageSettings();
 
-                         
-                     } 
-
+                    }
+                     
                     //Check if in study state
                     if ( popupState.state === "study") {
                         studyPageSettings();
@@ -242,8 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         PgTitle.innerHTML = "Long Break";
                         breakPageSettings();
                     }
-                    
-                    
+
                 }
 
                 
@@ -262,7 +236,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         saveToStorage(timer);
                         answer = confirm(message);
                         if (answer) {
-                            //get list from storage, then add domain to list, then save
+                            //Add it to the whitelist
+
+                            //get list from storage
                             chrome.storage.local.get(["blocked"], function (local) {
                                 const blocked = local;
                                 if (Array.isArray(blocked.blocked)) {
@@ -296,6 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
     });
+
     //saves the list of blocked sites to localstorage
     save.addEventListener("click", () => {
         var domains = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
@@ -318,6 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
         //tell user which were removed
         var removedPara = document.getElementById("removedDomains");
         removedPara.innerHTML = removedString;
+        // console.log(blocked);
         chrome.storage.local.set({ blocked });
     });
 
@@ -326,20 +304,21 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target && e.target.matches("input[type='radio']")) {
             timer.choiceid = e.target.getAttribute("id");
             if (!(timer.choiceid.includes("opt"))) {
-                var studyMin = document.getElementById("studyMin").value;
-                var shortBkMin = document.getElementById("shortBkMin").value;
-                var cycleNum = document.getElementById("cycleNum").value;
-                var longBkMin = document.getElementById("longBkMin").value;
-                //check if any inputs
-                if (studyMin != "") {
-                    timer.studyMin = studyMin;
-                } if (shortBkMin != "") {
-                    timer.shortBkMin = shortBkMin;
-                } if (cycleNum != "") {
-                    timer.cycleNum = cycleNum;
-                } if (longBkMin != "") {
-                    timer.longBkMin = longBkMin;
-                }
+                validateCustInputs();
+                // var studyMin = document.getElementById("studyMin").value;
+                // var shortBkMin = document.getElementById("shortBkMin").value;
+                // var cycleNum = document.getElementById("cycleNum").value;
+                // var longBkMin = document.getElementById("longBkMin").value;
+                // //check if any inputs
+                // if (studyMin != "") {
+                //     timer.studyMin = studyMin;
+                // } if (shortBkMin != "") {
+                //     timer.shortBkMin = shortBkMin;
+                // } if (cycleNum != "") {
+                //     timer.cycleNum = cycleNum;
+                // } if (longBkMin != "") {
+                //     timer.longBkMin = longBkMin;
+                // }
             }
             saveToStorage(timer);
         }
@@ -348,9 +327,9 @@ document.addEventListener("DOMContentLoaded", () => {
     //if a cust value is put in, save input in storage
     var inputs = document.getElementsByClassName('custInput');
     for (var inputIndex = 0; inputIndex < inputs.length; inputIndex++) {
-        inputs[inputIndex].addEventListener('change', e => {
+        inputs[inputIndex].addEventListener('change', function validateCustInputs(e) {
             //set separate values for keeping the custom timer for later use
-            if (e.target && e.target.matches("input[type='number']")) {
+            // if (e.target && e.target.matches("input[type='number']")) {
                 var studyMinCust = document.getElementById("studyMin").value;
                 var shortBkMinCust = document.getElementById("shortBkMin").value;
                 var cycleNumCust = document.getElementById("cycleNum").value;
@@ -392,7 +371,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                 }
                 saveToStorage(timer);
-            }
+            // }
         });
     }
 
@@ -464,7 +443,7 @@ document.addEventListener("DOMContentLoaded", () => {
     pauseBtn.addEventListener('click', () => {
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             chrome.tabs.sendMessage(tabs[0].id, { message: "pause" }, function (response) {
-                console.log(response.farewell);
+                // console.log(response.farewell);
             });
         });
     });
@@ -550,19 +529,19 @@ function validateTimerChoice() {
 }
 
 function validateCustomTimer() {
-    var studyMin = timer.studyMinCust;
-    var shortBkMin = timer.shortBkMinCust;
-    var cycleNum = timer.cycleNumCust;
-    var longBkMin = timer.longBkMinCust;
+    var studyMin = document.getElementById("studyMin").value;
+    var shortBkMin = document.getElementById("shortBkMin").value;
+    var cycleNum = document.getElementById("cycleNum").value;
+    var longBkMin = document.getElementById("longBkMin").value;
     //check if all the inputs have been filled
-    if (studyMin == "" || studyMin === undefined || studyMin === null) {
-        alert("Please fill all custom timer fields to begin");
-    } else if (shortBkMin == "" || shortBkMin === undefined || shortBkMin === null) {
-        alert("Please fill all custom timer fields to begin");
-    } else if (cycleNum == "" || cycleNum === undefined || cycleNum === null) {
-        alert("Please fill all custom timer fields to begin");
-    } else if (longBkMin == "" || longBkMin === undefined || longBkMin === null) {
-        alert("Please fill all custom timer fields to begin");
+    if (studyMin == "") {
+        alert("Please fill all customer time fields to begin");
+    } else if (shortBkMin == "") {
+        alert("Please fill all customer time fields to begin");
+    } else if (cycleNum == "") {
+        alert("Please fill all customer time fields to begin");
+    } else if (longBkMin == "") {
+        alert("Please fill all customer time fields to begin");
     } else {
         var answer = confirm("Ready to reload page for timer to begin?");
         if (!answer){
@@ -602,7 +581,7 @@ function calcEndTime(mins) {
 function saveToStorage(obj) {
     let serialized = JSON.stringify(obj);
     chrome.storage.sync.set({ "popupState": serialized }, function () {
-        // console.log('Value is set to ' + serialized);
+        console.log('Value is set to ' + serialized);
     });
 }
 
