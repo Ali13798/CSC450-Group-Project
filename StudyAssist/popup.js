@@ -3,7 +3,6 @@ var timeMessage; //Stores the string rep of the end timer time
 //Session progress counters
 // var numStudy, numBreak, numLongBreak;
 //Timer choice values
-// var Stime, Btime, LBtime, Cnum;
 var innerCycleNum = 2;
 //Content areas
 var popCont, timerDiv, custSessionInputs, textarea, messages, healthyMsg, userInfoInput;
@@ -112,17 +111,17 @@ document.addEventListener("DOMContentLoaded", () => {
     userInfoInput = document.getElementById("userInfoInput");
 
     //if the title is welcome, then clear some info from storage
-    if (PgTitle.innerHTML == "Welcome!") {
-        //TODO: decide what to remove or change
+    // if (PgTitle.innerHTML == "Welcome!") {
+    //     //TODO: decide what to remove or change
 
-        //for now, just make sure blocking is off
-        const enabled = false;
-        chrome.storage.local.set({ enabled });
+    //     //for now, just make sure blocking is off
+    //     const enabled = false;
+    //     chrome.storage.local.set({ enabled });
 
-        //turn off breakTime
-        const breakTime = false;
-        chrome.storage.local.set({ breakTime });
-    }
+    //     //turn off breakTime
+    //     const breakTime = false;
+    //     chrome.storage.local.set({ breakTime });
+    // }
 
     //Load previous session data if any
     chrome.storage.sync.get(['popupState'], function (result) {
@@ -138,21 +137,63 @@ document.addEventListener("DOMContentLoaded", () => {
                 timer.Stime = parseFloat(popupState.studyMin);
                 timer.Btime = parseFloat(popupState.shortBkMin);
                 timer.LBtime = parseFloat(popupState.longBkMin);
-                timer.Cnum = parseInt(popupState.cycleNum);
+                timer.cycleNum = parseInt(popupState.cycleNum);
 
                 if (!(popupState.state === undefined || popupState.state === null || popupState.state.length === 0)){
 
                     //detect if the session has finished
-                    if (timer.numLongBreak == timer.Cnum) {
+                    if (timer.numLongBreak == timer.cycleNum) {
                         //set back to main page and display session finished
                         popupState.state = "mainpg";
                         timer.state = "mainpg";
+                        mainPageSettings();
                         messages.innerHTML = "Session Completed!";
                         messages.style.display = "block";
+                        
                         //reset counters
                         timer.numStudy = 0;
                         timer.numBreak = 0;
                         timer.numLongBreak = 0;
+                        
+
+                        //If there is contents in timeStudied, then save it to the DB
+                        if (!(popupState.timeStudied === undefined || 
+                            popupState.timeStudied === null || 
+                            popupState.timeStudied.length === 0)){
+                            data = {};
+                            console.log("data = " + popupState.timeStudied + " " + popupState.clickCount + " " + popupState.keyCount);
+                            data.timeStudied = popupState.timeStudied;
+                            data.clickCount = popupState.clickCount
+                            data.keyCount = popupState.keyCount
+                            try{
+                                fetch("http://127.0.0.1:5000/saveStudyData", {
+                                    method: "POST",
+                                    body: JSON.stringify(data),
+                                    headers: new Headers({
+                                        "content-type": "application/json"
+                                    })
+                                })
+                                .then(function(response) {
+                                    if(response.ok){
+                                        return response.json()
+                                    }else{
+                                        console.log("Response error status: ", response.status);
+                                    }
+                                })
+                                .then(function(message){
+                                    console.log("Message: ", message);
+                                    timer.timeStudied = null;
+                                    timer.clickCount = null;
+                                    timer.keyCount = null;
+                                    saveToStorage(timer)
+                                }).catch(function(error){
+                                    console.log("Error on fetch: ", error); 
+                                })
+                            }catch(error){
+                                console.log("Error on try: ", error);  
+                            }
+                            
+                        }
 
                     } else if (popupState.state === "mainpg") {
                         messages.innerHTML = "";
@@ -160,6 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         var PgTitle = document.getElementById("PgTitle");
                         mainPageSettings();
 
+                         
                      } 
 
                     //Check if in study state
@@ -203,43 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     
                 }
-                //If there is contents in timeStudied, then save it to the DB
-                if (!(popupState.timeStudied === undefined || popupState.timeStudied === null || popupState.timeStudied.length === 0)){
-                    // data to send //TODO: update later with more data
-                    data = {};
-                    console.log("data = " + popupState.timeStudied + " " + popupState.clickCount + " " + popupState.keyCount);
-                    data.timeStudied = popupState.timeStudied;
-                    data.clickCount = popupState.clickCount
-                    data.keyCount = popupState.keyCount
-                    try{
-                        fetch("http://127.0.0.1:5000/saveStudyData", {
-                            method: "POST",
-                            body: JSON.stringify(data),
-                            headers: new Headers({
-                                "content-type": "application/json"
-                            })
-                        })
-                        .then(function(response) {
-                            if(response.ok){
-                                return response.json()
-                            }else{
-                                console.log("Response error status: ", response.status);
-                            }
-                        })
-                        .then(function(message){
-                            console.log("Message: ", message);
-                            timer.timeStudied = null;
-                            timer.clickCount = null;
-                            timer.keyCount = null;
-                            saveToStorage(timer)
-                        }).catch(function(error){
-                            console.log("Error on fetch: ", error); 
-                        })
-                    }catch(error){
-                        console.log("Error on try: ", error);  
-                    }
-                    
-                }
+
                 
 
                 if (!(popupState.newBlockedPg === undefined || popupState.newBlockedPg === null || popupState.newBlockedPg.length === 0)) {
@@ -339,27 +345,56 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    //if a cust value is input, save input in storage
-    custSessionInputs.addEventListener('input', e => {
-        //set separate values for keeping the custom timer for later use
-        if (e.target && e.target.matches("input[type='number']")) {
-            var studyMinCust = document.getElementById("studyMin").value;
-            var shortBkMinCust = document.getElementById("shortBkMin").value;
-            var cycleNumCust = document.getElementById("cycleNum").value;
-            var longBkMinCust = document.getElementById("longBkMin").value;
-            //check if any inputs
-            if (studyMinCust != "") {
-                timer.studyMinCust = studyMinCust;
-            } if (shortBkMinCust != "") {
-                timer.shortBkMinCust = shortBkMinCust;
-            } if (cycleNumCust != "") {
-                timer.cycleNumCust = cycleNumCust;
-            } if (longBkMinCust != "") {
-                timer.longBkMinCust = longBkMinCust;
+    //if a cust value is put in, save input in storage
+    var inputs = document.getElementsByClassName('custInput');
+    for (var inputIndex = 0; inputIndex < inputs.length; inputIndex++) {
+        inputs[inputIndex].addEventListener('change', e => {
+            //set separate values for keeping the custom timer for later use
+            if (e.target && e.target.matches("input[type='number']")) {
+                var studyMinCust = document.getElementById("studyMin").value;
+                var shortBkMinCust = document.getElementById("shortBkMin").value;
+                var cycleNumCust = document.getElementById("cycleNum").value;
+                var longBkMinCust = document.getElementById("longBkMin").value;
+                //check if any inputs
+                if (studyMinCust != "") {
+                    console.log(studyMinCust);
+                    if(parseFloat(studyMinCust) <= 0){
+                        console.log(parseFloat(studyMinCust));
+                        studyMinCust = 1;
+                        alert("Invalid value, only positive numbers. Saved as 1.");
+                    }
+                    timer.studyMinCust = studyMinCust;
+                    
+                    
+                } if (shortBkMinCust != "") {
+                    if(parseFloat(shortBkMinCust) <= 0){
+                        shortBkMinCust = 1;
+                        alert("Invalid value, only positive numbers. Saved as 1.");
+                    }
+                    timer.shortBkMinCust = shortBkMinCust;
+                    
+                    
+                } if (cycleNumCust != "") {
+                    if(!Number.isInteger(parseFloat(cycleNumCust))){
+                        cycleNumCust = 1;
+                        alert("Invalid value, only whole numbers. Saved as 1.");
+                    }
+                    timer.cycleNumCust = parseInt(cycleNumCust);
+                    
+
+                } if (longBkMinCust != "") {
+                    if(parseFloat(longBkMinCust) <= 0){
+                        longBkMinCust = 1;
+                        alert("Invalid value, only positive numbers. Saved as 1.");
+                    }
+                    timer.longBkMinCust = longBkMinCust;
+                    
+                    
+                }
+                saveToStorage(timer);
             }
-            saveToStorage(timer);
-        }
-    });
+        });
+    }
 
     //Begin session by getting timer informaiton
     beginButton.addEventListener('click', () => {
@@ -515,19 +550,19 @@ function validateTimerChoice() {
 }
 
 function validateCustomTimer() {
-    var studyMin = document.getElementById("studyMin").value;
-    var shortBkMin = document.getElementById("shortBkMin").value;
-    var cycleNum = document.getElementById("cycleNum").value;
-    var longBkMin = document.getElementById("longBkMin").value;
+    var studyMin = timer.studyMinCust;
+    var shortBkMin = timer.shortBkMinCust;
+    var cycleNum = timer.cycleNumCust;
+    var longBkMin = timer.longBkMinCust;
     //check if all the inputs have been filled
-    if (studyMin == "") {
-        alert("Please fill all customer time fields to begin");
-    } else if (shortBkMin == "") {
-        alert("Please fill all customer time fields to begin");
-    } else if (cycleNum == "") {
-        alert("Please fill all customer time fields to begin");
-    } else if (longBkMin == "") {
-        alert("Please fill all customer time fields to begin");
+    if (studyMin == "" || studyMin === undefined || studyMin === null) {
+        alert("Please fill all custom timer fields to begin");
+    } else if (shortBkMin == "" || shortBkMin === undefined || shortBkMin === null) {
+        alert("Please fill all custom timer fields to begin");
+    } else if (cycleNum == "" || cycleNum === undefined || cycleNum === null) {
+        alert("Please fill all custom timer fields to begin");
+    } else if (longBkMin == "" || longBkMin === undefined || longBkMin === null) {
+        alert("Please fill all custom timer fields to begin");
     } else {
         var answer = confirm("Ready to reload page for timer to begin?");
         if (!answer){
@@ -567,7 +602,7 @@ function calcEndTime(mins) {
 function saveToStorage(obj) {
     let serialized = JSON.stringify(obj);
     chrome.storage.sync.set({ "popupState": serialized }, function () {
-        console.log('Value is set to ' + serialized);
+        // console.log('Value is set to ' + serialized);
     });
 }
 
@@ -655,7 +690,7 @@ function displayProgress(){
     // display progress
     var progressMessage = "Study: " + timer.numStudy + "/" + innerCycleNum
     + ", Short Break: " + timer.numBreak + "/" + innerCycleNum
-    + ", Long Break: " + timer.numLongBreak + "/" + timer.Cnum;
+    + ", Long Break: " + timer.numLongBreak + "/" + timer.cycleNum;
     messages.innerHTML = progressMessage;
     messages.style.display = "block";
 }

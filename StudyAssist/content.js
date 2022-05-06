@@ -19,6 +19,7 @@ var pauseEnd = null;
 var clickCount= 0, keyCount= 0;
 var timeSinceClick = 0;
 var timetowaitforclick = 180;
+var state = undefined;
 
 //Listen for message about pausing the timer
 chrome.runtime.onMessage.addListener(
@@ -47,15 +48,20 @@ function pauseFunc(){
 
 //When a key is pressed, add to count
 document.addEventListener('keydown', (event) => {
-    console.log("key press");
-      //increase count
-      keyCount += 1;
+    // console.log("key press");
+    //increase count
+    if (state === "study"){
+        keyCount += 1;
+    }
+    
 });
 document.addEventListener('click', (event) => {
-    console.log("click");
-      //increase count
-    clickCount += 1;
-    timeSinceClick = 0;
+    // console.log("click");
+    //increase count
+    if (state === "study"){
+        clickCount += 1;
+        timeSinceClick = 0;
+    }
 });
 
 if(!pause){
@@ -66,6 +72,7 @@ if(!pause){
             // if study timer white
             if (popupState.state == "study"){
                 timerPlace.style.color = "#fff";
+                state = "study";
             }
             // if break timer orange
             if (popupState.state == "break" || popupState.state === "Long break"){
@@ -93,6 +100,8 @@ if(!pause){
                     }
                     //if not paused, continue timer
                     if(!(timerPlace.innerHTML == "Paused")){
+                        if (additionalTime == 1) additionalTime += 1; //count additional time used
+
                         //check if it has been paused previously
                         if(pauseStart) {//if there is a date in start pause, then it has been paused
                             //get how long it has been paused
@@ -123,7 +132,10 @@ if(!pause){
                                         var popupState = JSON.parse(result.popupState);
                                         if(popupState.state === "study"){
                                             popupState.numStudy = (popupState.numStudy) ? (parseInt(popupState.numStudy) + 1) : 1;
-                                            popupState.timeStudied = popupState.studyMin + additionalTime;
+                                            prevTime = popupState.timeStudied ? parseInt(popupState.timeStudied): 0;
+                                            console.log("prev: ", prevTime);
+                                            popupState.timeStudied = prevTime + popupState.studyMin + additionalTime;
+                                            console.log(popupState.timeStudied);
                                         }else if (popupState.state === "break"){
                                             popupState.numBreak = (popupState.numBreak) ? (parseInt(popupState.numBreak) + 1) : 1;
                                         }else if (popupState.state === "Long break"){
@@ -162,7 +174,7 @@ if(!pause){
                             }else{ 
                                 //add 2 minutes to the timer
                                 endTime.setMinutes(new Date().getMinutes() + 2);
-                                additionalTime += 2;
+                                additionalTime += 1; 
                                 // turn red
                                 timerPlace.style.color = "#f00";
                                 // but the state of popup is intermission becuase they can end any time and continue to the next state
