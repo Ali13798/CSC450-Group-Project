@@ -124,11 +124,11 @@ def stats():
     if not username:
         return flask.redirect("/")
 
-    # with sqlite3.connect(DB_PATH) as con:
-    #     cur = con.cursor()
-    #     user_stats = db_tools.get_stats(cur=cur, username=username)
+    with sqlite3.connect(DB_PATH) as con:
+        cur = con.cursor()
+        user_stats = db_tools.get_stats(cur=cur, username=username)
 
-    # return str(user_stats)
+    return str(user_stats)
 
     # Returns records of the past 5 or 10 session counts for the graphs
     # Mouse History
