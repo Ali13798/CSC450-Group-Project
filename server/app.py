@@ -116,16 +116,8 @@ def stats2():
 
 @app.route("/stats")
 def stats():
-    # Returns the totals for clickcount, keycount, and timestudied
-    
-    stats: dict[str, int] = {
-            "clickCountTot": 5,
-            "KeyCountTot": 20,
-            "timeStudiedTot": 125,
-        }
 
     # Returns records of the past 5 or 10 session counts for the graphs
-
     # Mouse History
     mouseHst: list[dict[str, int]] = [
         {
@@ -168,11 +160,36 @@ def stats():
         },
     ]
 
-    return render_template("stats.html", title="Stats", stats=stats, mouseHst=mouseHst, keyHst = keyHst, minHst = minHst)
+    return render_template("stats.html", title="Stats", mouseHst=mouseHst, keyHst = keyHst, minHst = minHst)
 
 @app.route("/history")
 def history():
-    return render_template("history.html", title="History")
+
+    userHist: list[dict[str, int]] = [
+        {
+            "id": 1,
+            "date": "5/1/22",
+            "clickCount": 5,
+            "keyCount": 20,
+            "timeStudied": 125,
+        },
+        {
+            "id": 2,
+            "date": "5/2/22",
+            "clickCount": 41,
+            "keyCount": 12,
+            "timeStudied": 60,
+        },
+        {
+            "id": 3,
+            "date": "5/3/22",
+            "clickCount": 100,
+            "keyCount": 80,
+            "timeStudied": 310,
+        }
+    ]
+
+    return render_template("history.html", title="History", userHist=userHist)
 
 
 def hash_password(pswd: str) -> str:
