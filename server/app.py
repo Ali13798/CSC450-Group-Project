@@ -118,59 +118,37 @@ def stats2():
 
 @app.route("/stats")
 def stats():
-    # Returns records of the past 5 or 10 session counts for the graphs
-    # Mouse History
-    mouseHst: list[dict[str, int]] = [
-        {
-            "id": 1,
-            "date": "5/2/22",
-            "clickCount": 5
-        },
-        {
-            "id": 2,
-            "date": "5/3/22",
-            "clickCount": 41
-        },
-    ]
-
-    # Key History
-    keyHst: list[dict[str, int]] = [
-        {
-            "id": 1,
-            "date": "5/2/22",
-            "keyCount": 20
-        },
-        {
-            "id": 2,
-            "date": "5/3/22",
-            "keyCount": 12
-        },
-    ]
-
-    # Minutes History
-    minHst: list[dict[str, int]] = [
-        {
-            "id": 1,
-            "date": "5/2/22",
-            "timeStudied": 125
-        },
-        {
-            "id": 2,
-            "date": "5/3/22",
-            "timeStudied": 310
-        },
-    ]
+    # Please load in the past 5
+    stats: list[dict[str, int]] = [{
+        "id": 1,
+        "date": "5/1/22",
+        "clickCount": 5,
+        "keyCount": 20,
+        "timeStudied": 125,
+    }, {
+        "id": 2,
+        "date": "5/2/22",
+        "clickCount": 41,
+        "keyCount": 12,
+        "timeStudied": 60,
+    }, {
+        "id": 3,
+        "date": "5/3/22",
+        "clickCount": 100,
+        "keyCount": 80,
+        "timeStudied": 310,
+    }]
 
     return render_template("stats.html",
                            title="Stats",
-                           mouseHst=mouseHst,
-                           keyHst=keyHst,
-                           minHst=minHst)
+                           stats=stats)
 
 
 @app.route("/history")
 def history():
 
+    # if you can send all of them, I can have the user provide a date 
+    # range so they have the ability to see all of their history as our teacher asked
     userHist: list[dict[str, int]] = [{
         "id": 1,
         "date": "5/1/22",
@@ -199,7 +177,7 @@ def hash_password(pswd: str) -> str:
     return hashlib.sha256(pswd).hexdigest()
 
 
-# Mackensie testing endpoint for saving data from extension
+# This is where the extension sends data to for each session
 @app.route("/saveStudyData", methods=["POST"])
 def saveStudyData():
     request_data = request.get_json()
