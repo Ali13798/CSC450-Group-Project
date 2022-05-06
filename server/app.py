@@ -118,78 +118,65 @@ def stats2():
 
 @app.route("/stats")
 def stats():
+    if not flask.session.get("name"):
+        return flask.redirect("/")
+
     # Returns records of the past 5 or 10 session counts for the graphs
     # Mouse History
     mouseHst: list[dict[str, int]] = [
-        {
-            "id": 1,
-            "date": "5/2/22",
-            "clickCount": 5
-        },
-        {
-            "id": 2,
-            "date": "5/3/22",
-            "clickCount": 41
-        },
+        {"id": 1, "date": "5/2/22", "clickCount": 5},
+        {"id": 2, "date": "5/3/22", "clickCount": 41},
     ]
 
     # Key History
     keyHst: list[dict[str, int]] = [
-        {
-            "id": 1,
-            "date": "5/2/22",
-            "keyCount": 20
-        },
-        {
-            "id": 2,
-            "date": "5/3/22",
-            "keyCount": 12
-        },
+        {"id": 1, "date": "5/2/22", "keyCount": 20},
+        {"id": 2, "date": "5/3/22", "keyCount": 12},
     ]
 
     # Minutes History
     minHst: list[dict[str, int]] = [
-        {
-            "id": 1,
-            "date": "5/2/22",
-            "timeStudied": 125
-        },
-        {
-            "id": 2,
-            "date": "5/3/22",
-            "timeStudied": 310
-        },
+        {"id": 1, "date": "5/2/22", "timeStudied": 125},
+        {"id": 2, "date": "5/3/22", "timeStudied": 310},
     ]
 
-    return render_template("stats.html",
-                           title="Stats",
-                           mouseHst=mouseHst,
-                           keyHst=keyHst,
-                           minHst=minHst)
+    return render_template(
+        "stats.html",
+        title="Stats",
+        mouseHst=mouseHst,
+        keyHst=keyHst,
+        minHst=minHst,
+    )
 
 
 @app.route("/history")
 def history():
+    if not flask.session.get("name"):
+        return flask.redirect("/")
 
-    userHist: list[dict[str, int]] = [{
-        "id": 1,
-        "date": "5/1/22",
-        "clickCount": 5,
-        "keyCount": 20,
-        "timeStudied": 125,
-    }, {
-        "id": 2,
-        "date": "5/2/22",
-        "clickCount": 41,
-        "keyCount": 12,
-        "timeStudied": 60,
-    }, {
-        "id": 3,
-        "date": "5/3/22",
-        "clickCount": 100,
-        "keyCount": 80,
-        "timeStudied": 310,
-    }]
+    userHist: list[dict[str, int]] = [
+        {
+            "id": 1,
+            "date": "5/1/22",
+            "clickCount": 5,
+            "keyCount": 20,
+            "timeStudied": 125,
+        },
+        {
+            "id": 2,
+            "date": "5/2/22",
+            "clickCount": 41,
+            "keyCount": 12,
+            "timeStudied": 60,
+        },
+        {
+            "id": 3,
+            "date": "5/3/22",
+            "clickCount": 100,
+            "keyCount": 80,
+            "timeStudied": 310,
+        },
+    ]
 
     return render_template("history.html", title="History", userHist=userHist)
 
@@ -212,11 +199,18 @@ def saveStudyData():
         if "keyCount" in request_data:
             keyCount = request_data["keyCount"]
 
-    return ('{ "message":"recieved ' + str(timeStudied) + " " + str(clickCount) +
-            " " + str(keyCount) + '" }')
+    return (
+        '{ "message":"recieved '
+        + str(timeStudied)
+        + " "
+        + str(clickCount)
+        + " "
+        + str(keyCount)
+        + '" }'
+    )
 
 
-#Anh testing endpoint for saving users name
+# Anh testing endpoint for saving users name
 @app.route("/addUser", methods=["POST"])
 def addUser():
     request_info = request.get_json()
@@ -226,7 +220,7 @@ def addUser():
             fusername = request_info["fusername"]
         if "lusername" in request_info:
             lusername = request_info["lusername"]
-    return ('{ "message":"recived "' + fusername + " " + lusername + "}")
+    return '{ "message":"recived "' + fusername + " " + lusername + "}"
 
 
 def main():
