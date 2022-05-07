@@ -418,7 +418,8 @@ A variety of tests were performed to ensure the system behaves as expected, such
 
 \noindent \underline{Website} \\
 Our website contains 3 pages, a Home page, a Stats page, and a Login page. The Home page consists of a welcome box for the dynamic user and instructions on the site. It also contains the user’s dynamic name, current level and rank, next level and rank as well as rewards (if the level is a multiple of 5), and a progress wheel / percentage to show their current level.
-\\\\The Stats page works by displaying the variables we use for our experience system in boxes. These boxes are split for what variables they represent: the mouse clicks, key presses, time spent studying, and days studied. Time spent studying is based on the amount of time the timer runs, and days spent studying is a simple counter that checks the date. Mouse clicks and key presses are collected while the extension is running.
+\\\\The Stats page works by displaying the variables we use for our experience system in boxes. These boxes are split for what variables they represent: the mouse clicks, key presses, and time spent studying. Time spent studying is based on the amount of time the timer runs. Mouse clicks and key presses are collected while the extension is running. We also have graphs tied to each of these variables so users can keep track of their individual statistics by date.
+\\\\We also have a history page that shows the combined stats side-by-side in a large chart. This provides a scaled benchmark comparing all of the stats to each other.
 \\\\The Login page works as a typical login page where it checks the database for a matching username and password and logs the user in, displaying their personalized stats and levels for gamification.
 \\\\All of the variables listed above are tied to the user in the database, and are displayed based off of the profile that is signed in.
 \\\\
