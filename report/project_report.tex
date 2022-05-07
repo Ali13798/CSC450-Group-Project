@@ -385,6 +385,9 @@ the website, then their data is saved and connected to their account. If the use
 is on the website with an account. This is why the users are prompted to make an account or log in before they start a session. 
 If the user decides to end the session early, the study periods they have completed are still saved to the database.
 Once the data is sent to the database, then the variables are reset so that it only keeps track of totals for one session.
+
+\\\\
+We are using local storage to store the data of the users. For example, when the user provides their name in the input field, the submit button will send their input to local storage and store it. Besides storing the username, we will also store the PIN number in local storage. For the PIN number, a function will make an authorization step to know whether the PIN number is correct or not, then decide to let the user enter ParentMode or not.
 \\\\
 \indent Once the user or the parent creates an authorization pin, this pin is used to allow the user to access some of the more important controls of the extension. If the user wants to add a new website domain to 
 the whitelist, they must first provide a correct authorization pin before being allowed to edit it. 
@@ -427,6 +430,8 @@ If the user never postponed, then the progress and time studied are saved and th
 \indent The whitelist blocking is handled in the background script, also called the service worker. The logic of this portion came from an article called "Learn the most useful Chrome APIs by creating Block Site Chrome extension". We changed the function to block tabs based on not being in the list, and added some variables to save some information about that blocked page in local storage.
 When the extension is ran, the background first checks if there is an existing whitelist in storage. If not, then it creates an empty array as a placeholder.
 It also checks if there are values called "enabled" and "breakTime" of type Boolean and creates and sets them to false if there are none.\\
+\\\\
+During study time, a function checks if the browser window is not in focus every few seconds. If it is not, then an alarm is sounded, accompanied by an alert display.
 
 \\\\Also in the background script is an event listener for when any tab in the browser window requests for a page to load. This is referred to as the tab being updated.
 When the script receives the notice, it grabs the tab id and information about the change. These parameters allow the function
@@ -448,7 +453,44 @@ no option to remove it from the list is provided, and Google is excluded from be
 \\The server was developed in the Visual Studio Code IDE with python 3.10 using The Flask and Flask-Sessions modules. The server is composed of an app.py file, which serves the website on the localhost. If desired, this can be later configured to deploy the server on a purchased domain, however, this step was omitted since there are no budgets allocated to this group project by MSU or the CS department. Flask sessions are used to facilitate a user's login actions. The server currently has support for various endpoints, such as "/", "/login", "/signup", "/logout", etc.
 \\The server dynamically changes the contents of the navigation bar in such a way that if the user is not logged in, only the home, login, and logout buttons are available. However, if the user is logged in, the stats and history buttons also appear and the login and signup buttons are replaced with a logout button. The server also facilitates
 \\The server employs a database to store user's username and hashed password. Currently, for demonstration purposes only, these passwords can be temporarily acquired by the admin login credentials. The python class db\_tools facilitates executing common SQL queries, such as creating a new users table, adding users to the database, retrieving passwords for comparison, etc.\\\\\\
-A variety of tests were performed to ensure the system behaves as expected, such as:
+
+\noindent \underline{Database} \\
+\\\indent A database was employed to store various data about the users, their study sessions, and levels. Since the server program is written in Python program programming language, sqlite3 was used to access the database, execute SQL queries, and to retrieve data from the database. A class db\_tools was used to facilitate execution of commonly used SQL queries. This class provides functionality to create required tables, if they do not already exist, such as the user's credentials, personal details, sessions, and levels. The credentials table is comprised of columns for the user id, username, and hashed password. The details table currently is comprised of only the first and last name of the user, but will be later expanded to include more details such as an email address, etc. The sessions table is made of columns for the entry id, user id, the time the session took place, total duration of the session, number of mouse clicks, and lastly the number of keyboard clicks. The levels table currently includes columns for the user id, number of xps, and the current level.  Moreover, the db\_tools class includes methods for adding new users credentials to the appropriate table, adding and retrieving study sessions, retrieving a user's password, and verifying whether a username already exists or not. \\\\
+
+
+\noindent \underline{Website} \\\\\indent
+Our website contains 3 pages, a Home page, a Stats page, and a Login page. The Home page consists of a welcome box for the dynamic user and instructions on the site. It also contains the user’s dynamic name, current level and rank, next level and rank as well as rewards (if the level is a multiple of 5), and a progress wheel / percentage to show their current level.
+\\\\\indent The Stats page works by displaying the variables we use for our experience system in boxes. These boxes are split for what variables they represent: the mouse clicks, key presses, and time spent studying. Time spent studying is based on the amount of time the timer runs. Mouse clicks and key presses are collected while the extension is running. We also have graphs tied to each of these variables so users can keep track of their individual statistics by date.
+\\\\\indent We also have a history page that shows the combined stats side-by-side in a large chart. This provides a scaled benchmark comparing all of the stats to each other.
+\\\\\indent The Login page works as a typical login page where it checks the database for a matching username and password and logs the user in, displaying their personalized stats and levels for gamification.
+\\\\\indent All of the variables listed above are tied to the user in the database, and are displayed based off of the profile that is signed in.
+\\\\
+
+\subsection{Testing Scenarios and Results}
+\noindent \underline{Extension} \\\\\indent
+The extension has several fields for user input. We developed the test cases for these fields, with the results shown below:
+\begin{itemize}
+    \item All timer options were selected.
+    \begin{itemize}
+        \item Result: no issues.
+    \end{itemize}
+    \item Customer timer entry. Cases: (-256, -1, 0, 1, 59, 61, 255, 256, 60000000)
+    \begin{itemize}
+        \item Result: Negative numbers had unexpected behavior. This has been fixed.
+    \end{itemize}
+    \item Whitelist entry. Cases: (a, -1, 0, 1, www., //, /*)
+    \begin{itemize}
+        \item Result: Some letters were giving false negatives. This has been fixed.
+    \end{itemize}
+    \item Name entry. Cases: (-1, 0, B, b, bB, *, .., //, /*, bbbbbbbbbbbb)
+    \begin{itemize}
+        \item Result: no issues.
+    \end{itemize}
+\end{itemize}
+The whitelist and timers were also tested at many points throughout the project. There were various issues with timers not always displaying, and old tabs not behaving correctly. Various fixes were employed, including a forced reload when starting a new session. These issues have been resolved, and core functionality of the extension behaves as expected.
+\\\\
+\noindent \underline{Website} \\\\\indent
+A variety of tests were performed to ensure login for the website behaves as expected, such as:
 \begin{itemize}
     \item User visiting the "/" endpoint without signing in.
     \begin{itemize}
@@ -471,20 +513,6 @@ A variety of tests were performed to ensure the system behaves as expected, such
         \item If the user is logged in, the session name is removed and user is logged out. Regardless, the user is redirected to the login page.
     \end{itemize}
 \end{itemize}\\\\
-
-\noindent \underline{Database} \\
-\\\indent A database was employed to store various data about the users, their study sessions, and levels. Since the server program is written in Python program programming language, sqlite3 was used to access the database, execute SQL queries, and to retrieve data from the database. A class db\_tools was used to facilitate execution of commonly used SQL queries. This class provides functionality to create required tables, if they do not already exist, such as the user's credentials, personal details, sessions, and levels. The credentials table is comprised of columns for the user id, username, and hashed password. The details table currently is comprised of only the first and last name of the user, but will be later expanded to include more details such as an email address, etc. The sessions table is made of columns for the entry id, user id, the time the session took place, total duration of the session, number of mouse clicks, and lastly the number of keyboard clicks. The levels table currently includes columns for the user id, number of xps, and the current level.  Moreover, the db\_tools class includes methods for adding new users credentials to the appropriate table, adding and retrieving study sessions, retrieving a user's password, and verifying whether a username already exists or not. \\\\
-
-
-\noindent \underline{Website} \\\\\indent
-Our website contains 3 pages, a Home page, a Stats page, and a Login page. The Home page consists of a welcome box for the dynamic user and instructions on the site. It also contains the user’s dynamic name, current level and rank, next level and rank as well as rewards (if the level is a multiple of 5), and a progress wheel / percentage to show their current level.
-\\\\\indent The Stats page works by displaying the variables we use for our experience system in boxes. These boxes are split for what variables they represent: the mouse clicks, key presses, and time spent studying. Time spent studying is based on the amount of time the timer runs. Mouse clicks and key presses are collected while the extension is running. We also have graphs tied to each of these variables so users can keep track of their individual statistics by date.
-\\\\\indent We also have a history page that shows the combined stats side-by-side in a large chart. This provides a scaled benchmark comparing all of the stats to each other.
-\\\\\indent The Login page works as a typical login page where it checks the database for a matching username and password and logs the user in, displaying their personalized stats and levels for gamification.
-\\\\\indent All of the variables listed above are tied to the user in the database, and are displayed based off of the profile that is signed in.
-\\\\
-
-\subsection{Testing Scenarios and Results}
 
 \section{References}
 
