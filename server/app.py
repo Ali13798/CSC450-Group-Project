@@ -128,11 +128,12 @@ def stats2():
 
     return render_template("stats2.html", title="Stats", stats=stats)
 
-@app.route("/stats")
-def expFormula():
-    username = flask.session.get("name")
-    exp = (0.0015 * clickCount) + (0.00015 * keyCount) + (0.25 * timeStudied)
-    return exp
+
+def get_xp(click_count: int, key_count: int, time_studied: int) -> float:
+    xp = (
+        (0.0015 * click_count) + (0.00015 * key_count) + (0.25 * time_studied)
+    )
+    return xp
 
 
 @app.route("/stats")
