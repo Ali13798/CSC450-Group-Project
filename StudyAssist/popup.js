@@ -44,44 +44,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //Get User information
     //Button for user to enter name
-    // document.addEventListener("DOMContentLoaded", () => { //this is already being done on line 15
-        infoBtn.addEventListener("click", submitForm);
-        function submitForm() {
-            let data = {};
-            data.fusername = document.getElementById("fname").value;
-            data.lusername = document.getElementById("lname").value;
-            if (document.getElementById("fname").value == "") {
-                alert("Please, enter your first name.")
-            } else if (document.getElementById("lname").value == "") {
-                alert("Please, enter your last name.")
-            }
-            else {
-                alert("Hello, " + fname.value + " " + lname.value);
-            }
-            try {
-                fetch("http://127.0.0.1:5000/addUser", {
-                    method: 'POST',
-                    headers: new Headers({ 'Content-Type': 'application/json', }),
-                    body: JSON.stringify(data)
-                }).then(function (response) {
-                    if (response.ok) {
-                        return response.json()
-                    } else {
-                        console.log("User Information error: ", response.status)
-                    }
-                }).then(function (message) {
-                    consolse.log("Message: ", message);
-                    users.fusername = null;
-                    users.lusername = null;
-                    saveToStorage(users)
-                }).catch(function (error) {
-                    console.log("Error on fetch: ", error);
-                });
-            } catch (error) {
-                console.log("Error on try: ", error);
-            }
+    infoBtn.addEventListener("click", submitForm);
+    function submitForm() {
+        let users = {};
+        users.fusername = document.getElementById("fname").value;
+        users.lusername = document.getElementById("lname").value;
+        if (document.getElementById("fname").value == "") {
+            alert("Please, enter your first name.")
+        } else if (document.getElementById("lname").value == "") {
+            alert("Please, enter your last name.")
         }
-    // })
+        else {
+            alert("Hello, " + fname.value + " " + lname.value);
+            saveToStorage(users)
+        }
+
+    }
 
     //Parent Mode Button
     document.addEventListener("DOMContentLoaded", () => { //this is also already being done on line 15
@@ -123,22 +101,22 @@ document.addEventListener("DOMContentLoaded", () => {
                         mainPageSettings();
                         messages.innerHTML = "Session Completed!";
                         messages.style.display = "block";
-                        
+
                         //reset counters
                         timer.numStudy = 0;
                         timer.numBreak = 0;
                         timer.numLongBreak = 0;
-                        
+
                         //If there is contents in timeStudied, then save it to the DB
-                        if (!(popupData.timeStudied === undefined || 
-                            popupData.timeStudied === null || 
-                            popupData.timeStudied.length === 0)){
+                        if (!(popupData.timeStudied === undefined ||
+                            popupData.timeStudied === null ||
+                            popupData.timeStudied.length === 0)) {
                             data = {};
                             console.log("data = " + popupData.timeStudied + " " + popupData.clickCount + " " + popupData.keyCount);
                             data.timeStudied = popupData.timeStudied;
                             data.clickCount = popupData.clickCount
                             data.keyCount = popupData.keyCount
-                            try{
+                            try {
                                 fetch("http://127.0.0.1:5000/saveStudyData", {
                                     method: "POST",
                                     body: JSON.stringify(data),
@@ -146,26 +124,26 @@ document.addEventListener("DOMContentLoaded", () => {
                                         "content-type": "application/json"
                                     })
                                 })
-                                .then(function(response) {
-                                    if(response.ok){
-                                        return response.json()
-                                    }else{
-                                        console.log("Response error status: ", response.status);
-                                    }
-                                })
-                                .then(function(message){
-                                    console.log("Message: ", message);
-                                    timer.timeStudied = null;
-                                    timer.clickCount = null;
-                                    timer.keyCount = null;
-                                    saveToStorage(timer)
-                                }).catch(function(error){
-                                    console.log("Error on fetch: ", error); 
-                                })
-                            }catch(error){
-                                console.log("Error on try: ", error);  
+                                    .then(function (response) {
+                                        if (response.ok) {
+                                            return response.json()
+                                        } else {
+                                            console.log("Response error status: ", response.status);
+                                        }
+                                    })
+                                    .then(function (message) {
+                                        console.log("Message: ", message);
+                                        timer.timeStudied = null;
+                                        timer.clickCount = null;
+                                        timer.keyCount = null;
+                                        saveToStorage(timer)
+                                    }).catch(function (error) {
+                                        console.log("Error on fetch: ", error);
+                                    })
+                            } catch (error) {
+                                console.log("Error on try: ", error);
                             }
-                            
+
                         }
 
                     } else if (popupData.state === "mainpg") {
@@ -175,15 +153,15 @@ document.addEventListener("DOMContentLoaded", () => {
                         mainPageSettings();
 
                         //If there is contents in timeStudied, then save it to the DB //Checking here again in case it failed to save when the session ended. 
-                        if (!(popupData.timeStudied === undefined || 
-                            popupData.timeStudied === null || 
-                            popupData.timeStudied.length === 0)){
+                        if (!(popupData.timeStudied === undefined ||
+                            popupData.timeStudied === null ||
+                            popupData.timeStudied.length === 0)) {
                             data = {};
                             console.log("data = " + popupData.timeStudied + " " + popupData.clickCount + " " + popupData.keyCount);
                             data.timeStudied = popupData.timeStudied;
                             data.clickCount = popupData.clickCount
                             data.keyCount = popupData.keyCount
-                            try{
+                            try {
                                 fetch("http://127.0.0.1:5000/saveStudyData", {
                                     method: "POST",
                                     body: JSON.stringify(data),
@@ -191,38 +169,38 @@ document.addEventListener("DOMContentLoaded", () => {
                                         "content-type": "application/json"
                                     })
                                 })
-                                .then(function(response) {
-                                    if(response.ok){
-                                        return response.json()
-                                    }else{
-                                        console.log("Response error status: ", response.status);
-                                    }
-                                })
-                                .then(function(message){
-                                    console.log("Message: ", message);
-                                    timer.timeStudied = null;
-                                    timer.clickCount = null;
-                                    timer.keyCount = null;
-                                    saveToStorage(timer)
-                                }).catch(function(error){
-                                    console.log("Error on fetch: ", error); 
-                                })
-                            }catch(error){
-                                console.log("Error on try: ", error);  
+                                    .then(function (response) {
+                                        if (response.ok) {
+                                            return response.json()
+                                        } else {
+                                            console.log("Response error status: ", response.status);
+                                        }
+                                    })
+                                    .then(function (message) {
+                                        console.log("Message: ", message);
+                                        timer.timeStudied = null;
+                                        timer.clickCount = null;
+                                        timer.keyCount = null;
+                                        saveToStorage(timer)
+                                    }).catch(function (error) {
+                                        console.log("Error on fetch: ", error);
+                                    })
+                            } catch (error) {
+                                console.log("Error on try: ", error);
                             }
-                            
+
                         }
 
                     }
-                     
+
                     //Check if in study state
-                    if ( popupData.state === "study") {
+                    if (popupData.state === "study") {
                         studyPageSettings();
                     }
 
                     //check if in intermission state
-                    if ( popupData.state === "intermission") {
-                        
+                    if (popupData.state === "intermission") {
+
                         //figure out the next stage is, display it on the button
                         var nextStepMessage;
                         if (timer.numStudy == timer.cycleNum && timer.numBreak == (timer.cycleNum - 1)) {
@@ -240,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         nextStep.innerHTML = nextStepMessage;
 
                         interPageSettings(); //set the rest of the settings
-                        
+
                     }
 
                     //check if in break state
@@ -259,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 }
 
-                
+
 
                 if (!(popupData.newBlockedPg === undefined || popupData.newBlockedPg === null || popupData.newBlockedPg.length === 0)) {
                     if (popupData.newBlockedPg == true) {
@@ -335,77 +313,77 @@ document.addEventListener("DOMContentLoaded", () => {
         //update list with only approved
         textarea.value = blocked.join("\n");
         //tell user which were removed
-        if (atLeastOneRemoved){
+        if (atLeastOneRemoved) {
             var removedPara = document.getElementById("removedDomains");
             removedPara.innerHTML = removedString;
         }
-    
+
         chrome.storage.local.set({ blocked });
     });
 
- //if a button is selected, save selection in storage
- radioButtons.addEventListener('click', e => {
-    if (e.target && e.target.matches("input[type='radio']")) {
-        timer.choiceid = e.target.getAttribute("id");
-        if (!(timer.choiceid.includes("opt"))) {
-            var studyMinCust = document.getElementById("studyMin").value;
-            var shortBkMinCust = document.getElementById("shortBkMin").value;
-            var cycleNumCust = document.getElementById("cycleNum").value;
-            var longBkMinCust = document.getElementById("longBkMin").value;
-            var repeatNum = document.getElementById("repeatNum").value;
-            //check if any inputs
-            if (studyMinCust != "") {
-                console.log(studyMinCust);
-                if(parseFloat(studyMinCust) <= 0){
-                    console.log(parseFloat(studyMinCust));
-                    studyMinCust = 1;
-                    alert("Invalid value, only positive numbers. Saved as 1.");
+    //if a button is selected, save selection in storage
+    radioButtons.addEventListener('click', e => {
+        if (e.target && e.target.matches("input[type='radio']")) {
+            timer.choiceid = e.target.getAttribute("id");
+            if (!(timer.choiceid.includes("opt"))) {
+                var studyMinCust = document.getElementById("studyMin").value;
+                var shortBkMinCust = document.getElementById("shortBkMin").value;
+                var cycleNumCust = document.getElementById("cycleNum").value;
+                var longBkMinCust = document.getElementById("longBkMin").value;
+                var repeatNum = document.getElementById("repeatNum").value;
+                //check if any inputs
+                if (studyMinCust != "") {
+                    console.log(studyMinCust);
+                    if (parseFloat(studyMinCust) <= 0) {
+                        console.log(parseFloat(studyMinCust));
+                        studyMinCust = 1;
+                        alert("Invalid value, only positive numbers. Saved as 1.");
+                    }
+                    timer.studyMinCust = studyMinCust;
+
+
+                } if (shortBkMinCust != "") {
+                    if (parseFloat(shortBkMinCust) <= 0) {
+                        shortBkMinCust = 1;
+                        alert("Invalid value, only positive numbers. Saved as 1.");
+                    }
+                    timer.shortBkMinCust = shortBkMinCust;
+
+
+                } if (cycleNumCust != "") {
+                    if (!Number.isInteger(parseFloat(cycleNumCust))) {
+                        cycleNumCust = 1;
+                        alert("Invalid value, only whole numbers. Saved as 1.");
+                    }
+                    timer.cycleNumCust = parseInt(cycleNumCust);
+
+                } if (longBkMinCust != "") {
+                    if (parseFloat(longBkMinCust) <= 0) {
+                        longBkMinCust = 1;
+                        alert("Invalid value, only positive numbers. Saved as 1.");
+                    }
+                    timer.longBkMinCust = longBkMinCust;
+
+                } if (repeatNum != "") {
+                    if (!Number.isInteger(parseFloat(repeatNum))) {
+                        repeatNum = 1;
+                        alert("Invalid value, only whole numbers. Saved as 1.");
+                    }
+                    timer.repeatNum = parseInt(repeatNum);
+
                 }
-                timer.studyMinCust = studyMinCust;
-                
-                
-            } if (shortBkMinCust != "") {
-                if(parseFloat(shortBkMinCust) <= 0){
-                    shortBkMinCust = 1;
-                    alert("Invalid value, only positive numbers. Saved as 1.");
-                }
-                timer.shortBkMinCust = shortBkMinCust;
-                
-                
-            } if (cycleNumCust != "") {
-                if(!Number.isInteger(parseFloat(cycleNumCust))){
-                    cycleNumCust = 1;
-                    alert("Invalid value, only whole numbers. Saved as 1.");
-                }
-                timer.cycleNumCust = parseInt(cycleNumCust);
-                
-            } if (longBkMinCust != "") {
-                if(parseFloat(longBkMinCust) <= 0){
-                    longBkMinCust = 1;
-                    alert("Invalid value, only positive numbers. Saved as 1.");
-                }
-                timer.longBkMinCust = longBkMinCust;
-                
-            } if (repeatNum != "") {
-                if(!Number.isInteger(parseFloat(repeatNum))){
-                    repeatNum = 1;
-                    alert("Invalid value, only whole numbers. Saved as 1.");
-                }
-                timer.repeatNum = parseInt(repeatNum);
-                
+                saveToStorage(timer);
             }
             saveToStorage(timer);
         }
-        saveToStorage(timer);
-    }
-});
+    });
 
-//if a cust value is put in, save input in storage
-var inputs = document.getElementsByClassName('custInput');
-for (var inputIndex = 0; inputIndex < inputs.length; inputIndex++) {
-    inputs[inputIndex].addEventListener('change', function validateCustInputs(e) {
-        //set separate values for keeping the custom timer for later use
-        // if (e.target && e.target.matches("input[type='number']")) {
+    //if a cust value is put in, save input in storage
+    var inputs = document.getElementsByClassName('custInput');
+    for (var inputIndex = 0; inputIndex < inputs.length; inputIndex++) {
+        inputs[inputIndex].addEventListener('change', function validateCustInputs(e) {
+            //set separate values for keeping the custom timer for later use
+            // if (e.target && e.target.matches("input[type='number']")) {
             var studyMinCust = document.getElementById("studyMin").value;
             var shortBkMinCust = document.getElementById("shortBkMin").value;
             var cycleNumCust = document.getElementById("cycleNum").value;
@@ -414,49 +392,49 @@ for (var inputIndex = 0; inputIndex < inputs.length; inputIndex++) {
             //check if any inputs
             if (studyMinCust != "") {
                 console.log(studyMinCust);
-                if(parseFloat(studyMinCust) <= 0){
+                if (parseFloat(studyMinCust) <= 0) {
                     console.log(parseFloat(studyMinCust));
                     studyMinCust = 1;
                     alert("Invalid value, only positive numbers. Saved as 1.");
                 }
                 timer.studyMinCust = studyMinCust;
-                
-                
+
+
             } if (shortBkMinCust != "") {
-                if(parseFloat(shortBkMinCust) <= 0){
+                if (parseFloat(shortBkMinCust) <= 0) {
                     shortBkMinCust = 1;
                     alert("Invalid value, only positive numbers. Saved as 1.");
                 }
                 timer.shortBkMinCust = shortBkMinCust;
-                
-                
+
+
             } if (cycleNumCust != "") {
-                if(!Number.isInteger(parseFloat(cycleNumCust))){
+                if (!Number.isInteger(parseFloat(cycleNumCust))) {
                     cycleNumCust = 1;
                     alert("Invalid value, only whole numbers. Saved as 1.");
                 }
                 timer.cycleNumCust = parseInt(cycleNumCust);
-                
+
 
             } if (longBkMinCust != "") {
-                if(parseFloat(longBkMinCust) <= 0){
+                if (parseFloat(longBkMinCust) <= 0) {
                     longBkMinCust = 1;
                     alert("Invalid value, only positive numbers. Saved as 1.");
                 }
                 timer.longBkMinCust = longBkMinCust;
 
             } if (repeatNum != "") {
-                if(!Number.isInteger(parseFloat(repeatNum))){
+                if (!Number.isInteger(parseFloat(repeatNum))) {
                     repeatNum = 1;
                     alert("Invalid value, only whole numbers. Saved as 1.");
                 }
                 timer.repeatNum = parseInt(repeatNum);
-                
+
             }
 
             saveToStorage(timer);
-    });
-}
+        });
+    }
 
     //Begin session by getting timer informaiton
     beginButton.addEventListener('click', () => {
@@ -465,21 +443,21 @@ for (var inputIndex = 0; inputIndex < inputs.length; inputIndex++) {
 
     //End session //end session button not working
     endButton.addEventListener('click', () => {
-        
+
         answer = confirm("Reload page to remove timer?");
         if (!answer) {
             return;
         }
 
-        if (!(timer.timeStudied === undefined || 
-            timer.timeStudied === null || 
-            timer.timeStudied.length === 0)){
+        if (!(timer.timeStudied === undefined ||
+            timer.timeStudied === null ||
+            timer.timeStudied.length === 0)) {
             data = {};
             console.log("data = " + timer.timeStudied + " " + timer.clickCount + " " + timer.keyCount);
             data.timeStudied = timer.timeStudied;
             data.clickCount = timer.clickCount
             data.keyCount = timer.keyCount
-            try{
+            try {
                 fetch("http://127.0.0.1:5000/saveStudyData", {
                     method: "POST",
                     body: JSON.stringify(data),
@@ -487,30 +465,30 @@ for (var inputIndex = 0; inputIndex < inputs.length; inputIndex++) {
                         "content-type": "application/json"
                     })
                 })
-                .then(function(response) {
-                    if(response.ok){
-                        return response.json()
-                    }else{
-                        console.log("Response error status: ", response.status);
-                    }
-                })
-                .then(function(message){
-                    console.log("Message: ", message);
-                    timer.timeStudied = null;
-                    timer.clickCount = null;
-                    timer.keyCount = null;
-                    saveToStorage(timer)
-                }).catch(function(error){
-                    console.log("Error on fetch: ", error); 
-                })
-            }catch(error){
-                console.log("Error on try: ", error);  
+                    .then(function (response) {
+                        if (response.ok) {
+                            return response.json()
+                        } else {
+                            console.log("Response error status: ", response.status);
+                        }
+                    })
+                    .then(function (message) {
+                        console.log("Message: ", message);
+                        timer.timeStudied = null;
+                        timer.clickCount = null;
+                        timer.keyCount = null;
+                        saveToStorage(timer)
+                    }).catch(function (error) {
+                        console.log("Error on fetch: ", error);
+                    })
+            } catch (error) {
+                console.log("Error on try: ", error);
             }
-            
+
         }
 
         mainPageSettings();
-        
+
         timer.state = "mainpg";
         messages.innerHTML = "";
 
@@ -571,7 +549,7 @@ for (var inputIndex = 0; inputIndex < inputs.length; inputIndex++) {
 
     nextStep.addEventListener('click', () => {
         var answer = confirm("Ready to reload page for timer to begin?");
-        if (!answer){
+        if (!answer) {
             return;
         }
         //figure out if the next step is to study or break
@@ -591,7 +569,7 @@ for (var inputIndex = 0; inputIndex < inputs.length; inputIndex++) {
             saveToStorage(timer);
             startTimer(timer.LBtime);
 
-        }else if (timer.numStudy > timer.numBreak) {
+        } else if (timer.numStudy > timer.numBreak) {
             //short break
 
             //save state to storage
@@ -627,7 +605,7 @@ function validateTimerChoice() {
         validateCustomTimer();
     } else {
         var answer = confirm("Ready to reload page for timer to begin?");
-        if (!answer){
+        if (!answer) {
             return;
         }
         //Extract information from choice
@@ -668,9 +646,9 @@ function validateCustomTimer() {
         alert("Please fill all custom timer fields to begin");
     } else if (repeatNum == "") {
         alert("Please fill all custom timer fields to begin");
-    }else {
+    } else {
         var answer = confirm("Ready to reload page for timer to begin?");
-        if (!answer){
+        if (!answer) {
             return;
         }
         timer.studyMin = studyMin;
@@ -711,7 +689,7 @@ function saveToStorage(obj) {
     });
 }
 
-function mainPageSettings(){
+function mainPageSettings() {
     PgTitle.innerHTML = "Main Menu";
     userInfoInput.style.display = "block"; //can choose to remove this later or make it depend on if the user is logged in
 
@@ -729,7 +707,7 @@ function mainPageSettings(){
     messages.style.display = "none";
 }
 
-function studyPageSettings(){
+function studyPageSettings() {
     //display it is in study mode
     var PgTitle = document.getElementById("PgTitle");
     PgTitle.innerHTML = "Study Mode";
@@ -752,7 +730,7 @@ function studyPageSettings(){
     userInfoInput.style.display = "none";
 }
 
-function interPageSettings(){
+function interPageSettings() {
     displayProgress();
 
     var PgTitle = document.getElementById("PgTitle");
@@ -772,7 +750,7 @@ function interPageSettings(){
 
 }
 
-function breakPageSettings(){
+function breakPageSettings() {
     displayProgress();
 
     healthyMsg.innerHTML += healthyMessage;
@@ -791,11 +769,11 @@ function breakPageSettings(){
     userInfoInput.style.display = "none";
 }
 
-function displayProgress(){
+function displayProgress() {
     // display progress
     var progressMessage = "Study: " + timer.numStudy + "/" + timer.cycleNum
-    + ", Short Break: " + timer.numBreak + "/" + (timer.cycleNum - 1)
-    + ", Long Break: " + timer.numLongBreak + "/" + timer.repeatNum;
+        + ", Short Break: " + timer.numBreak + "/" + (timer.cycleNum - 1)
+        + ", Long Break: " + timer.numLongBreak + "/" + timer.repeatNum;
     messages.innerHTML = progressMessage;
     messages.style.display = "block";
 }
