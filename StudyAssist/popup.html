@@ -29,31 +29,35 @@
                 <table id="timerTable">
                     <tr>
                         <th>Option</th>
-                        <th>Study</th>
+                        <th>Study Period</th>
                         <th>Short Break</th>
-                        <th>Cycles</th>
+                        <th>Number of Cycles</th>
                         <th>Long Break</th>
+                        <th>Repeat</th>
                     </tr>
                     <tr>
-                        <td><input type="radio" id="opt1" name="timerOp" value="25/5/3/20"> </td>
+                        <td><input type="radio" id="opt1" name="timerOp" value="25/5/4/15/2"> </td>
                         <td><label for="opt1">25</label></td>
                         <td><label for="opt1">5</label></td>
-                        <td><label for="opt1">3</label></td>
-                        <td><label for="opt1">20</label></td>
+                        <td><label for="opt1">4</label></td>
+                        <td><label for="opt1">15</label></td>
+                        <td><label for="opt1">2</label></td>
                     </tr>
                     <tr>
-                        <td><input type="radio" id="opt2" name="timerOp" value="60/10/2/30"></td>
-                        <td><label for="opt2">50</label></td>
+                        <td><input type="radio" id="opt2" name="timerOp" value="40/10/2/30/2"></td>
+                        <td><label for="opt2">40</label></td>
                         <td><label for="opt2">10</label></td>
                         <td><label for="opt2">2</label></td>
                         <td><label for="opt2">30</label></td>
+                        <td><label for="opt2">2</label></td>
                     </tr>
                     <tr>
-                        <td><input type="radio" id="opt3" name="timerOp" value=".25/.15/2/.5"></td>
+                        <td><input type="radio" id="opt3" name="timerOp" value=".25/.15/2/.5/1"></td>
                         <td><label for="opt3">.25</label></td>
                         <td><label for="opt3">.15</label></td>
                         <td><label for="opt3">2</label></td>
                         <td><label for="opt3">.5</label></td>
+                        <td><label for="opt3">1</label></td>
                     </tr>
                     <tr>
                         <!--  custom -->
@@ -63,6 +67,7 @@
                             <td><input class="custInput" type="number" id="shortBkMin" name="shortBkMin" min="0.1" max="30"></td>
                             <td><input class="custInput" type="number" id="cycleNum" name="cycleNum" min="1" max="10"></td>
                             <td><input class="custInput" type="number" id="longBkMin" name="longBkMin" min="1" max="120"></td>
+                            <td><input class="custInput" type="number" id="repeatNum" name="repeatNum" min="1" max="10"></td>
                         </div>
                     </tr>
                 </table>

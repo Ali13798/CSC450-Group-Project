@@ -81,7 +81,10 @@
       end = document.getElementById('end').value;
 
       startD = new Date(start +"T00:00:00");
-      endD = new Date(end+"T00:00:00").setUTCHours(23,59,59,999);
+      endD = new Date(end+"T00:00:00");
+      endD = new Date(endD.setHours(23, 59, 59, 999));
+      // console.log(startD);
+      // console.log(endD);
       google.charts.load('current', {'packages':['bar']});
       google.charts.setOnLoadCallback(drawChart);
 
@@ -90,10 +93,12 @@
   });
 
   var userHist = document.getElementById("hstDiv").getAttribute('data-userHist');
+  console.log(userHist);
   userHist = "{ 'data': " + userHist + "}";
   userHist = userHist.replace(/\'/g, '"');
   userHist = JSON.parse(userHist);
   hstArray = userHist.data;
+  console.log(userHist);
 
   function drawChart() {
     // Labels
@@ -117,7 +122,7 @@
         day = (dateObj.getDate() < 10 ) ? "0"+dateObj.getDate() : dateObj.getDate();
         MDYDate = month  + "/" + day + "/" +  year;
 
-        sessions.push([MDYDate, elm.clickCount, elm.keyCount, elm.timeStudied]);
+        sessions.push([MDYDate, elm.timeStudied, elm.keyCount, elm.clickCount ]);
         itemAdded = true;
       }
       
