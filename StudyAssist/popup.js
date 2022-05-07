@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     infoBtn = document.getElementById("buttonInfo");
     parentBtn = document.getElementById("parentModeBtn");
     validationP = document.getElementById("validation");
+    editBtn = document.getElementById("editbtn");
 
     //Get User information
     //Button for user to enter name
@@ -44,8 +45,12 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Please, enter your last name.")
         }
         else {
-            alert("Hello, " + fname.value + " " + lname.value);
-            saveToStorage(users)
+            messages.innerHTML = "Welcome, " + fname.value + " " + lname.value;
+            let serialized = JSON.stringify(users);
+            chrome.storage.sync.set({ "user" : serialized }, function () {
+                // console.log('Value is set to ' + serialized);
+            });
+            mainPageSettings();
         }
 
     }
@@ -61,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
             parentInput.style.display = "none";
         }
     }
+
     validationP.addEventListener("click", authorizationPin)
     function authorizationPin() {
         let pin = {};
@@ -78,7 +84,12 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Missing number.")
         } else {
             alert("Pin saved in Local Storage.")
-            saveToStorage(pin)
+            let serialized = JSON.stringify(pin);
+            chrome.storage.sync.set({ "authPin" : serialized }, function () {
+                // console.log('Value is set to ' + serialized);
+            });
+            togglePinField(); //hide pin field
+            mainPageSettings();
         }
     }
 
@@ -144,7 +155,10 @@ document.addEventListener("DOMContentLoaded", () => {
                                         timer.timeStudied = null;
                                         timer.clickCount = null;
                                         timer.keyCount = null;
-                                        saveToStorage(timer)
+                                        let serialized = JSON.stringify(timer);
+                                        chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                                            // console.log('Value is set to ' + serialized);
+                                        });
                                     }).catch(function (error) {
                                         console.log("Error on fetch: ", error);
                                     })
@@ -189,7 +203,10 @@ document.addEventListener("DOMContentLoaded", () => {
                                         timer.timeStudied = null;
                                         timer.clickCount = null;
                                         timer.keyCount = null;
-                                        saveToStorage(timer)
+                                        let serialized = JSON.stringify(timer);
+                                        chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                                            // console.log('Value is set to ' + serialized);
+                                        });
                                     }).catch(function (error) {
                                         console.log("Error on fetch: ", error);
                                     })
@@ -258,7 +275,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         timer.newBlockedPg = false;
                         // popupData.lastBlockedPage = "";
                         timer.lastBlockedPage = "";
-                        saveToStorage(timer);
+                        let serialized = JSON.stringify(timer);
+                        chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                            // console.log('Value is set to ' + serialized);
+                        });
                         answer = confirm(message);
                         if (answer) {
                             //get list from storage, add to list, save
@@ -325,8 +345,16 @@ document.addEventListener("DOMContentLoaded", () => {
             var removedPara = document.getElementById("removedDomains");
             removedPara.innerHTML = removedString;
         }
-
+        //Set textarea back to readonly
+        textarea.setAttribute("readonly", "");
         chrome.storage.local.set({ blocked });
+    });
+
+    editBtn.addEventListener("click", () => {
+        // Validate pin
+
+        // Remove readonly from textbox
+        textarea.removeAttribute("readonly");
     });
 
     //if a button is selected, save selection in storage
@@ -380,9 +408,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     timer.repeatNum = parseInt(repeatNum);
 
                 }
-                saveToStorage(timer);
+                let serialized = JSON.stringify(timer);
+                chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                    // console.log('Value is set to ' + serialized);
+                });
             }
-            saveToStorage(timer);
+            let serialized = JSON.stringify(timer);
+            chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                // console.log('Value is set to ' + serialized);
+            });
         }
     });
 
@@ -440,13 +474,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
-            saveToStorage(timer);
+            let serialized = JSON.stringify(timer);
+            chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                // console.log('Value is set to ' + serialized);
+            });
         });
     }
 
     //Begin session by getting timer informaiton
     beginButton.addEventListener('click', () => {
-        validateTimerChoice();
+        // check if a parent pin has been saved
+        chrome.storage.sync.get(['authPin'], function (result) {
+            if (!(result === undefined || result === null || Object.keys(result).length === 0)) {
+                console.log(result);
+                // if the pin exists
+                validateTimerChoice();
+            }else{
+                console.log(result);
+                // make them create a pin
+                alert("You must create an authorization pin to begin.");
+            }
+        });
+
     });
 
     //End session //end session button not working
@@ -485,7 +534,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         timer.timeStudied = null;
                         timer.clickCount = null;
                         timer.keyCount = null;
-                        saveToStorage(timer)
+                        let serialized = JSON.stringify(timer);
+                        chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                            // console.log('Value is set to ' + serialized);
+                        });
                     }).catch(function (error) {
                         console.log("Error on fetch: ", error);
                     })
@@ -507,7 +559,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         timer.endTime = "";
 
-        saveToStorage(timer);
+        let serialized = JSON.stringify(timer);
+        chrome.storage.sync.set({ "popupData" : serialized }, function () {
+            // console.log('Value is set to ' + serialized);
+        });
         chrome.tabs.reload();
 
     });
@@ -539,6 +594,7 @@ document.addEventListener("DOMContentLoaded", () => {
             //change hide options button to options
             optionsBtn.innerHTML = "Whitelist Options";
             optionsBtn.style.marginLeft = "28%";
+
         }
     });
 
@@ -576,7 +632,10 @@ document.addEventListener("DOMContentLoaded", () => {
             //reset count of study and short breaks
             timer.numStudy = 0;
             timer.numBreak = 0;
-            saveToStorage(timer);
+            let serialized = JSON.stringify(timer);
+            chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                // console.log('Value is set to ' + serialized);
+            });
             startTimer(timer.LBtime);
 
         } else if (timer.numStudy > timer.numBreak) {
@@ -603,6 +662,82 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+document.getElementById("pinValidBtn").addEventListener('click', ()=>{
+    // get the pin number
+    let pin = {};
+    pin.pinNum1 = document.getElementById("pinVal1").value;
+    pin.pinNum2 = document.getElementById("pinVal2").value;
+    pin.pinNum3 = document.getElementById("pinVal3").value;
+    pin.pinNum4 = document.getElementById("pinVal4").value;
+    if (pin.pinNum1 == "") {
+        alert("Missing number.")
+    } else if (pin.pinNum2 == "") {
+        alert("Missing number.")
+    } else if (pin.pinNum3 == "") {
+        alert("Missing number.")
+    } else if (pin.pinNum4 == "") {
+        alert("Missing number.")
+    } else {
+        chrome.storage.sync.get(["authPin"] , function (result) {
+            // Compare to storage
+            if (!(result === undefined || result === null || Object.keys(result).length === 0)) {
+                //TODO: Decode or encode to compare
+
+                // Temporarally comparing without encoding
+
+            }
+        });
+    }
+    // Complete saved action
+
+})
+
+document.getElementById("pinValidCancelBtn").addEventListener('click', ()=>{
+    // go back to previous page which is the current state
+    chrome.storage.sync.get(['popupData'], function (result) {
+        if (!(result.popupData === undefined || result.popupData === null || result.popupData.length === 0)) {
+            //if there is data load it in, get it as a string
+            var popupData = JSON.parse(result.popupData);
+            if (!(popupData.state === undefined || popupData.state === null || popupData.state.length === 0)) {
+                //Check if in study state
+                if (popupData.state === "study") {
+                    studyPageSettings();
+                }
+                //check if in intermission state
+                if (popupData.state === "intermission") {
+                    //figure out the next stage is, display it on the button
+                    var nextStepMessage;
+                    if (timer.numStudy == timer.cycleNum && timer.numBreak == (timer.cycleNum - 1)) {
+                        //long break time
+                        nextStepMessage = "Start Long Break";
+                    } else if (timer.numStudy > timer.numBreak) {
+                        //short break
+                        nextStepMessage = "Start Short Break";
+                    } else if (timer.numStudy == timer.numBreak) {
+                        //study time
+                        nextStepMessage = "Start Study Time";
+                    }
+                    nextStep.style.display = "inline";
+                    nextStep.innerHTML = nextStepMessage;
+                    interPageSettings(); //set the rest of the settings
+                }
+                //check if in break state
+                if (popupData.state === "break") {
+                    var PgTitle = document.getElementById("PgTitle");
+                    PgTitle.innerHTML = "Short Break";
+                    breakPageSettings();
+                }
+                //check if in long break state
+                if (popupData.state === "Long break") {
+                    var PgTitle = document.getElementById("PgTitle");
+                    PgTitle.innerHTML = "Long Break";
+                    breakPageSettings();
+                }
+            }
+        }
+    });
+})
 
 //Begin Session Functions
 function validateTimerChoice() {
@@ -633,7 +768,10 @@ function validateTimerChoice() {
 
         //save state to storage
         timer.state = "study";
-        saveToStorage(timer);
+        let serialized = JSON.stringify(timer);
+        chrome.storage.sync.set({ "popupData" : serialized }, function () {
+            // console.log('Value is set to ' + serialized);
+        });
         studyPageSettings();
         startTimer(studyMin);
     }
@@ -668,7 +806,10 @@ function validateCustomTimer() {
         timer.repeatNum = repeatNum;
         //save state to storage
         timer.state = "study";
-        saveToStorage(timer);
+        let serialized = JSON.stringify(timer);
+        chrome.storage.sync.set({ "popupData" : serialized }, function () {
+            // console.log('Value is set to ' + serialized);
+        });
         studyPageSettings();
         startTimer(studyMin);
     }
@@ -689,19 +830,14 @@ function calcEndTime(mins) {
     endTimeDate = new Date(countDownTime + mins * 60000);
     var endTimeString = endTimeDate.getHours() + " " + endTimeDate.getMinutes() + " " + endTimeDate.getSeconds();
     timer.endTime = endTimeString;
-    saveToStorage(timer);
-}
-
-function saveToStorage(obj) {
-    let serialized = JSON.stringify(obj);
-    chrome.storage.sync.set({ "popupData": serialized }, function () {
+    let serialized = JSON.stringify(timer);
+    chrome.storage.sync.set({ "popupData" : serialized }, function () {
         // console.log('Value is set to ' + serialized);
     });
 }
 
 function mainPageSettings() {
     PgTitle.innerHTML = "Main Menu";
-    userInfoInput.style.display = "block"; //can choose to remove this later or make it depend on if the user is logged in
 
     //no blocking
     const enabled = false;
@@ -714,7 +850,24 @@ function mainPageSettings() {
     pauseBtn.style.display = "none"; //do not display the other buttons
     nextStep.style.display = "none";
     endButton.style.display = "none";
-    messages.style.display = "none";
+    messages.style.display = "block";
+
+    chrome.storage.sync.get(['authPin'], function (result) {
+        if (!(result === undefined || result === null || Object.keys(result).length === 0)) {
+            parentBtn.style.display = "none";
+        }else{
+            parentBtn.style.display = "block";
+        }
+    });
+
+    chrome.storage.sync.get(['user'], function (result) {
+        if (!(result === undefined || result === null || Object.keys(result).length === 0)) {
+            userInfoInput.style.display = "none";
+        }else{
+            userInfoInput.style.display = "block";
+        }
+    });
+
 }
 
 function studyPageSettings() {
@@ -738,6 +891,7 @@ function studyPageSettings() {
     pauseBtn.style.display = "inline-block";
     nextStep.style.display = "none";
     userInfoInput.style.display = "none";
+    parentBtn.style.display = "none";
 }
 
 function interPageSettings() {
@@ -759,7 +913,7 @@ function interPageSettings() {
     userInfoInput.style.display = "none";
     nextStep.style.marginLeft = "-1%";
     nextStep.style.marginBottom = "5%";
-    // nextStep.style.marginLeft = "35%";
+    parentBtn.style.display = "none";
 
 }
 
@@ -781,10 +935,26 @@ function breakPageSettings() {
     pauseBtn.style.display = "inline-block";
     userInfoInput.style.display = "none";
     nextStep.style.display = "none";
+    parentBtn.style.display = "none";
 }
 
 function pinValidationPageSettings(){
 
+    var PgTitle = document.getElementById("PgTitle");
+    PgTitle.innerHTML = "Pin Authorization";
+    messages.innerHTML = "Please enter the authorization pin to complete desired action:";
+    messages.style.display = "block";
+    pinValidaionDiv = document.getElementById("pinValidaionDiv");
+    pinValidaionDiv.style.display = "block";
+
+
+    timerDiv.style.display = "none";
+    beginButton.style.display = "none";
+    endButton.style.display = "none";
+    pauseBtn.style.display = "none";
+    userInfoInput.style.display = "none";
+    nextStep.style.display = "none";
+    parentBtn.style.display = "none";
 }
 
 function displayProgress() {

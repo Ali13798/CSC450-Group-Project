@@ -111,12 +111,23 @@
             <h3>Allowed During Study Mode:</h3>
             <button id="popWebsites">Populate Recomended Websites</button>
             <br>
-            <textarea id="textarea" rows="10" cols="30" spellcheck="false"></textarea>
+            <textarea id="textarea" rows="10" cols="30" spellcheck="false" readonly></textarea>
+            <br>
+            <button id="editbtn">Edit</button>
             <br>
             <button id="save">Save</button>
             <p id="removedDomains"></p>
         </div>
-
+        <div id="pinValidaionDiv">
+            <form id="pinValidaionForm">
+                <input id="pinVal1" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                <input id="pinVal2" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                <input id="pinVal3" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                <input id="pinVal4" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                <button type="submit" id="pinValidBtn">Submit</button>
+                <button type="submit" id="pinValidCancelBtn">Cancel</button>
+            </form>
+        </div>
     </div>
     <script src="popup.js"></script>
 </body>
