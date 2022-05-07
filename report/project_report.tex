@@ -289,6 +289,7 @@ Req-25: Web-based features will update within a day
     \item Description: When any changes are submitted after a session, those updates should be visible to the user within 24 hours.
     \item Rationale: Users will need to see their overall progress in their studies within a reasonable amount of time. Since this will be dependent on a web server, some time should be allowed for data transfer and potential outages.
 \end{itemize}
+
 \pagebreak
 \section{Design}
 \subsection{Design Diagram}
@@ -299,97 +300,140 @@ Req-25: Web-based features will update within a day
 \textbf{Study Extension:} A google chrome extension to help users focus on studying and remember to take breaks. Users have the option to log in which gives access to the website. The extension stores data about the study sessions in the database. \\\\
 \textbf{User Interface:} The popup menu where users control the session, make choices about the timer, provide information, and can access the Progress Website.\\\\
 \textbf{Storage:} Storage provided by the chrome.storage API that is shared among the scripts in the extension.\\\\
-Background: Monitors the content pages to implement the whitelist and closes tabs that violate it. Continuously checks for mouse or keyboard inputs for statistics.\\\\
+\textbf{Background:} Monitors the content pages to implement the whitelist and closes tabs that violate it. Continuously checks for mouse or keyboard inputs for statistics.\\\\
 \textbf{Content:} Makes changes to the current tab's content such as running the Timer.\\\\
 \textbf{Timer:} Displays a timer on the screen and counts down to the provided time. Contained and executed in the Content Script. Timer accesses storage when finished.\\\\
 \textbf{Database:} Database that stores information about the study sessions such as total time studied and keyboard and mouse input frequencies. Verifies user login in the extension or the website before allowing access to the website information. \\\\
-Progress Website: A locally hosted website which allows users to view information and progress on their study sessions. \\\\
-\textbf{Statistics:} Displays information such as total time spent studying and input frequency.
-History: Displays information on previous sessions such as date, time began and ended, and total time studied for the session. \\\\
+\textbf{Progress Website:} A locally hosted website which allows users to view information and progress on their study sessions. \\\\
+\textbf{Statistics:} Displays information such as total time spent studying and input frequency.\\\\
+\textbf{History:} Displays information on previous sessions such as date, time began and ended, and total time studied for the session. \\\\
 \textbf{Gamification:} Provides incentives for the users to study more through a game-like system where the total amount studied is translated to points and then to levels and titles.\\\\
 
 
 \section{Implementation and Testing}
 
-\subsection{Development environment and tools}
-\noindent \underline{Overview} \\
-The Google Chrome extension was developed in Visual Studio Code with JavaScript, HTML, and CSS
+\subsection{Development Environment and Implementation}
+\noindent \underline{Overview} \\\\
+\indent The Google Chrome extension was developed in Visual Studio Code with JavaScript, HTML, CSS
 and was tested using the Developer Mode in the Extensions page of the Google Chrome browser. The extension works
 with the server and the database to store progress data about users that have created an account. This progress data is
-available to view from the website.
-\\\\
-\underline{Manifest JSON}\\
-The first step in developing the extension was to create a JSON file titled "manifest" which
+available to be viewed from the website in the form of levels.
+\\\\\\
+\underline{Manifest JSON}\\\\
+\indent The first step in developing the extension was to create a JSON file titled "manifest" which
 defines different aspects of the extension such as the name, description, version, scripts for the popup menu,
 scripts for the background service worker, content scripts, and various permissions. The permissions requested were storage, tabs, activeTab, and scripting.
 \\\\
 
-
-
-
-\noindent \underline{Popup Menu} \\
-The popup script contains the main control menu for the extension. This script runs each time the popup page
+\noindent \underline{Popup Menu} \\\\
+\indent The popup script contains the main control menu for the extension. This script runs each time the popup page
 is opened and first checks shared storage to see what state the popup menu should be in. The possible states
 are the main page, which displays when there is no study session started, a study state which displays when
 the user is in study mode, an intermission state for between study and break, and break state for during short breaks,
 and a long break state for during long breaks. The short and long break states are functionally the same, they just
 have a different title. Once the script determines which state it is supposed to be in, it shows or hides the
-appropriate elements so that it looks the same as the last time the user looked at it, unless the state changed when the timer ended.
+appropriate elements so that it looks the same as the last time the user looked at it, unless the state changed when the timer ended.\\
+
 \\\\Along side checking and updating the state, the script also pulls the relevant timer variables from storage such as
-the number of times studied this session, number of short and long breaks taken, number of cycles left, and the chosen number of minutes
-for studying, each break, and the total number of cycles. All of this information is used to display some progress information at the top of
-the page while in a session. The information is written as a few fractions such as the number of breaks taken out of how many more there are left.
+the number of times studied this session, number of short and long breaks taken, and the chosen number of minutes
+for studying, for each break, the total number of cycles, and the number of times to repeat. All of this information is used to display some progress information at the top of
+the page while in a session. The information is written as a few fractions such as the number of breaks taken out of how many more there are left.\\
+
 \\\\When the popup is in the main page state, it also refills the choices and inputs that the user made
-in the timer choices menu so they do not have to reenter the information. Additionally, the customer timer inputs are saved between sessions to
-allow for easily repeated custom sessions.
+in the timer choices menu so they do not have to reenter the information and allows for easily repeated custom sessions. 
+When the custom timer options are filled in, a function is called to check that the values are valid. Any input that contains an amount of minutes is not allowed to be negative, 
+while the cycle and repeat options cannot be negative and must be whole numbers. If any of these are invalid, the user is alerted and the values are instead saved as the number 1 
+until the user enters a valid number. \\
+
 \\\\When the user accesses and edits the text box that contains the list of domains for the whitelist,
 the function uses a regular expression to check if it is in the valid from of a domain such as www.google.com or en.Wikipedia.org.
-This check will not allow strings of just letters to get through which would mess up the whitelist. If the domain is valid, it is kept and stored.
-If not, it is removed and a message is shown beneath the text box listing the entries that were removed.
+This check will not allow strings of just letters to get through that could deceive whitelist into allowing any website containing that string. 
+If the domain is valid, it is kept and stored.
+If not, it is removed and a message is shown beneath the text box listing the entries that were removed.\\
+
 \\\\When the begin timer button is clicked, it checks that a radio button has been selected and sends an alert telling
-the user to make a selection before trying to begin. If an option is selected, it checks to see if it was a premade timer option or the custom.
-If the custom timer was chosen, the script also checks if all of the inputs are filled in before allowing the session to begin, and sends an alert if any are empty.
-\\\\Once the choices are deemed valid, the session begins by saving all of the timer choice information to shared storage.
-Then the state of the page is set to study, the whitelist blocking is enabled, and the start timer function is called.
-\\\\The function to start the timer begins by asking the user if they are ready to reload the current tab to allow the timer to show up.
-If they are not ready, then the state stays on the main page until they come back to press begin, and choose to allow the page to reload.
-This is to allow the user to make any necessary changes to the current page such as saving their work. Once the user is ready, the page is transitioned
-to the study state by hiding the timer options and end button, and showing the end button and pause button.
-Then it calls a function to get the end time for the timer and finally reloads the current page.
-\\\\The calculation function gets the current time, gets the end time by adding the current time and the number of minutes to study multiplied by 60000 since the getTime function
-returns milliseconds. Then turns the time into a string of the form HH:MM:SS and saves it to shared storage.
+the user to make a selection before trying to begin if none are selected. If an option is selected, it checks to see if it was a recommended timer option or the custom.
+If the custom timer was chosen, the script also checks if all of the inputs are filled in before allowing the session to begin, and sends an alert if any are empty.\\
+
+\\\\Once the choices are deemed valid, begins by asking the user if they are ready to reload the current tab to allow the timer to show up. 
+If the answer is no, then nothing is changed. If the answer is yes, then the session begins by saving all of the timer choice information to shared storage.
+Then the state of the page is set to study, the whitelist blocking is enabled, and the start timer function is called.\\
+
+\\\\The function to start the timer calls a function to get the end time for the number of chosen minutes, saves it to shared storage, and finally reloads the current page.\\
+
+\\\\The end time function gets the current time, then gets the end time by adding the current time and the number of minutes to study multiplied by 60000 since the getTime function
+returns milliseconds. Next turns the time into a string of the form HH MM SS and saves it to shared storage.\\
+
+\\\\
+When the popup state must be changed, one of the corresponding functions is called to set it up. There is one function for each of the possible states of the popup 
+menu and each of them shows and hides elements as needed, sets the title, sets the whitelist to on for studying, turns the list into a blacklist during breaks, or turns 
+them both off so normal browsing is not interrupted.
+\\\\
+\indent When a timer ends, the state is entered into an intermission which allows the user to open up the popup menu and continue to the next state. The words on the button that controls the continuation 
+are changed to reflect what the next step is. If the number of completed study periods is equal to the number of cycles, and the number of completed short breaks 
+is equal to one less than the number of cycles, then the next state is a long break because the cycle requirement has been met. 
+Then if the number of completed study periods is more than the the number of short breaks completed, the next state is a short break. 
+Lastly, if the number completed study periods is the same as completed short breaks, then the next state is a study period.
+\\\\\indent When the next state button is clicked, the same calculation is completed, the end time is calculated, and the start timer function is called for the corresponding end time. 
+Additionally, the long break phase means it is time to repeat so the count of completed study periods and short breaks are reset.
+\\\\\indent During breaks, a message about healthy choices is also displayed in the popup menu. It lists things like drinking water and doing stretches to encourage users to be mindful about their health while working. \\
+
+\\\\The check to see if the session is completed occurs when the number of long breaks that have been completed is the same as the number of repeats. 
+At this point, the state is reset to the main page and checks if there is any study session data to save to the database. If there is, then it loads the number of minutes studied, 
+the number of mouse clicks recorded, and the number of key presses recorded for the whole session into an object and uses a fetch request to send it to the database. If the user is logged in with 
+the website, then their data is saved and connected to their account. If the user is not logged in or doesn't have an account, it is not saved since the only way for the user to view their statistics 
+is on the website with an account. This is why the users are prompted to make an account or log in before they start a session. 
+If the user decides to end the session early, the study periods they have completed are still saved to the database.
+Once the data is sent to the database, then the variables are reset so that it only keeps track of totals for one session.
 \\\\
 \noindent
-\underline{Content Script}\\
-When the current tab is reloaded, the content script is run on the current tab's page. The content script first creates a div HTML element, and adds styling to prepare
-for the timer to be shown on screen. There is a message listener that responds to a message sent from the popup script
-when the user presses the pause button. When a pause message is received, the content script flips the paused value on or off, and saves the time the timer was paused or unpaused.
-When the content script is run without a message being sent, it first checks if the timer is supposed to be paused. If paused, it does nothing. Once it is unpaused, then
-the script accesses shared storage to get the end time for the timer and parses out the hour, minutes, and seconds and then stores it in a date object.
-\\\\The script then enters a set interval function which runs every second. The logic of this function was found in an article called "How TO - JavaScript Countdown Timer" and we changed the timer to only show hours, minutes, and seconds, and to work from a supplied time.
+\underline{Content Script}\\\\
+\indent When the current tab is reloaded, the content script is run on the current tab's page. The content script first creates a div HTML element, and adds styling to prepare
+for the timer to be shown on screen. \\\\
+\indent There is a message listener that responds to a message sent from the popup script
+when the user presses the pause button. When a pause message is received, the content script flips the paused value on or off, and saves the time the timer was paused or unpaused.\\\\
+\indent There are also event listeners that listen to mouse clicks and key presses and count each event during a study period. The mouse click event also helps keeps track of the time since a click 
+was last recorded to help track if the user is active. After three minutes of no mouse clicks, an alert is sent to get the users attention and pauses the timer until they close it. This is one way we 
+are trying to prevent users cheating on the time studied by letting the timer run with no interaction with the page. The time is kept track of using the set interval function just like the timer. \\
+
+\\\\When the content script is run from the extension injecting it into the current page, it first checks if the timer is supposed to be paused. If paused, it does nothing. Once it is unpaused, then
+the script accesses shared storage to get the end time for the timer and parses out the hour, minutes, and seconds and then stores it in a date object. 
+This is also when it checks if it is a study or break period and sets the color of the timer to white for studying, and blue for breaks so the user can easily remember which period they are in. \\\\
+\indent The script then enters a set interval function which runs every second. The logic of this function was found in an article called "How TO - JavaScript Countdown Timer" and we changed the timer to only show hours, minutes, and seconds, and to work from a supplied time.
 This function first checks if there is any value stored for the pause start time. If there is,
 then it subtracts the start pause from the end pause time to get the amount of real time that passed while paused, and adds that to the timer end time.
 The start and end pause times are reset to null. For each second that this function is called, it gets the current time and subtracts it from the
 end time to find how much is left. Then gets the hours, minutes, and seconds values of the difference and displays the string to the screen in the div created earlier.
 It then checks if the difference is less than or equal to 0, which means the timer is done.
-\\\\If the timer is done, it checks what state the popup is in, increments the count for that corresponding state, stores the count, and changes the state to intermission.
-For example, if the popup was in the study state, then the number of study times completed is incremented. The timer display is then set to an empty string and the whitelist blocking is turned off.
+\\\\\indent If the timer is done, it asks the user if they are ready to move on to the next stage. 
+If the answer is no, then two minutes are added to the timer and it turns red to indicate that the user should have moved on to the next stage already. The purpose of allowing an extension is so that if the user is in the middle of a question, paragraph, or other kind of work, 
+they are allowed to get to a stopping point. However, since they have already completed the set time, the progress is saved and the popup menu is set to intermission where there is the option to move on to the next state. 
+If the two minutes runs out, and the user chooses to be done, the additional time spent is saved. 
+If the user never postponed, then the progress and time studied are saved and the popup is set to intermission. \\
+
 \\\\
-\underline{Background Script}\\
-The whitelist blocking is handled in the background script, also called the service worker. The logic of this portion came from an article called "Learn the most useful Chrome APIs by creating Block Site Chrome extension". We changed the function to block tabs based on not being in the list, and added some variables to save some informaiton about that blocked page in local storage.
+\noindent \underline{Background Script}\\\\
+\indent The whitelist blocking is handled in the background script, also called the service worker. The logic of this portion came from an article called "Learn the most useful Chrome APIs by creating Block Site Chrome extension". We changed the function to block tabs based on not being in the list, and added some variables to save some information about that blocked page in local storage.
 When the extension is ran, the background first checks if there is an existing whitelist in storage. If not, then it creates an empty array as a placeholder.
-It also checks if there is a value called "enabled" of type boolean and creates and sets it to false if there is not one.
+It also checks if there are values called "enabled" and "breakTime" of type Boolean and creates and sets them to false if there are none.\\
+
 \\\\Also in the background script is an event listener for when any tab in the browser window requests for a page to load. This is referred to as the tab being updated.
 When the script receives the notice, it grabs the tab id and information about the change. These parameters allow the function
-to grab the URL from the new tab and test it. First, it tests if it exists, or if it starts with "http". If either of these things are false, then the function returns and does not block it.
+to grab the URL from the new tab and test it. \\\\
+\indent First, it tests if it exists, or if it starts with "http". If either of these things are false, then the function returns and does not block it.
 This is so that pages that begin with "chrome" are allowed through and never blocked because they could be important settings pages.
-If it passes the first test, it moves on to the second test where the script looks through the list of allowed domains and looks for the domain of the current URL. If the domain is found, then the tab is removed, and the URL is saved to shared memory and a flag that says a page was recently blocked is set.
-This is so that when the user goes back into the popup page, the script checks for these values and asks the use if they want to add that domain to the whitelist. If they choose yes and a valid pin is provided, then the domain
-is added and will not be blocked the next time they ask to open it.
+\\\\\indent If it passes the first test, it moves on to the second test where it checks for if "enabled" or "breakTime" are stored as true. Enabled means the 
+script will looks through the list of allowed domains and looks for the domain of the current URL. If the domain is not found, then the tab is removed, and the URL is saved to shared memory and a flag that says a page was recently blocked is set.
+This is the whitelist which is used during study periods. 
+\\\\\indent Saving the domain is used so that when the user goes back into the popup page, the script checks for these values and asks the use if they want to add that domain to the whitelist. If they choose yes and a valid pin is provided, then the domain
+is added and will not be blocked the next time they ask to open it. \\\\
+\indent
+BreakTime being true means that the list now becomes a blacklist so that the user is forced to take their break before continuing to study. The main differences are that if the domain is found in the list, then the tab is removed, 
+no option to remove it from the list is provided, and Google is excluded from being blocked to allow users to use the search engine during study periods and breaks.
 \\\\
 
 
-\noindent \underline{Server}
+\noindent \underline{Server}\\
 \\The server was developed in the Visual Studio Code IDE with python 3.10 using The Flask and Flask-Sessions modules. The server is composed of an app.py file, which serves the website on the localhost. If desired, this can be later configured to deploy the server on a purchased domain, however, this step was omitted since there are no budgets allocated to this group project by MSU or the CS department. Flask sessions are used to facilitate a user's login actions. The server currently has support for various endpoints, such as "/", "/login", "/signup", "/logout", etc.
 \\The server dynamically changes the contents of the navigation bar in such a way that if the user is not logged in, only the home, login, and logout buttons are available. However, if the user is logged in, the stats and history buttons also appear and the login and signup buttons are replaced with a logout button. The server also facilitates
 \\The server employs a database to store user's username and hashed password. Currently, for demonstration purposes only, these passwords can be temporarily acquired by the admin login credentials. The python class db\_tools facilitates executing common SQL queries, such as creating a new users table, adding users to the database, retrieving passwords for comparison, etc.\\\\\\
@@ -417,31 +461,19 @@ A variety of tests were performed to ensure the system behaves as expected, such
     \end{itemize}
 \end{itemize}\\\\
 
-\noindent \underline{Database}
-\\A database was employed to store various data about the users, their study sessions, and levels. Since the server program is written in Python program programming language, sqlite3 was used to access the database, execute SQL queries, and to retrieve data from the database. A class db\_tools was used to facilitate execution of commonly used SQL queries. This class provides functionality to create required tables, if they do not already exist, such as the user's credentials, personal details, sessions, and levels. The credentials table is comprised of columns for the user id, username, and hashed password. The details table currently is comprised of only the first and last name of the user, but will be later expanded to include more details such as an email address, etc. The sessions table is made of columns for the entry id, user id, the time the session took place, total duration of the session, number of mouse clicks, and lastly the number of keyboard clicks. The levels table currently includes columns for the user id, number of xps, and the current level.  Moreover, the db\_tools class includes methods for adding new users credentials to the appropriate table, adding and retrieving study sessions, retrieving a user's password, and verifying whether a username already exists or not. \\\\
+\noindent \underline{Database} \\
+\\\indent A database was employed to store various data about the users, their study sessions, and levels. Since the server program is written in Python program programming language, sqlite3 was used to access the database, execute SQL queries, and to retrieve data from the database. A class db\_tools was used to facilitate execution of commonly used SQL queries. This class provides functionality to create required tables, if they do not already exist, such as the user's credentials, personal details, sessions, and levels. The credentials table is comprised of columns for the user id, username, and hashed password. The details table currently is comprised of only the first and last name of the user, but will be later expanded to include more details such as an email address, etc. The sessions table is made of columns for the entry id, user id, the time the session took place, total duration of the session, number of mouse clicks, and lastly the number of keyboard clicks. The levels table currently includes columns for the user id, number of xps, and the current level.  Moreover, the db\_tools class includes methods for adding new users credentials to the appropriate table, adding and retrieving study sessions, retrieving a user's password, and verifying whether a username already exists or not. \\\\
 
 
-\noindent \underline{Website} \\
+\noindent \underline{Website} \\\\\indent
 Our website contains 3 pages, a Home page, a Stats page, and a Login page. The Home page consists of a welcome box for the dynamic user and instructions on the site. It also contains the user’s dynamic name, current level and rank, next level and rank as well as rewards (if the level is a multiple of 5), and a progress wheel / percentage to show their current level.
-\\\\The Stats page works by displaying the variables we use for our experience system in boxes. These boxes are split for what variables they represent: the mouse clicks, key presses, and time spent studying. Time spent studying is based on the amount of time the timer runs. Mouse clicks and key presses are collected while the extension is running. We also have graphs tied to each of these variables so users can keep track of their individual statistics by date.
-\\\\We also have a history page that shows the combined stats side-by-side in a large chart. This provides a scaled benchmark comparing all of the stats to each other.
-\\\\The Login page works as a typical login page where it checks the database for a matching username and password and logs the user in, displaying their personalized stats and levels for gamification.
-\\\\All of the variables listed above are tied to the user in the database, and are displayed based off of the profile that is signed in.
+\\\\\indent The Stats page works by displaying the variables we use for our experience system in boxes. These boxes are split for what variables they represent: the mouse clicks, key presses, and time spent studying. Time spent studying is based on the amount of time the timer runs. Mouse clicks and key presses are collected while the extension is running. We also have graphs tied to each of these variables so users can keep track of their individual statistics by date.
+\\\\\indent We also have a history page that shows the combined stats side-by-side in a large chart. This provides a scaled benchmark comparing all of the stats to each other.
+\\\\\indent The Login page works as a typical login page where it checks the database for a matching username and password and logs the user in, displaying their personalized stats and levels for gamification.
+\\\\\indent All of the variables listed above are tied to the user in the database, and are displayed based off of the profile that is signed in.
 \\\\
 
-\\\\\noindent
-\underline{Needs Implementation}\\
-\begin{itemize}
-    \item Connect the log in form in the popup page to the database for validation
-    \item The timer will change color and count up when the timer ends and the user has not moved to the next stage.
-    \item Record the keyboard and mouse interactions on each content page and submit the total to the database for statistics.
-    \item If no keyboard or mouse input is recieved, send an alert to ask the user if they are still working. Pause the timer when this alert is sent, until the resopnse comes back.
-    \item If the Google Chrome Browser detects it is not the in focus window, send an alert for the user to return. Pause the timer when the alert is sent, unpause when a response comes back.
-    \item Save the minutes studied, number of clicks, number of keypresses, and increment the number of sessions completed in the database for the logged in user.
-    \item Require the parent pin to be able to modify the whitelist or end the session.
-\end{itemize}
-
-\subsection{Testing scenarios and results}
+\subsection{Testing Scenarios and Results}
 
 \section{References}
 

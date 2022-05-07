@@ -74,7 +74,7 @@ if(!pause){
                 timerPlace.style.color = "#fff";
                 state = "study";
             }
-            // if break timer orange
+            // if break timer blue
             if (popupData.state == "break" || popupData.state === "Long break"){
                 timerPlace.style.color = "#11FFEF";
             }   
@@ -225,7 +225,7 @@ if(!pause){
                                             console.log("postpone save prev: ", prevTime); 
 
                                             popupData.timeStudied = prevTime //add on the time for the session that just finished
-                                                                + popupData.studyMin; //current amount for the timer
+                                                                + parseFloat(popupData.studyMin); //current amount for the timer
 
                                             console.log(popupData.timeStudied);
 
