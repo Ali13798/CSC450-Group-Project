@@ -386,6 +386,17 @@ is on the website with an account. This is why the users are prompted to make an
 If the user decides to end the session early, the study periods they have completed are still saved to the database.
 Once the data is sent to the database, then the variables are reset so that it only keeps track of totals for one session.
 \\\\
+\indent Once the user or the parent creates an authorization pin, this pin is used to allow the user to access some of the more important controls of the extension. If the user wants to add a new website domain to 
+the whitelist, they must first provide a correct authorization pin before being allowed to edit it. 
+\\\\\indent When a page is blocked and the popup menu asks if they would like to allow it next time, they are required to enter the 
+pin in order for the script to add it to the list. 
+\\\\\indent Lastly, if the user wants to end the session before it is finished, this also requires entering the pin. 
+\\\\\indent This pin is stored in local storage, but it is encoded with base64 to prevent the user from being able to access it if they are 
+not given permission. Even though older users can create and use their pin at will, requiring the users to complete a task in order to allow them to access another site 
+or end the session will help encourage them to only use sites they need to use, and to complete the session entirely. 
+\\\\\indent The verification process bring up a form and is asked to provide the pin, once the pin in storage is compare with the provided and found to be correct, then the request action is completed. If it is not correct, 
+they are told as such and given another chance. If they are unable to provide the correct pin, then the state will go back to the way it was and the action is not completed. 
+\\\\
 \noindent
 \underline{Content Script}\\\\
 \indent When the current tab is reloaded, the content script is run on the current tab's page. The content script first creates a div HTML element, and adds styling to prepare

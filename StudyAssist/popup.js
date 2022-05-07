@@ -29,19 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
     infoBtn = document.getElementById("buttonInfo");
     parentBtn = document.getElementById("parentModeBtn");
 
-    //if the title is welcome, then clear some info from storage
-    // if (PgTitle.innerHTML == "Welcome!") {
-    //     //TODO: decide what to remove or change
-
-    //     //for now, just make sure blocking is off
-    //     const enabled = false;
-    //     chrome.storage.local.set({ enabled });
-
-    //     //turn off breakTime
-    //     const breakTime = false;
-    //     chrome.storage.local.set({ breakTime });
-    // }
-
     //Get User information
     //Button for user to enter name
     infoBtn.addEventListener("click", submitForm);
