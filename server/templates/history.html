@@ -81,7 +81,7 @@
       end = document.getElementById('end').value;
 
       startD = new Date(start +"T00:00:00");
-      endD = new Date(end+"T00:00:00");
+      endD = new Date(end+"T00:00:00").setUTCHours(23,59,59,999);
       google.charts.load('current', {'packages':['bar']});
       google.charts.setOnLoadCallback(drawChart);
 
@@ -108,10 +108,9 @@
     sessions = [labels];
     hstArray.forEach(elm => {
 
-      dateArray = elm.date.split("/");
-      dateObj = new Date("20" + dateArray[2] + "-" + dateArray[0] + "-" + dateArray[1]);
+      dateObj = new Date(elm.date);
 
-      if (dateObj >= startD.getDate() && dateObj.getDate() <= endD.getDate() ){
+      if (dateObj >= startD && dateObj <= endD ){
         sessions.push([elm.date, elm.clickCount, elm.keyCount, elm.timeStudied]);
         itemAdded = true;
       }

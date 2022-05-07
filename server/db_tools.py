@@ -24,7 +24,7 @@ class db_tools:
                 id                  INTEGER PRIMARY KEY,
                 user_id             INTEGER NOT NULL,
                 session_time        TEXT NOT NULL,
-                session_duration    INTEGER,
+                session_duration    DOUBLE(6, 2),
                 click_count         INTEGER,
                 keyboard_count      INTEGER
             )"""
@@ -76,7 +76,7 @@ class db_tools:
         cur: sqlite3.Cursor,
         username: str,
         date_time: str,
-        duration: int,
+        duration: float,
         click_count: int,
         keyboard_count: int,
     ) -> None:

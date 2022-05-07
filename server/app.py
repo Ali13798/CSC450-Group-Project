@@ -243,7 +243,7 @@ def saveStudyData():
 
     if request_data:
         if "timeStudied" in request_data:
-            timeStudied = int(request_data["timeStudied"])
+            timeStudied = float(request_data["timeStudied"])
         if "clickCount" in request_data:
             clickCount = int(request_data["clickCount"])
         if "keyCount" in request_data:
