@@ -21,8 +21,28 @@
             <label for="lname">Last name: </label>
             <input type="text" id="lname" name="lname" required><br><br>
             <button type="submit" id="buttonInfo">Save</button>
+
+            <form id="createLoginForm" action="http://127.0.0.1:5000/login" target="_blank">
+                <input id="createLoginBtn" type="submit" value="Create Account or Login" />
+            </form><br />
+
+             <!--Parent Mode Button-->
+            <button type="button" id="parentModeBtn">
+                Create Authorization Pin
+            </button>
+            <div id="parentInput">
+                <form id="parentInputForm">
+                    <input id="parentInputP1" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                    <input id="parentInputP2" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                    <input id="parentInputP3" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                    <input id="parentInputP4" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                    <button type="submit" id="validation">Save</button>
+                </form>
+            </div><br/>
+
         </div>
-        </form>
+        <!-- </form> -->
+
         <div id="timerOptions">
             <h3>Choose a study session type:</h3>
             <div id="radioButtons">
@@ -79,11 +99,10 @@
             </div>
         </div>
         <br>
-        <button id="beginSession">Begin Session</button>
-        <button id="pauseBtn">Toggle Pause</button>
-        <button id="nextStep">Next Step</button>
+        <button id="beginSession">Begin Session</button><br />
+        <button id="pauseBtn">Toggle Pause</button><br />
+        <button id="nextStep">Next Step</button><br />
         <button id="endSession">End Session</button> <br />
-        <!-- <button id="websiteBtn">Go To Website</button> -->
         <form action="http://127.0.0.1:5000/login" target="_blank">
             <input id="websiteBtn" type="submit" value="Go to Website" />
         </form><br />
@@ -98,20 +117,6 @@
             <p id="removedDomains"></p>
         </div>
 
-        <!--Parent Mode Button-->
-        <br>
-        <button type="button" id="parentModeBtn">
-            Hide/Show Parent Mode Login
-        </button>
-        <div id="parentInput">
-            <form id="parentInputForm">
-                <input id="parentInputP1" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
-                <input id="parentInputP2" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
-                <input id="parentInputP3" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
-                <input id="parentInputP4" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
-                <button type="submit" id="validation">Login</button>
-            </form>
-        </div>
     </div>
     <script src="popup.js"></script>
 </body>

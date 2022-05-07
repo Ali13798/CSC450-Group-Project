@@ -520,6 +520,7 @@ document.addEventListener("DOMContentLoaded", () => {
             options.style.display = "block";
             //change options button to hide options
             optionsBtn.innerHTML = "Hide Options";
+            optionsBtn.style.marginLeft = "32%";
             //get the list of sites
             chrome.storage.local.get(["blocked"], function (local) {
                 console.log("getting sites");
@@ -537,6 +538,7 @@ document.addEventListener("DOMContentLoaded", () => {
             options.style.display = "none";
             //change hide options button to options
             optionsBtn.innerHTML = "Whitelist Options";
+            optionsBtn.style.marginLeft = "28%";
         }
     });
 
@@ -755,6 +757,9 @@ function interPageSettings() {
     endButton.style.display = "inline-block"; //only show end button
     pauseBtn.style.display = "none";
     userInfoInput.style.display = "none";
+    nextStep.style.marginLeft = "-1%";
+    nextStep.style.marginBottom = "5%";
+    // nextStep.style.marginLeft = "35%";
 
 }
 
@@ -775,6 +780,11 @@ function breakPageSettings() {
     endButton.style.display = "inline-block"; //show end and pause only
     pauseBtn.style.display = "inline-block";
     userInfoInput.style.display = "none";
+    nextStep.style.display = "none";
+}
+
+function pinValidationPageSettings(){
+
 }
 
 function displayProgress() {
