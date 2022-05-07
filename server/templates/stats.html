@@ -82,7 +82,12 @@
               // Data
               sessions = [labels];
               statsArray.forEach(elm => {
-                sessions.push([elm.date, elm.clickCount]);
+                dateObj = new Date(elm.date);
+                year = dateObj.getFullYear();
+                month = ((dateObj.getMonth() + 1) < 10 ) ? "0"+(dateObj.getMonth() + 1) : (dateObj.getMonth() + 1);
+                day = (dateObj.getDate() < 10 ) ? "0"+dateObj.getDate() : dateObj.getDate();
+                MDYDate = month  + "/" + day + "/" +  year;
+                sessions.push([MDYDate, elm.clickCount]);
               });
               
               var data = google.visualization.arrayToDataTable(sessions);
@@ -127,12 +132,6 @@
             
           <script type="text/javascript">
 
-            // var keyHst = document.getElementById("keyDiv").getAttribute('data-keyHst');
-            // keyHst = "{ 'data': " + keyHst + "}";
-            // keyHst = keyHst.replace(/\'/g, '"');
-            // keyHst = JSON.parse(keyHst);
-            // keyArray = keyHst.data;
-
             google.charts.load('current', {'packages':['bar']});
             google.charts.setOnLoadCallback(drawChart);
           
@@ -144,7 +143,12 @@
               // Data          
               sessions = [labels];
               statsArray.forEach(elm => {
-                sessions.push([elm.date, elm.keyCount]);
+                dateObj = new Date(elm.date);
+                year = dateObj.getFullYear();
+                month = ((dateObj.getMonth() + 1) < 10 ) ? "0"+(dateObj.getMonth() + 1) : (dateObj.getMonth() + 1);
+                day = (dateObj.getDate() < 10 ) ? "0"+dateObj.getDate() : dateObj.getDate();
+                MDYDate = month  + "/" + day + "/" +  year;
+                sessions.push([MDYDate, elm.keyCount]);
               });
               
               var data = google.visualization.arrayToDataTable(sessions);
@@ -189,12 +193,6 @@
             
           <script type="text/javascript">
 
-            // var minHst = document.getElementById("minDiv").getAttribute('data-minHst');
-            // minHst = "{ 'data': " + minHst + "}";
-            // minHst = minHst.replace(/\'/g, '"');
-            // minHst = JSON.parse(minHst);
-            // minArray = minHst.data;
-
             google.charts.load('current', {'packages':['bar']});
             google.charts.setOnLoadCallback(drawChart);
           
@@ -206,7 +204,12 @@
               // Data
               sessions = [labels];
               statsArray.forEach(elm => {
-                sessions.push([elm.date, elm.timeStudied]);
+                dateObj = new Date(elm.date);
+                year = dateObj.getFullYear();
+                month = ((dateObj.getMonth() + 1) < 10 ) ? "0"+(dateObj.getMonth() + 1) : (dateObj.getMonth() + 1);
+                day = (dateObj.getDate() < 10 ) ? "0"+dateObj.getDate() : dateObj.getDate();
+                MDYDate = month  + "/" + day + "/" +  year;
+                sessions.push([MDYDate, elm.timeStudied]);
               });
               
               var data = google.visualization.arrayToDataTable(sessions);
