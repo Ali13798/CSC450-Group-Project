@@ -15,20 +15,22 @@ body {
 #options,
 #pauseBtn,
 #nextStep,
-#messages, 
+#messages,
 #healthy {
     display: none;
     color: #ffbe30;
 }
-#healthy{
+
+#healthy {
     text-align: left;
     /* margin-left: px; */
     /* margin-top: -40px; */
     /* background-color: rgba(0, 0, 0, 0.2); */
     display: inline-block;
-    
+
 }
-#messages, 
+
+#messages,
 #healthy {
     margin: 0;
 }
@@ -271,8 +273,41 @@ input[type=submit] {
 
 }
 
+#validation {
+    /* margin-left: -10%; */
+    font-family: 'Michroma', sans-serif;
+    color: rgb(255, 255, 255);
+    /* position: absolute; */
+    background-color: #137575cc;
+
+}
+
 #parentInput {
-    display:block;
+    display: block;
+}
+
+#parentInputForm {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: left;
+    text-decoration: none;
+    outline: none;
+    border: none;
+}
+
+#parentInputP1,
+#parentInputP2,
+#parentInputP3,
+#parentInputP4 {
+    margin: 0 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #333;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 3rem;
 }
 
 
@@ -298,6 +333,7 @@ input[type=submit],
     border: none;
 }
 
+#validation:hover,
 #beginSession:hover,
 #endSession:hover,
 #websiteBtn:hover,
@@ -312,6 +348,7 @@ input[type=submit]:hover,
     background-color: #ffbe30;
 }
 
+#validation:active,
 #beginSession:active,
 #endSession:active,
 #websiteBtn:active,

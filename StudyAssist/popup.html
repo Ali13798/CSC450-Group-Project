@@ -63,11 +63,16 @@
                         <!--  custom -->
                         <td><input type="radio" id="cust" name="timerOp" value="cust"></td>
                         <div id="custSessionInputs">
-                            <td><input class="custInput" type="number" id="studyMin" name="studyMin" min="1" max="120"></td>
-                            <td><input class="custInput" type="number" id="shortBkMin" name="shortBkMin" min="0.1" max="30"></td>
-                            <td><input class="custInput" type="number" id="cycleNum" name="cycleNum" min="1" max="10"></td>
-                            <td><input class="custInput" type="number" id="longBkMin" name="longBkMin" min="1" max="120"></td>
-                            <td><input class="custInput" type="number" id="repeatNum" name="repeatNum" min="1" max="10"></td>
+                            <td><input class="custInput" type="number" id="studyMin" name="studyMin" min="1" max="120">
+                            </td>
+                            <td><input class="custInput" type="number" id="shortBkMin" name="shortBkMin" min="0.1"
+                                    max="30"></td>
+                            <td><input class="custInput" type="number" id="cycleNum" name="cycleNum" min="1" max="10">
+                            </td>
+                            <td><input class="custInput" type="number" id="longBkMin" name="longBkMin" min="1"
+                                    max="120"></td>
+                            <td><input class="custInput" type="number" id="repeatNum" name="repeatNum" min="1" max="10">
+                            </td>
                         </div>
                     </tr>
                 </table>
@@ -99,9 +104,13 @@
             Hide/Show Parent Mode Login
         </button>
         <div id="parentInput">
-            <input type="password" name="pin" inputmode="numeric" maxlength="4" required
-                placeholder="4 digits of PIN number 1-9">
-            <input type="submit" value="Submit">
+            <form id="parentInputForm">
+                <input id="parentInputP1" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                <input id="parentInputP2" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                <input id="parentInputP3" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                <input id="parentInputP4" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                <button type="submit" id="validation">Login</button>
+            </form>
         </div>
     </div>
     <script src="popup.js"></script>

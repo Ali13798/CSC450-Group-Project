@@ -1,6 +1,7 @@
 var timer = {}; //global object for storing information about the timer
 var timeMessage; //Stores the string rep of the end timer time
 var users = {} //Object for storing information of users
+var pin = {};
 
 //Content areas
 var popCont, timerDiv, custSessionInputs, textarea, messages, healthyMsg, userInfoInput, displayEnterPin;
@@ -28,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     userInfoInput = document.getElementById("userInfoInput");
     infoBtn = document.getElementById("buttonInfo");
     parentBtn = document.getElementById("parentModeBtn");
+    validationP = document.getElementById("validation");
 
     //Get User information
     //Button for user to enter name
@@ -49,17 +51,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     //Parent Mode Button
-    document.addEventListener("DOMContentLoaded", () => { //this is also already being done on line 15
-        parentBtn.addEventListener("click", togglePinField);
-        parentInput = document.getElementById("parentInput");
-        function togglePinField() {
-            if (parentInput.style.display === "none") {
-                parentInput.style.display = "block";
-            } else {
-                parentInput.style.display = "none";
-            }
+    parentBtn.addEventListener("click", togglePinField);
+    parentInput = document.getElementById("parentInput");
+    form = document.querySelector('parentInputForm');
+    function togglePinField() {
+        if (parentInput.style.display === "none") {
+            parentInput.style.display = "block";
+        } else {
+            parentInput.style.display = "none";
         }
-    })
+    }
+    validationP.addEventListener("click", authorizationPin)
+    function authorizationPin() {
+        let pin = {};
+        pin.parentInputP1 = document.getElementById("parentInputP1").value;
+        pin.parentInputP2 = document.getElementById("parentInputP2").value;
+        pin.parentInputP3 = document.getElementById("parentInputP3").value;
+        pin.parentInputP4 = document.getElementById("parentInputP4").value;
+        if (document.getElementById("parentInputP1").value == "") {
+            alert("Missing number.")
+        } else if (document.getElementById("parentInputP2").value == "") {
+            alert("Missing number.")
+        } else if (document.getElementById("parentInputP3").value == "") {
+            alert("Missing number.")
+        } else if (document.getElementById("parentInputP4").value == "") {
+            alert("Missing number.")
+        } else {
+            alert("Pin saved in Local Storage.")
+            saveToStorage(pin)
+        }
+    }
 
     //Load previous session data if any
     chrome.storage.sync.get(['popupData'], function (result) {
