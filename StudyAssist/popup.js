@@ -6,7 +6,7 @@ var pin = {};
 //Content areas
 var popCont, timerDiv, custSessionInputs, textarea, messages, healthyMsg, userInfoInput, displayEnterPin;
 //Buttons
-var infoBtn, save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep;
+var infoBtn, save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep, userInfoInput, parentBtn;
 var healthyMessage = "<br><br>Healthy Break Tips: <br>-Drink water <br>-Have some fruit as a snack <br>-Get up and stretch <br>-Some light exercise";
 
 //Clicking on the button starts the blocking session
@@ -70,10 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
     validationP.addEventListener("click", authorizationPin)
     function authorizationPin() {
         let pin = {};
-        pin.parentInputP1 = document.getElementById("parentInputP1").value;
-        pin.parentInputP2 = document.getElementById("parentInputP2").value;
-        pin.parentInputP3 = document.getElementById("parentInputP3").value;
-        pin.parentInputP4 = document.getElementById("parentInputP4").value;
+        pin.num1 = document.getElementById("parentInputP1").value;
+        pin.num2 = document.getElementById("parentInputP2").value;
+        pin.num3 = document.getElementById("parentInputP3").value;
+        pin.num4 = document.getElementById("parentInputP4").value;
         if (document.getElementById("parentInputP1").value == "") {
             alert("Missing number.")
         } else if (document.getElementById("parentInputP2").value == "") {
@@ -171,7 +171,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     } else if (popupData.state === "mainpg") {
                         messages.innerHTML = "";
                         messages.style.display = "none";
-                        var PgTitle = document.getElementById("PgTitle");
                         mainPageSettings();
 
                         //If there is contents in timeStudied, then save it to the DB //Checking here again in case it failed to save when the session ended. 
@@ -260,37 +259,31 @@ document.addEventListener("DOMContentLoaded", () => {
                         breakPageSettings();
                     }
 
+                    // check if in pinval
+                    if (popupData.state === "pinVal") {
+                        pinValidationPageSettings();
+                    }
+
                 }
-
-
 
                 if (!(popupData.newBlockedPg === undefined || popupData.newBlockedPg === null || popupData.newBlockedPg.length === 0)) {
                     if (popupData.newBlockedPg == true) {
-                        var url = popupData.lastBlockedPage;
-                        //get the domain from the url
-                        var domain = (new URL(url)).hostname;
-                        message = "Access to the following page is not permitted during study mode:\n" + url
-                            + "\nAllow this domain? " + domain;
-                        // popupData.newBlockedPg = false;
-                        timer.newBlockedPg = false;
-                        // popupData.lastBlockedPage = "";
-                        timer.lastBlockedPage = "";
-                        let serialized = JSON.stringify(timer);
-                        chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                        // Save desired action
+                        action = {};
+                        action.type = "addDomain";
+                        let serializedAction = JSON.stringify(action);
+                        chrome.storage.sync.set({ "action" : serializedAction }, function () {
+                            // console.log('Value is set to ' + serialized);
+                        });      
+
+                        // show pin page
+                        timer.prevState = timer.state;
+                        timer.state = "pinVal"
+                        let serializedTimer = JSON.stringify(timer);
+                        chrome.storage.sync.set({ "popupData" : serializedTimer }, function () {
                             // console.log('Value is set to ' + serialized);
                         });
-                        answer = confirm(message);
-                        if (answer) {
-                            //get list from storage, add to list, save
-                            chrome.storage.local.get(["blocked"], function (local) {
-                                const blocked = local;
-                                if (Array.isArray(blocked.blocked)) {
-                                    textarea.value = blocked.blocked.join("\n");
-                                }
-                                textarea.value += "\n" + domain;
-                                save.click();
-                            });
-                        }
+                        location.reload();
                     }
                 }
                 //Populate choices for custom timer
@@ -351,10 +344,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     editBtn.addEventListener("click", () => {
-        // Validate pin
-
-        // Remove readonly from textbox
-        textarea.removeAttribute("readonly");
+        console.log("clicked edit");
+        // Save desired action
+        action = {};
+        action.type = "editTextBox";
+        let serialized = JSON.stringify(action);
+        chrome.storage.sync.set({ "action" : serialized }, function () {
+            // console.log('Value is set to ' + serialized);
+        });      
+        //Show pin page
+        timer.prevState = timer.state;
+        timer.state = "pinVal"
+        let serializedT = JSON.stringify(timer);
+        chrome.storage.sync.set({ "popupData" : serializedT }, function () {
+            // console.log('Value is set to ' + serialized);
+        });
+        location.reload();
+        
     });
 
     //if a button is selected, save selection in storage
@@ -500,71 +506,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //End session //end session button not working
     endButton.addEventListener('click', () => {
+        // Save desired action
+        action = {};
+        action.type = "endSession";
+        let serializedAction = JSON.stringify(action);
+        chrome.storage.sync.set({ "action" : serializedAction }, function () {
+            // console.log('Value is set to ' + serialized);
+        });      
 
-        answer = confirm("Reload page to remove timer?");
-        if (!answer) {
-            return;
-        }
-
-        if (!(timer.timeStudied === undefined ||
-            timer.timeStudied === null ||
-            timer.timeStudied.length === 0)) {
-            data = {};
-            console.log("data = " + timer.timeStudied + " " + timer.clickCount + " " + timer.keyCount);
-            data.timeStudied = timer.timeStudied;
-            data.clickCount = timer.clickCount
-            data.keyCount = timer.keyCount
-            try {
-                fetch("http://127.0.0.1:5000/saveStudyData", {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    headers: new Headers({
-                        "content-type": "application/json"
-                    })
-                })
-                    .then(function (response) {
-                        if (response.ok) {
-                            return response.json()
-                        } else {
-                            console.log("Response error status: ", response.status);
-                        }
-                    })
-                    .then(function (message) {
-                        console.log("Message: ", message);
-                        timer.timeStudied = null;
-                        timer.clickCount = null;
-                        timer.keyCount = null;
-                        let serialized = JSON.stringify(timer);
-                        chrome.storage.sync.set({ "popupData" : serialized }, function () {
-                            // console.log('Value is set to ' + serialized);
-                        });
-                    }).catch(function (error) {
-                        console.log("Error on fetch: ", error);
-                    })
-            } catch (error) {
-                console.log("Error on try: ", error);
-            }
-
-        }
-
-        mainPageSettings();
-
-        timer.state = "mainpg";
-        messages.innerHTML = "";
-
-        //reset count of study and short breaks
-        timer.numStudy = 0;
-        timer.numBreak = 0;
-        timer.numLongBreak = 0;
-
-        timer.endTime = "";
-
+        // show pin validation page
+        timer.prevState = timer.state;
+        timer.state = "pinVal"
         let serialized = JSON.stringify(timer);
         chrome.storage.sync.set({ "popupData" : serialized }, function () {
             // console.log('Value is set to ' + serialized);
         });
-        chrome.tabs.reload();
-
+        location.reload();
     });
 
     //Show / hide whitelisting options 
@@ -679,64 +636,52 @@ document.getElementById("pinValidBtn").addEventListener('click', ()=>{
     } else if (pin.pinNum4 == "") {
         alert("Missing number.")
     } else {
+
         chrome.storage.sync.get(["authPin"] , function (result) {
             // Compare to storage
             if (!(result === undefined || result === null || Object.keys(result).length === 0)) {
-                //TODO: Decode or encode to compare
-
-                // Temporarally comparing without encoding
-
+                var result = JSON.parse(result.authPin);
+                valid = validatePin(pin, result);
+                if (valid) {
+                    console.log("pin was correct");
+                    // Complete saved action
+                    chrome.storage.sync.get(['action'], function (result) {
+            
+                        if (!(result === undefined || result === null || Object.keys(result).length === 0)) {
+                                //if there is data load it in, get it as a string
+                            var result = JSON.parse(result.action);
+        
+                            if (!(result.type === undefined || result.type === null || result.type.length === 0)) {
+        
+                                if (result.type === "editTextBox"){
+                                    editTextBox();
+        
+                                }else if (result.type === "addDomain"){
+                                    addDomain();
+        
+                                }else if (result.type === "endSession"){
+                                    endSession();
+        
+                                }else{
+                                    alert("No action found to be completed");
+                                }
+                            }
+                        }
+                    })
+         
+                }else{
+                    console.log("pin does not match: ", pin);
+                alert("Sorry, the pin does not match. ")
+                }
             }
         });
+        
+       
     }
-    // Complete saved action
-
 })
 
 document.getElementById("pinValidCancelBtn").addEventListener('click', ()=>{
-    // go back to previous page which is the current state
-    chrome.storage.sync.get(['popupData'], function (result) {
-        if (!(result.popupData === undefined || result.popupData === null || result.popupData.length === 0)) {
-            //if there is data load it in, get it as a string
-            var popupData = JSON.parse(result.popupData);
-            if (!(popupData.state === undefined || popupData.state === null || popupData.state.length === 0)) {
-                //Check if in study state
-                if (popupData.state === "study") {
-                    studyPageSettings();
-                }
-                //check if in intermission state
-                if (popupData.state === "intermission") {
-                    //figure out the next stage is, display it on the button
-                    var nextStepMessage;
-                    if (timer.numStudy == timer.cycleNum && timer.numBreak == (timer.cycleNum - 1)) {
-                        //long break time
-                        nextStepMessage = "Start Long Break";
-                    } else if (timer.numStudy > timer.numBreak) {
-                        //short break
-                        nextStepMessage = "Start Short Break";
-                    } else if (timer.numStudy == timer.numBreak) {
-                        //study time
-                        nextStepMessage = "Start Study Time";
-                    }
-                    nextStep.style.display = "inline";
-                    nextStep.innerHTML = nextStepMessage;
-                    interPageSettings(); //set the rest of the settings
-                }
-                //check if in break state
-                if (popupData.state === "break") {
-                    var PgTitle = document.getElementById("PgTitle");
-                    PgTitle.innerHTML = "Short Break";
-                    breakPageSettings();
-                }
-                //check if in long break state
-                if (popupData.state === "Long break") {
-                    var PgTitle = document.getElementById("PgTitle");
-                    PgTitle.innerHTML = "Long Break";
-                    breakPageSettings();
-                }
-            }
-        }
-    });
+    cancelBttnFunction();
 })
 
 //Begin Session Functions
@@ -851,6 +796,7 @@ function mainPageSettings() {
     nextStep.style.display = "none";
     endButton.style.display = "none";
     messages.style.display = "block";
+    document.getElementById("websiteBtn").style.display = "block";
 
     chrome.storage.sync.get(['authPin'], function (result) {
         if (!(result === undefined || result === null || Object.keys(result).length === 0)) {
@@ -955,6 +901,8 @@ function pinValidationPageSettings(){
     userInfoInput.style.display = "none";
     nextStep.style.display = "none";
     parentBtn.style.display = "none";
+    optionsBtn.style.display = "none";
+    document.getElementById("websiteBtn").style.display = "none";
 }
 
 function displayProgress() {
@@ -964,4 +912,201 @@ function displayProgress() {
         + ", Long Break: " + timer.numLongBreak + "/" + timer.repeatNum;
     messages.innerHTML = progressMessage;
     messages.style.display = "block";
+}
+
+function validatePin(givenPin, storedPin){
+    
+    //TODO: Encode to compare
+    encodedPin = {};
+    encodedPin.pinNum1 = givenPin.pinNum1;
+    encodedPin.pinNum2 = givenPin.pinNum2;
+    encodedPin.pinNum3 = givenPin.pinNum3;
+    encodedPin.pinNum4 = givenPin.pinNum4; 
+
+    // Comparing 
+    if (storedPin.num1 == encodedPin.pinNum1 &&
+        storedPin.num2 == encodedPin.pinNum2 &&
+        storedPin.num3 == encodedPin.pinNum3 &&
+        storedPin.num4 == encodedPin.pinNum4){
+        console.log("true, same", true);
+        return true;
+    }else{
+        console.log("stored pin: ");
+        console.log(storedPin);
+        console.log("encoded pin: ");
+        console.log(encodedPin);
+        return false;
+    }
+
+}
+
+function editTextBox(){
+    console.log("turn to readonly");
+    // Remove readonly from textbox
+    textarea.removeAttribute("readonly");
+    // go back to prev state
+    cancelBttnFunction();
+
+}
+
+function endSession(){
+    answer = confirm("Reload page to remove timer?");
+    if (!answer) {
+        return;
+    }
+
+    if (!(timer.timeStudied === undefined ||
+        timer.timeStudied === null ||
+        timer.timeStudied.length === 0)) {
+        data = {};
+        console.log("data = " + timer.timeStudied + " " + timer.clickCount + " " + timer.keyCount);
+        data.timeStudied = timer.timeStudied;
+        data.clickCount = timer.clickCount
+        data.keyCount = timer.keyCount
+        try {
+            fetch("http://127.0.0.1:5000/saveStudyData", {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    "content-type": "application/json"
+                })
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.json()
+                    } else {
+                        console.log("Response error status: ", response.status);
+                    }
+                })
+                .then(function (message) {
+                    console.log("Message: ", message);
+                    timer.timeStudied = null;
+                    timer.clickCount = null;
+                    timer.keyCount = null;
+                    let serialized = JSON.stringify(timer);
+                    chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                        // console.log('Value is set to ' + serialized);
+                    });
+                }).catch(function (error) {
+                    console.log("Error on fetch: ", error);
+                })
+        } catch (error) {
+            console.log("Error on try: ", error);
+        }
+
+    }
+
+    mainPageSettings();
+
+    timer.state = "mainpg";
+    messages.innerHTML = "";
+
+    //reset count of study and short breaks
+    timer.numStudy = 0;
+    timer.numBreak = 0;
+    timer.numLongBreak = 0;
+
+    timer.endTime = "";
+
+    let serialized = JSON.stringify(timer);
+    chrome.storage.sync.set({ "popupData" : serialized }, function () {
+        // console.log('Value is set to ' + serialized);
+    });
+    chrome.tabs.reload();
+    
+}
+
+function addDomain(){
+    var url = timer.lastBlockedPage;
+    //get the domain from the url
+    var domain = (new URL(url)).hostname;
+    message = "Access to the following page is not permitted during study mode:\n" + url
+        + "\nAllow this domain? " + domain;
+    // popupData.newBlockedPg = false;
+    timer.newBlockedPg = false;
+    // popupData.lastBlockedPage = "";
+    timer.lastBlockedPage = "";
+    let serialized = JSON.stringify(timer);
+    chrome.storage.sync.set({ "popupData" : serialized }, function () {
+        // console.log('Value is set to ' + serialized);
+    });
+    answer = confirm(message);
+    if (answer) {
+        //get list from storage, add to list, save
+        chrome.storage.local.get(["blocked"], function (local) {
+            const blocked = local;
+            if (Array.isArray(blocked.blocked)) {
+                textarea.value = blocked.blocked.join("\n");
+            }
+            textarea.value += "\n" + domain;
+            save.click();
+        });
+    }
+    // go back to prev state
+    cancelBttnFunction();
+}
+
+function cancelBttnFunction(){
+    // go back to previous page which is the current state
+    chrome.storage.sync.get(['popupData'], function (result) {
+        if (!(result.popupData === undefined || result.popupData === null || result.popupData.length === 0)) {
+            //if there is data load it in, get it as a string
+            var popupData = JSON.parse(result.popupData);
+            if (!(popupData.prevState === undefined || popupData.prevState === null || popupData.prevState.length === 0)) {
+                //Check if in study state
+                if (popupData.prevState === "mainpg") {
+                    timer.state = "mainpg";
+                    messages.innerHTML = "";
+                    messages.style.display = "none";
+                    var PgTitle = document.getElementById("PgTitle");
+                    mainPageSettings();
+                }
+                if (popupData.prevState === "study") {
+                    timer.state = "study";
+                    studyPageSettings();
+                }
+                //check if in intermission state
+                if (popupData.prevState === "intermission") {
+                    timer.state = "intermission";
+                    //figure out the next stage is, display it on the button
+                    var nextStepMessage;
+                    if (timer.numStudy == timer.cycleNum && timer.numBreak == (timer.cycleNum - 1)) {
+                        //long break time
+                        nextStepMessage = "Start Long Break";
+                    } else if (timer.numStudy > timer.numBreak) {
+                        //short break
+                        nextStepMessage = "Start Short Break";
+                    } else if (timer.numStudy == timer.numBreak) {
+                        //study time
+                        nextStepMessage = "Start Study Time";
+                    }
+                    nextStep.style.display = "inline";
+                    nextStep.innerHTML = nextStepMessage;
+                    interPageSettings(); //set the rest of the settings
+                }
+                //check if in break state
+                if (popupData.prevState === "break") {
+                    timer.state = "break";
+                    var PgTitle = document.getElementById("PgTitle");
+                    PgTitle.innerHTML = "Short Break";
+                    breakPageSettings();
+                }
+                //check if in long break state
+                if (popupData.prevState === "Long break") {
+                    timer.state = "Long break";
+                    var PgTitle = document.getElementById("PgTitle");
+                    PgTitle.innerHTML = "Long Break";
+                    breakPageSettings();
+                }
+
+                // save back to prev state
+                let serialized = JSON.stringify(timer);
+                chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                    // console.log('Value is set to ' + serialized);
+                });
+
+                console.log("timer = ", timer.state);
+            }
+        }
+    })
 }

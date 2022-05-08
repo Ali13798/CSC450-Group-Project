@@ -72,7 +72,7 @@ h3 {
 
 #timerTable {
 
-    width: 100%;
+    width: 50%;
     background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -85,43 +85,10 @@ td {
 }
 
 #timerOptions {
-    margin-left: 1em;
-    margin-right: 1em;
+    /* margin-left: 1em;
+    margin-right: 1em; */
     text-align: left;
-
 }
-
-/* #studyMin
-{
-    width: 14.75%; */
-/* margin-left: 4.25em; */
-/* margin-left: 70px;
-    margin-top: 5px;
-} */
-
-/* #shortBkMin 
-{ */
-/* margin-left: 1.2em; */
-/* width: 14.75%;
-    margin-left: 29px;
-    margin-top: 5px;
-} */
-
-/* #cycleNum
-{ */
-/* margin-left: 2.3em; */
-/* width: 14.75%;
-    margin-left: 44px;
-    margin-top: 5px; */
-/* } */
-
-/* #longBkMin
-{ */
-/* margin-left: 1.4em; */
-/* width: 14.75%;
-    margin-left: 32px;
-    margin-top: 5px; */
-/* }  */
 
 h3 {
     color: #ffbe30;
@@ -154,7 +121,7 @@ h3 {
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
     text-align: left;
-    margin-left: -1%;
+    margin-left: 30%;
     margin-top: 10%;
 }
 
@@ -163,12 +130,12 @@ h3 {
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
     text-align: left;
-    margin-left: 2.5em;
+    /* margin-left: 2.5em; */
     /* position: absolute;
     left: 0%; */
     /* padding-top: 3em; */
     margin-top: 0%;
-    margin-left: 0%;
+    margin-left: 30%;
 }
 
 
@@ -188,24 +155,33 @@ h3 {
 
 #save,
 #editbtn,
-#popWebsites {
+#popWebsites, 
+#pinValidBtn, 
+#pinValidCancelBtn {
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
     margin-bottom: 10px;
     margin-left: 15%;
 }
-#save, #editbtn{
+#save, 
+#editbtn{
     margin-left: 40%;
 }
 
-#endSession {
+#pinValidBtn, 
+#pinValidCancelBtn{
+    margin-top: 10%;
+    margin-left: 25%;
+}
 
+#endSession {
+    display: none;
     /* same as begin btn */
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
-    /* margin-left: 15%; */
+    margin-left: 30%;
     margin-top: 2%;
 }
 
@@ -288,7 +264,13 @@ input[type=submit] {
     margin-left: 15%;
 }
 
-#parentInputForm {
+#pinValidaionDiv {
+    display: none;
+    margin-left: 15%;
+    margin-top: -25%;
+}
+
+#parentInputForm, #pinValidaionForm {
     display: inline-block;
     padding: 15px 25px;
     font-size: 12px;
@@ -302,7 +284,11 @@ input[type=submit] {
 #parentInputP1,
 #parentInputP2,
 #parentInputP3,
-#parentInputP4 {
+#parentInputP4, 
+#pinVal1, 
+#pinVal2,
+#pinVal3,
+#pinVal4{
     margin: 0 0.5rem;
     padding: 0.5rem;
     border: 1px solid #333;
@@ -325,8 +311,9 @@ input[type=submit],
 #pauseBtn,
 #popWebsites,
 #save,
-#editbtn{
-    display: block;
+#editbtn, 
+#pinValidBtn, 
+#pinValidCancelBtn{
     padding: 15px 25px;
     font-size: 14px;
     cursor: pointer;
@@ -334,6 +321,16 @@ input[type=submit],
     text-decoration: none;
     outline: none;
     border: none;
+}
+
+#beginSession,
+#websiteBtn,
+#optionsBtn,
+#parentModeBtn,
+#buttonInfo,
+input[type=submit],
+#popWebsites{
+    display: block;
 }
 
 #validation:hover,
@@ -375,7 +372,7 @@ input[type=submit]:active,
 
 input[type="radio"] {
     /* position: relative; */
-    width: 60px;
+    width: 50px;
     height: 20px;
     /* margin: 5px; */
     margin-bottom: 1em;
