@@ -1235,3 +1235,7 @@ animation-delay: .5s;
   padding: 10px;
   border: 0;
 }
+
+#subButton{
+  display: none;
+}

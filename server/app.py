@@ -135,7 +135,7 @@ def get_xp(click_count: int, key_count: int, time_studied: int) -> float:
     )
     return xp
 
-def get_Title():
+'''def get_Title():
 
     if {{curLevel}} == 0 or {{curLevel}} == 1 or {{curLevel}} == 2 or {{curLevel}} == 3 or {{curLevel}} == 4:
         {{user_title}} = "Novice"
@@ -171,7 +171,7 @@ def get_Title():
         {{user_title}} = "God-King"
 
     return {{user_title}}
-
+'''
 
 @app.route("/stats")
 def stats():
