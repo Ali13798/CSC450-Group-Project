@@ -43,11 +43,7 @@ def greet():
 
     name = flask.request.form.get("name")
     password = flask.request.form.get("password")
-    confirm_password = flask.request.form.get("confirm_password")
 
-    # if password != confirm_password:
-    #     flask.flash("Passwords do not match, try again.")
-    #     return flask.redirect(flask.url_for("signup"))
     password = hash_password(password)
     all_names: list[tuple[int, str, str]] = []
 
@@ -91,6 +87,12 @@ def new_user():
         return flask.redirect(flask.url_for("signup"))
 
     password = flask.request.form.get("password")
+
+    confirm_password = flask.request.form.get("confirm_password")
+    if password != confirm_password:
+        flask.flash("Passwords do not match, try again.")
+        return flask.redirect(flask.url_for("signup"))
+
     password = hash_password(password)
 
     with sqlite3.connect(DB_PATH) as con:
