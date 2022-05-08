@@ -63,13 +63,17 @@
   });
 
   var userHist = document.getElementById("hstDiv").getAttribute('data-userHist');
-  console.log(userHist);
+  // console.log(userHist);
   userHist = "{ 'data': " + userHist + "}";
   userHist = userHist.replace(/\'/g, '"');
   userHist = JSON.parse(userHist);
   hstArray = userHist.data;
-  console.log(userHist);
+  // console.log(userHist);
 
+  // Sort list in date order
+  hstArray = hstArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+  // console.log(hstArray);
+  
   function drawChart() {
     // Labels
     xTitle = "Session Date";

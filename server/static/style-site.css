@@ -1170,7 +1170,7 @@ animation-delay: .5s;
 #mousechart_material
 {
   position: absolute;
-  left: 44%;
+  left: 80%;
   /* top: 45%; */
   top: 75%;
   transform: translate(-50%, -50%);

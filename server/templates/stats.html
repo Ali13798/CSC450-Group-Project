@@ -45,6 +45,7 @@
             statsDiv = statsDiv.replace(/\'/g, '"');
             statsDiv = JSON.parse(statsDiv);
             statsArray = statsDiv.data;
+            statsArray = statsArray.sort((a, b) => new Date(a.date) - new Date(b.date));
 
 
             google.charts.load('current', {'packages':['bar']});
@@ -168,7 +169,7 @@
             <span></span>
             <span></span>
             <span></span>
-            Time
+            Minutes
         </button>
         
         <!-- END STUDY TIME BUTTON -->
