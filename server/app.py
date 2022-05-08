@@ -45,9 +45,9 @@ def greet():
     password = flask.request.form.get("password")
     confirm_password = flask.request.form.get("confirm_password")
 
-    if password != confirm_password:
-        flask.flash("Passwords do not match, try again.")
-        return flask.redirect(flask.url_for("signup"))
+    # if password != confirm_password:
+    #     flask.flash("Passwords do not match, try again.")
+    #     return flask.redirect(flask.url_for("signup"))
     password = hash_password(password)
     all_names: list[tuple[int, str, str]] = []
 

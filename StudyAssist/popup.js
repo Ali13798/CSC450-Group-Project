@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (document.getElementById("parentInputP4").value == "") {
             alert("Missing number.")
         } else {
-            alert("Pin saved in Local Storage.")
+            // alert("Pin saved in Local Storage.")
             let serialized = JSON.stringify(pin);
             chrome.storage.sync.set({ "authPin": serialized }, function () {
                 // console.log('Value is set to ' + serialized);
