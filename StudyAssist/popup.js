@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // console.log('Value is set to ' + serialized);
             });
             mainPageSettings();
+            
         }
 
     }
@@ -109,7 +110,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 timer.LBtime = parseFloat(popupData.longBkMin);
                 timer.cycleNum = parseInt(popupData.cycleNum);
                 timer.repeatNum = parseInt(popupData.repeatNum);
-
+                if (timer.textboxState == "edit"){
+                    textarea.removeAttribute("readonly");
+                }else if (timer.textboxState == "read"){
+                    textarea.setAttribute("readonly", "");
+                }
+                
                 if (!(popupData.state === undefined || popupData.state === null || popupData.state.length === 0)) {
 
                     //detect if the session has finished
@@ -268,22 +274,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (!(popupData.newBlockedPg === undefined || popupData.newBlockedPg === null || popupData.newBlockedPg.length === 0)) {
                     if (popupData.newBlockedPg == true) {
-                        // Save desired action
-                        action = {};
-                        action.type = "addDomain";
-                        let serializedAction = JSON.stringify(action);
-                        chrome.storage.sync.set({ "action" : serializedAction }, function () {
-                            // console.log('Value is set to ' + serialized);
-                        });      
-
-                        // show pin page
-                        timer.prevState = timer.state;
-                        timer.state = "pinVal"
-                        let serializedTimer = JSON.stringify(timer);
-                        chrome.storage.sync.set({ "popupData" : serializedTimer }, function () {
+                        var url = timer.lastBlockedPage;
+                        //get the domain from the url
+                        var domain = (new URL(url)).hostname;
+                        message = "Access to the following page is not permitted during study mode:\n" + url
+                            + "\nAllow this domain? " + domain;
+                        timer.newBlockedPg = false;
+                        timer.lastBlockedPage = "";
+                        let serialized = JSON.stringify(timer);
+                        chrome.storage.sync.set({ "popupData" : serialized }, function () {
                             // console.log('Value is set to ' + serialized);
                         });
-                        location.reload();
+                        answer = confirm(message);
+                        if(answer){
+                            // Save desired action
+                            action = {};
+                            action.type = "addDomain";
+                            action.url = domain;
+                            let serializedAction = JSON.stringify(action);
+                            chrome.storage.sync.set({ "action" : serializedAction }, function () {
+                                // console.log('Value is set to ' + serialized);
+                            });      
+
+                            // show pin page
+                            timer.prevState = timer.state;
+                            timer.state = "pinVal"
+                            let serializedTimer = JSON.stringify(timer);
+                            chrome.storage.sync.set({ "popupData" : serializedTimer }, function () {
+                                // console.log('Value is set to ' + serialized);
+                            });
+                            // location.reload();
+                            pinValidationPageSettings();
+                        }
+                        
                     }
                 }
                 //Populate choices for custom timer
@@ -657,7 +680,7 @@ document.getElementById("pinValidBtn").addEventListener('click', ()=>{
                                     editTextBox();
         
                                 }else if (result.type === "addDomain"){
-                                    addDomain();
+                                    addDomain(valid);
         
                                 }else if (result.type === "endSession"){
                                     endSession();
@@ -670,8 +693,7 @@ document.getElementById("pinValidBtn").addEventListener('click', ()=>{
                     })
          
                 }else{
-                    console.log("pin does not match: ", pin);
-                alert("Sorry, the pin does not match. ")
+                    alert("Sorry, the pin does not match. ")
                 }
             }
         });
@@ -943,10 +965,10 @@ function validatePin(givenPin, storedPin){
 function editTextBox(){
     console.log("turn to readonly");
     // Remove readonly from textbox
+    timer.textboxState = "edit";
     textarea.removeAttribute("readonly");
     // go back to prev state
     cancelBttnFunction();
-
 }
 
 function endSession(){
@@ -1016,30 +1038,24 @@ function endSession(){
     
 }
 
-function addDomain(){
-    var url = timer.lastBlockedPage;
-    //get the domain from the url
-    var domain = (new URL(url)).hostname;
-    message = "Access to the following page is not permitted during study mode:\n" + url
-        + "\nAllow this domain? " + domain;
-    // popupData.newBlockedPg = false;
-    timer.newBlockedPg = false;
-    // popupData.lastBlockedPage = "";
-    timer.lastBlockedPage = "";
-    let serialized = JSON.stringify(timer);
-    chrome.storage.sync.set({ "popupData" : serialized }, function () {
-        // console.log('Value is set to ' + serialized);
-    });
-    answer = confirm(message);
+function addDomain(answer){
     if (answer) {
-        //get list from storage, add to list, save
-        chrome.storage.local.get(["blocked"], function (local) {
-            const blocked = local;
-            if (Array.isArray(blocked.blocked)) {
-                textarea.value = blocked.blocked.join("\n");
+        chrome.storage.sync.get(['action'], function (result) {
+            
+            if (!(result === undefined || result === null || Object.keys(result).length === 0)) {
+                    //if there is data load it in, get it as a string
+                var result = JSON.parse(result.action);
+                domain = result.url;
+                //get list from storage, add to list, save
+                chrome.storage.local.get(["blocked"], function (local) {
+                    const blocked = local;
+                    if (Array.isArray(blocked.blocked)) {
+                        textarea.value = blocked.blocked.join("\n");
+                    }
+                    textarea.value += "\n" + domain;
+                    save.click();
+                });
             }
-            textarea.value += "\n" + domain;
-            save.click();
         });
     }
     // go back to prev state
@@ -1104,8 +1120,6 @@ function cancelBttnFunction(){
                 chrome.storage.sync.set({ "popupData" : serialized }, function () {
                     // console.log('Value is set to ' + serialized);
                 });
-
-                console.log("timer = ", timer.state);
             }
         }
     })
