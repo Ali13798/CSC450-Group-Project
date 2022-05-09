@@ -1205,3 +1205,33 @@ animation-delay: .5s;
 }
 
 /* End Stats */
+
+/* Beging History */
+#columnchart_material{
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+}
+#datePicker {
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  font-size: 20px;
+  color: #ffbe0c;
+}
+#start, #end {
+    font-size:25px;
+    
+}
+#subButton{
+  color: #137575cc;
+  font-family: 'Michroma', sans-serif;
+  background-color: #ffbe0c;
+  font-size: 20px;
+  padding: 10px;
+  border: 0;
+}
