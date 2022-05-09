@@ -2,43 +2,6 @@
 {% block head %}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-        <style>
-            .buttonMouse, .buttonKey, .buttonTotalTime {
-              top: 25%;
-              color: #ffbe0c;
-            }
-            #mousechart_material
-            {
-              position: absolute;
-              left: 25%;
-              /* top: 45%; */
-              top: 75%;
-              transform: translate(-50%, -50%);
-              padding: 10px;
-            }
-
-            #keychart_material
-            {
-              position: absolute;
-              left: 58%;
-              /* top: 45%; */
-              top: 75%;
-              transform: translate(-50%, -50%);
-              padding: 10px;
-            }
-
-
-            #studychart_material
-            {
-              position: absolute;
-              left: 90%;
-              /* top: 45%; */
-              top: 75%;
-              transform: translate(-50%, -50%);
-              padding: 10px;
-            }
-        </style>
-
 {% endblock head %}
 
 {% block body %}
@@ -46,7 +9,7 @@
 <div id="statsDiv" data-stats='{{ stats }}'>
 
         <!-- Start stat buttons -->
-        <button class="buttonMouse" href="">
+        <button id="mouseStats" class="buttonMouse" href="">
             <span></span>
             <span></span>
             <span></span>
@@ -55,14 +18,28 @@
         </button>
 
         <!-- MOUSE GRAPH -->
-        <div class="container">
+        <div id="mouseCont" class="container">
 
-            <div id="mousechart_material" style="width: 800px; height: 500px;"></div>
+            <div id="mousechart_material" style="width: 300px; height: 500px;"></div>
           
         </div>
           
           <script type="text/javascript">
-
+            document.addEventListener("DOMContentLoaded", () => {
+              mouseStats = document.getElementById("mouseStats");
+              mouseCont = document.getElementById("mouseCont");
+              mouseStats.addEventListener('click', e => {
+                console.log("clicked mouse")
+                if (mouseCont.style.visibility === "hidden") {
+                  mouseCont.style.visibility = "visible";
+                  timeCont.style.visibility = "hidden";
+                  keyCont.style.visibility = "hidden";
+                } else {
+                  mouseCont.style.visibility = "hidden";
+                }
+              })
+            })
+            
             statsDiv = document.getElementById("statsDiv").getAttribute('data-stats');
             statsDiv = "{ 'data': " + statsDiv + "}";
             statsDiv = statsDiv.replace(/\'/g, '"');
@@ -113,7 +90,7 @@
 
 
           <!-- Start Button for Key Stats-->
-        <button class="buttonKey" href="">
+        <button id="keyStats" class="buttonKey" href="">
             <span></span>
             <span></span>
             <span></span>
@@ -124,13 +101,26 @@
         <!-- End Button for Key Stats-->
         
         <!-- Start Key Graph -->
-        <div class="container"> 
+        <div id="keyCont" class="container"> 
 
             <div id="keychart_material" style="width: 800px; height: 500px;"></div>
           
           </div>
             
           <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", () => {
+              keyStats = document.getElementById("keyStats");
+              keyCont = document.getElementById("keyCont");
+              keyStats.addEventListener('click', e => { 
+                if (keyCont.style.visibility === "hidden") {
+                  keyCont.style.visibility = "visible";
+                  mouseCont.style.visibility = "hidden";
+                  timeCont.style.visibility = "hidden";
+                } else {
+                  keyCont.style.visibility = "hidden";
+                }
+              })
+            })
 
             google.charts.load('current', {'packages':['bar']});
             google.charts.setOnLoadCallback(drawChart);
@@ -173,25 +163,38 @@
 
           <!-- START STUDY TIME BUTTON -->
 
-        <button class="buttonTotalTime" href="">
+        <button id="timeStats" class="buttonTotalTime" href="">
             <span></span>
             <span></span>
             <span></span>
             <span></span>
-            Study Time
+            Time
         </button>
         
         <!-- END STUDY TIME BUTTON -->
 
         <!-- START STUDY TIME CHART -->
 
-        <div class="container" >
+        <div id="timeCont" class="container" >
 
             <div id="studychart_material" style="width: 800px; height: 500px;"></div>
           
         </div>
             
           <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", () => {
+              timeStats = document.getElementById("timeStats");
+              timeCont = document.getElementById("timeCont");
+              timeStats.addEventListener('click', e => { 
+                if (timeCont.style.visibility === "hidden") {
+                  timeCont.style.visibility = "visible";
+                  mouseCont.style.visibility = "hidden";
+                  keyCont.style.visibility = "hidden";
+                } else {
+                  timeCont.style.visibility = "hidden";
+                }
+              })
+            })
 
             google.charts.load('current', {'packages':['bar']});
             google.charts.setOnLoadCallback(drawChart);
