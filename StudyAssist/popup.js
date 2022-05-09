@@ -6,7 +6,7 @@ var pin = {};
 //Content areas
 var popCont, timerDiv, custSessionInputs, textarea, messages, healthyMsg, userInfoInput, displayEnterPin;
 //Buttons
-var infoBtn, save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep, userInfoInput, parentBtn;
+var infoBtn, save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep, userInfoInput, parentBtn, validationP;
 var healthyMessage = "<br><br>Healthy Break Tips: <br>-Drink water <br>-Have some fruit as a snack <br>-Get up and stretch <br>-Some light exercise";
 
 //Clicking on the button starts the blocking session
@@ -47,11 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
         else {
             messages.innerHTML = "Welcome, " + fname.value + " " + lname.value;
             let serialized = JSON.stringify(users);
-            chrome.storage.sync.set({ "user" : serialized }, function () {
+            chrome.storage.sync.set({ "user": serialized }, function () {
                 // console.log('Value is set to ' + serialized);
             });
             mainPageSettings();
-            
+
         }
 
     }
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             alert("Pin saved in Local Storage.")
             let serialized = JSON.stringify(pin);
-            chrome.storage.sync.set({ "authPin" : serialized }, function () {
+            chrome.storage.sync.set({ "authPin": serialized }, function () {
                 // console.log('Value is set to ' + serialized);
             });
             togglePinField(); //hide pin field
@@ -110,12 +110,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 timer.LBtime = parseFloat(popupData.longBkMin);
                 timer.cycleNum = parseInt(popupData.cycleNum);
                 timer.repeatNum = parseInt(popupData.repeatNum);
-                if (timer.textboxState == "edit"){
+                if (timer.textboxState == "edit") {
                     textarea.removeAttribute("readonly");
-                }else if (timer.textboxState == "read"){
+                } else if (timer.textboxState == "read") {
                     textarea.setAttribute("readonly", "");
                 }
-                
+
                 if (!(popupData.state === undefined || popupData.state === null || popupData.state.length === 0)) {
 
                     //detect if the session has finished
@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                         timer.clickCount = null;
                                         timer.keyCount = null;
                                         let serialized = JSON.stringify(timer);
-                                        chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                                        chrome.storage.sync.set({ "popupData": serialized }, function () {
                                             // console.log('Value is set to ' + serialized);
                                         });
                                     }).catch(function (error) {
@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                         timer.clickCount = null;
                                         timer.keyCount = null;
                                         let serialized = JSON.stringify(timer);
-                                        chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                                        chrome.storage.sync.set({ "popupData": serialized }, function () {
                                             // console.log('Value is set to ' + serialized);
                                         });
                                     }).catch(function (error) {
@@ -282,31 +282,31 @@ document.addEventListener("DOMContentLoaded", () => {
                         timer.newBlockedPg = false;
                         timer.lastBlockedPage = "";
                         let serialized = JSON.stringify(timer);
-                        chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                        chrome.storage.sync.set({ "popupData": serialized }, function () {
                             // console.log('Value is set to ' + serialized);
                         });
                         answer = confirm(message);
-                        if(answer){
+                        if (answer) {
                             // Save desired action
                             action = {};
                             action.type = "addDomain";
                             action.url = domain;
                             let serializedAction = JSON.stringify(action);
-                            chrome.storage.sync.set({ "action" : serializedAction }, function () {
+                            chrome.storage.sync.set({ "action": serializedAction }, function () {
                                 // console.log('Value is set to ' + serialized);
-                            });      
+                            });
 
                             // show pin page
                             timer.prevState = timer.state;
                             timer.state = "pinVal"
                             let serializedTimer = JSON.stringify(timer);
-                            chrome.storage.sync.set({ "popupData" : serializedTimer }, function () {
+                            chrome.storage.sync.set({ "popupData": serializedTimer }, function () {
                                 // console.log('Value is set to ' + serialized);
                             });
                             // location.reload();
                             pinValidationPageSettings();
                         }
-                        
+
                     }
                 }
                 //Populate choices for custom timer
@@ -372,18 +372,18 @@ document.addEventListener("DOMContentLoaded", () => {
         action = {};
         action.type = "editTextBox";
         let serialized = JSON.stringify(action);
-        chrome.storage.sync.set({ "action" : serialized }, function () {
+        chrome.storage.sync.set({ "action": serialized }, function () {
             // console.log('Value is set to ' + serialized);
-        });      
+        });
         //Show pin page
         timer.prevState = timer.state;
         timer.state = "pinVal"
         let serializedT = JSON.stringify(timer);
-        chrome.storage.sync.set({ "popupData" : serializedT }, function () {
+        chrome.storage.sync.set({ "popupData": serializedT }, function () {
             // console.log('Value is set to ' + serialized);
         });
         location.reload();
-        
+
     });
 
     //if a button is selected, save selection in storage
@@ -438,12 +438,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 }
                 let serialized = JSON.stringify(timer);
-                chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                chrome.storage.sync.set({ "popupData": serialized }, function () {
                     // console.log('Value is set to ' + serialized);
                 });
             }
             let serialized = JSON.stringify(timer);
-            chrome.storage.sync.set({ "popupData" : serialized }, function () {
+            chrome.storage.sync.set({ "popupData": serialized }, function () {
                 // console.log('Value is set to ' + serialized);
             });
         }
@@ -504,7 +504,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             let serialized = JSON.stringify(timer);
-            chrome.storage.sync.set({ "popupData" : serialized }, function () {
+            chrome.storage.sync.set({ "popupData": serialized }, function () {
                 // console.log('Value is set to ' + serialized);
             });
         });
@@ -518,7 +518,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log(result);
                 // if the pin exists
                 validateTimerChoice();
-            }else{
+            } else {
                 console.log(result);
                 // make them create a pin
                 alert("You must create an authorization pin to begin.");
@@ -533,15 +533,15 @@ document.addEventListener("DOMContentLoaded", () => {
         action = {};
         action.type = "endSession";
         let serializedAction = JSON.stringify(action);
-        chrome.storage.sync.set({ "action" : serializedAction }, function () {
+        chrome.storage.sync.set({ "action": serializedAction }, function () {
             // console.log('Value is set to ' + serialized);
-        });      
+        });
 
         // show pin validation page
         timer.prevState = timer.state;
         timer.state = "pinVal"
         let serialized = JSON.stringify(timer);
-        chrome.storage.sync.set({ "popupData" : serialized }, function () {
+        chrome.storage.sync.set({ "popupData": serialized }, function () {
             // console.log('Value is set to ' + serialized);
         });
         location.reload();
@@ -613,7 +613,7 @@ document.addEventListener("DOMContentLoaded", () => {
             timer.numStudy = 0;
             timer.numBreak = 0;
             let serialized = JSON.stringify(timer);
-            chrome.storage.sync.set({ "popupData" : serialized }, function () {
+            chrome.storage.sync.set({ "popupData": serialized }, function () {
                 // console.log('Value is set to ' + serialized);
             });
             startTimer(timer.LBtime);
@@ -643,7 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-document.getElementById("pinValidBtn").addEventListener('click', ()=>{
+document.getElementById("pinValidBtn").addEventListener('click', () => {
     // get the pin number
     let pin = {};
     pin.pinNum1 = document.getElementById("pinVal1").value;
@@ -660,7 +660,7 @@ document.getElementById("pinValidBtn").addEventListener('click', ()=>{
         alert("Missing number.")
     } else {
 
-        chrome.storage.sync.get(["authPin"] , function (result) {
+        chrome.storage.sync.get(["authPin"], function (result) {
             // Compare to storage
             if (!(result === undefined || result === null || Object.keys(result).length === 0)) {
                 var result = JSON.parse(result.authPin);
@@ -669,40 +669,40 @@ document.getElementById("pinValidBtn").addEventListener('click', ()=>{
                     console.log("pin was correct");
                     // Complete saved action
                     chrome.storage.sync.get(['action'], function (result) {
-            
+
                         if (!(result === undefined || result === null || Object.keys(result).length === 0)) {
-                                //if there is data load it in, get it as a string
+                            //if there is data load it in, get it as a string
                             var result = JSON.parse(result.action);
-        
+
                             if (!(result.type === undefined || result.type === null || result.type.length === 0)) {
-        
-                                if (result.type === "editTextBox"){
+
+                                if (result.type === "editTextBox") {
                                     editTextBox();
-        
-                                }else if (result.type === "addDomain"){
+
+                                } else if (result.type === "addDomain") {
                                     addDomain(valid);
-        
-                                }else if (result.type === "endSession"){
+
+                                } else if (result.type === "endSession") {
                                     endSession();
-        
-                                }else{
+
+                                } else {
                                     alert("No action found to be completed");
                                 }
                             }
                         }
                     })
-         
-                }else{
+
+                } else {
                     alert("Sorry, the pin does not match. ")
                 }
             }
         });
-        
-       
+
+
     }
 })
 
-document.getElementById("pinValidCancelBtn").addEventListener('click', ()=>{
+document.getElementById("pinValidCancelBtn").addEventListener('click', () => {
     cancelBttnFunction();
 })
 
@@ -736,7 +736,7 @@ function validateTimerChoice() {
         //save state to storage
         timer.state = "study";
         let serialized = JSON.stringify(timer);
-        chrome.storage.sync.set({ "popupData" : serialized }, function () {
+        chrome.storage.sync.set({ "popupData": serialized }, function () {
             // console.log('Value is set to ' + serialized);
         });
         studyPageSettings();
@@ -774,7 +774,7 @@ function validateCustomTimer() {
         //save state to storage
         timer.state = "study";
         let serialized = JSON.stringify(timer);
-        chrome.storage.sync.set({ "popupData" : serialized }, function () {
+        chrome.storage.sync.set({ "popupData": serialized }, function () {
             // console.log('Value is set to ' + serialized);
         });
         studyPageSettings();
@@ -798,7 +798,7 @@ function calcEndTime(mins) {
     var endTimeString = endTimeDate.getHours() + " " + endTimeDate.getMinutes() + " " + endTimeDate.getSeconds();
     timer.endTime = endTimeString;
     let serialized = JSON.stringify(timer);
-    chrome.storage.sync.set({ "popupData" : serialized }, function () {
+    chrome.storage.sync.set({ "popupData": serialized }, function () {
         // console.log('Value is set to ' + serialized);
     });
 }
@@ -823,7 +823,7 @@ function mainPageSettings() {
     chrome.storage.sync.get(['authPin'], function (result) {
         if (!(result === undefined || result === null || Object.keys(result).length === 0)) {
             parentBtn.style.display = "none";
-        }else{
+        } else {
             parentBtn.style.display = "block";
         }
     });
@@ -831,7 +831,7 @@ function mainPageSettings() {
     chrome.storage.sync.get(['user'], function (result) {
         if (!(result === undefined || result === null || Object.keys(result).length === 0)) {
             userInfoInput.style.display = "none";
-        }else{
+        } else {
             userInfoInput.style.display = "block";
         }
     });
@@ -906,7 +906,7 @@ function breakPageSettings() {
     parentBtn.style.display = "none";
 }
 
-function pinValidationPageSettings(){
+function pinValidationPageSettings() {
 
     var PgTitle = document.getElementById("PgTitle");
     PgTitle.innerHTML = "Pin Authorization";
@@ -936,23 +936,23 @@ function displayProgress() {
     messages.style.display = "block";
 }
 
-function validatePin(givenPin, storedPin){
-    
+function validatePin(givenPin, storedPin) {
+
     //TODO: Encode to compare
     encodedPin = {};
     encodedPin.pinNum1 = givenPin.pinNum1;
     encodedPin.pinNum2 = givenPin.pinNum2;
     encodedPin.pinNum3 = givenPin.pinNum3;
-    encodedPin.pinNum4 = givenPin.pinNum4; 
+    encodedPin.pinNum4 = givenPin.pinNum4;
 
     // Comparing 
     if (storedPin.num1 == encodedPin.pinNum1 &&
         storedPin.num2 == encodedPin.pinNum2 &&
         storedPin.num3 == encodedPin.pinNum3 &&
-        storedPin.num4 == encodedPin.pinNum4){
+        storedPin.num4 == encodedPin.pinNum4) {
         console.log("true, same", true);
         return true;
-    }else{
+    } else {
         console.log("stored pin: ");
         console.log(storedPin);
         console.log("encoded pin: ");
@@ -962,7 +962,7 @@ function validatePin(givenPin, storedPin){
 
 }
 
-function editTextBox(){
+function editTextBox() {
     console.log("turn to readonly");
     // Remove readonly from textbox
     timer.textboxState = "edit";
@@ -971,7 +971,7 @@ function editTextBox(){
     cancelBttnFunction();
 }
 
-function endSession(){
+function endSession() {
     answer = confirm("Reload page to remove timer?");
     if (!answer) {
         return;
@@ -1006,7 +1006,7 @@ function endSession(){
                     timer.clickCount = null;
                     timer.keyCount = null;
                     let serialized = JSON.stringify(timer);
-                    chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                    chrome.storage.sync.set({ "popupData": serialized }, function () {
                         // console.log('Value is set to ' + serialized);
                     });
                 }).catch(function (error) {
@@ -1031,19 +1031,19 @@ function endSession(){
     timer.endTime = "";
 
     let serialized = JSON.stringify(timer);
-    chrome.storage.sync.set({ "popupData" : serialized }, function () {
+    chrome.storage.sync.set({ "popupData": serialized }, function () {
         // console.log('Value is set to ' + serialized);
     });
     chrome.tabs.reload();
-    
+
 }
 
-function addDomain(answer){
+function addDomain(answer) {
     if (answer) {
         chrome.storage.sync.get(['action'], function (result) {
-            
+
             if (!(result === undefined || result === null || Object.keys(result).length === 0)) {
-                    //if there is data load it in, get it as a string
+                //if there is data load it in, get it as a string
                 var result = JSON.parse(result.action);
                 domain = result.url;
                 //get list from storage, add to list, save
@@ -1062,7 +1062,7 @@ function addDomain(answer){
     cancelBttnFunction();
 }
 
-function cancelBttnFunction(){
+function cancelBttnFunction() {
     // go back to previous page which is the current state
     chrome.storage.sync.get(['popupData'], function (result) {
         if (!(result.popupData === undefined || result.popupData === null || result.popupData.length === 0)) {
@@ -1117,7 +1117,7 @@ function cancelBttnFunction(){
 
                 // save back to prev state
                 let serialized = JSON.stringify(timer);
-                chrome.storage.sync.set({ "popupData" : serialized }, function () {
+                chrome.storage.sync.set({ "popupData": serialized }, function () {
                     // console.log('Value is set to ' + serialized);
                 });
             }
