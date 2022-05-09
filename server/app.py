@@ -135,6 +135,43 @@ def get_xp(click_count: int, key_count: int, time_studied: int) -> float:
     )
     return xp
 
+def get_Title():
+
+    if {{curLevel}} == 0 or {{curLevel}} == 1 or {{curLevel}} == 2 or {{curLevel}} == 3 or {{curLevel}} == 4:
+        {{user_title}} = "Novice"
+    
+    elif {{curLevel}} == 5 or {{curLevel}} == 6 or {{curLevel}} == 7 or {{curLevel}} == 8 or {{curLevel}} == 9:
+        {{user_title}} = "Apprentice"
+
+    elif {{curLevel}} == 10 or {{curLevel}} == 11 or {{curLevel}} == 12 or {{curLevel}} == 13 or {{curLevel}} == 14:
+        {{user_title}} = "Rising Star"
+
+    elif {{curLevel}} == 15 or {{curLevel}} == 16 or {{curLevel}} == 17 or {{curLevel}} == 18 or {{curLevel}} == 19:
+        {{user_title}} = "Master"
+
+    elif {{curLevel}} == 20 or {{curLevel}} == 21 or {{curLevel}} == 22 or {{curLevel}} == 23 or {{curLevel}} == 24:
+        {{user_title}} = "Grandmaster"
+
+    elif {{curLevel}} == 25 or {{curLevel}} == 26 or {{curLevel}} == 27 or {{curLevel}} == 28 or {{curLevel}} == 29:
+        {{user_title}} = "Chieftain"
+
+    elif {{curLevel}} == 30 or {{curLevel}} == 31 or {{curLevel}} == 32 or {{curLevel}} == 33 or {{curLevel}} == 34:
+        {{user_title}} = "Cheiftan"
+
+    elif {{curLevel}} == 35 or {{curLevel}} == 36 or {{curLevel}} == 37 or {{curLevel}} == 38 or {{curLevel}} == 39:
+        {{user_title}} = "Demigod"
+
+    elif {{curLevel}} == 40 or {{curLevel}} == 41 or {{curLevel}} == 42 or {{curLevel}} == 43 or {{curLevel}} == 44:
+        {{user_title}} = "Diety"
+
+    elif {{curLevel}} == 45 or {{curLevel}} == 46 or {{curLevel}} == 47 or {{curLevel}} == 48 or {{curLevel}} == 49:
+        {{user_title}} = "Titan"
+
+    elif {{curLevel}} == 50:
+        {{user_title}} = "God-King"
+
+    return {{user_title}}
+
 
 @app.route("/stats")
 def stats():
@@ -277,6 +314,8 @@ def saveStudyData():
         + str(keyCount)
         + '" }'
     )
+
+
 
 
 # Anh testing endpoint for saving users name
