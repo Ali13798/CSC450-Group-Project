@@ -36,6 +36,7 @@ body {
 #messages,
 #healthy {
     margin: 0;
+    font-size: 20px;
 }
 
 #pinValidaionDiv {
@@ -72,8 +73,9 @@ h3 {
 
 #timerTable {
 
-    width: 50%;
+    width: 99%;
     background-color: rgba(0, 0, 0, 0.5);
+    font-size: 18px;
 }
 
 table,
@@ -130,12 +132,8 @@ h3 {
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
     text-align: left;
-    /* margin-left: 2.5em; */
-    /* position: absolute;
-    left: 0%; */
-    /* padding-top: 3em; */
     margin-top: 0%;
-    margin-left: 30%;
+    margin-left: -1%;
 }
 
 
@@ -154,7 +152,14 @@ h3 {
 }
 
 #save,
-#editbtn,
+#editbtn{
+    color: rgb(255, 255, 255);
+    font-family: 'Michroma', sans-serif;
+    background-color: #137575cc;
+    margin-bottom: 10px;
+    margin-right: 80%;
+}
+
 #popWebsites, 
 #pinValidBtn, 
 #pinValidCancelBtn {
@@ -181,7 +186,7 @@ h3 {
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
-    margin-left: 30%;
+    margin-left: -1%;
     margin-top: 2%;
 }
 
@@ -279,6 +284,7 @@ input[type=submit] {
     text-decoration: none;
     outline: none;
     border: none;
+    margin-left: 5%;
 }
 
 #parentInputP1,
