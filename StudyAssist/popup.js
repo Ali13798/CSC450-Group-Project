@@ -85,7 +85,10 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Missing number.")
         } else {
             // alert("Pin saved in Local Storage.")
-            let serialized = JSON.stringify(pin);
+            encodedPin = btoa(pin);
+            authPin = {}
+            authPin.encoded = encodedPin
+            let serialized = JSON.stringify(authPin);
             chrome.storage.sync.set({ "authPin": serialized }, function () {
                 // console.log('Value is set to ' + serialized);
             });
@@ -939,18 +942,10 @@ function displayProgress() {
 function validatePin(givenPin, storedPin) {
 
     //TODO: Encode to compare
-    encodedPin = {};
-    encodedPin.pinNum1 = givenPin.pinNum1;
-    encodedPin.pinNum2 = givenPin.pinNum2;
-    encodedPin.pinNum3 = givenPin.pinNum3;
-    encodedPin.pinNum4 = givenPin.pinNum4;
+    encodedPin = btoa(givenPin);
 
     // Comparing 
-    if (storedPin.num1 == encodedPin.pinNum1 &&
-        storedPin.num2 == encodedPin.pinNum2 &&
-        storedPin.num3 == encodedPin.pinNum3 &&
-        storedPin.num4 == encodedPin.pinNum4) {
-        console.log("true, same", true);
+    if (encodedPin == storedPin) {
         return true;
     } else {
         console.log("stored pin: ");
