@@ -114,28 +114,6 @@ def logout():
     return flask.redirect("/")
 
 
-# Ali's example, keeping for reference
-@app.route("/stats2")
-def stats2():
-
-    stats: list[dict[str, int]] = [
-        {
-            "id": 1,
-            "clickCount": 5,
-            "KeyCount": 20,
-            "timeStudied": 125,
-        },
-        {
-            "id": 2,
-            "clickCount": 41,
-            "KeyCount": 12,
-            "timeStudied": 310,
-        },
-    ]
-
-    return render_template("stats2.html", title="Stats", stats=stats)
-
-
 def get_xp(click_count: int, key_count: int, time_studied: int) -> int:
     xp = (2 * click_count) + (3 * key_count) + (time_studied)
     return xp
@@ -200,38 +178,11 @@ def stats():
         }
         stats.append(temp_dict)
 
-    # Please load in the past 5
-    # stats: list[dict[str, int]] = [
-    #     {
-    #         "id": 1,
-    #         "date": "5/1/22",
-    #         "clickCount": 5,
-    #         "keyCount": 20,
-    #         "timeStudied": 125,
-    #     },
-    #     {
-    #         "id": 2,
-    #         "date": "5/2/22",
-    #         "clickCount": 41,
-    #         "keyCount": 12,
-    #         "timeStudied": 60,
-    #     },
-    #     {
-    #         "id": 3,
-    #         "date": "5/3/22",
-    #         "clickCount": 100,
-    #         "keyCount": 80,
-    #         "timeStudied": 310,
-    #     },
-    # ]
-
     return render_template("stats.html", title="Stats", stats=stats)
 
 
 @app.route("/history")
 def history():
-    # if you can send all of them, I can have the user provide a date
-    # range so they have the ability to see all of their history as our teacher asked
     username = flask.session.get("name")
     if not username:
         return flask.redirect("/")
@@ -250,30 +201,6 @@ def history():
             "keyCount": stat[5],
         }
         userHist.append(temp_dict)
-
-    # userHist: list[dict[str, int]] = [
-    #     {
-    #         "id": 1,
-    #         "date": "5/1/22",
-    #         "clickCount": 5,
-    #         "keyCount": 20,
-    #         "timeStudied": 125,
-    #     },
-    #     {
-    #         "id": 2,
-    #         "date": "5/2/22",
-    #         "clickCount": 41,
-    #         "keyCount": 12,
-    #         "timeStudied": 60,
-    #     },
-    #     {
-    #         "id": 3,
-    #         "date": "5/3/22",
-    #         "clickCount": 100,
-    #         "keyCount": 80,
-    #         "timeStudied": 310,
-    #     },
-    # ]
 
     return render_template("history.html", title="History", userHist=userHist)
 
