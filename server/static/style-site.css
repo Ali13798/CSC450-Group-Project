@@ -246,7 +246,7 @@ border-radius: 73% 27% 44% 56% / 49% 44% 56% 51%;
 .button1, .button2, .buttonMouse, .buttonKey, .buttonTotalTime, .buttonDaysStudied
 {
   background-color: #004e55;
-  color: rgb(0, 0, 0);
+  color: #ffbe30;
 }
 
 /* Start Button 1 */
