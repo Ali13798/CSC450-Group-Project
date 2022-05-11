@@ -28,12 +28,13 @@ def index():
 
     title = get_Title(cur_level=cur_level)
     next_title = get_Title(cur_level=9)
+    # arc = cur_xp / 360
 
     return render_template(
         "home-site.html",
         title="Homepage",
         name=name,
-        current_xp=cur_xp,
+        xp=cur_xp,
         curLevel=cur_level,
         user_title=title,
         next_title=next_title,
