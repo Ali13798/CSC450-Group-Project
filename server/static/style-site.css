@@ -1242,10 +1242,17 @@ animation-delay: .5s;
 
 /* Start Rewards */
 
-#reward_forms
+.reward_forms
+{
+  margin-top: 25%;
+  left: 25%;
+  font-family:'Aquire', sans-serif;
+}
+
+.reward_text_forms
 {
   top: 50%;
-  left: 25%;
+  left: 50%;
   font-family:'Aquire', sans-serif;
 }
 
