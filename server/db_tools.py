@@ -53,6 +53,11 @@ class db_tools:
             (name, pswd),
         )
 
+        cur.execute(
+            "INSERT INTO levels (xp, level) VALUES (?, ?)",
+            (0, 1),
+        )
+
     def get_user_credentials_rows(
         cur: sqlite3.Cursor,
     ):  # -> list[tuple[int, str, str]]
