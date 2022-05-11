@@ -142,6 +142,16 @@ def get_xp(click_count: int, key_count: int, time_studied: int) -> float:
     )
     return xp
 
+def get_reward_level(request):
+    reward_level = request.GET['reward_text']
+
+    return render(request, 'home-site.html', {'Reward will be given at level: ':reward_level})
+
+def get_reward(request):
+    reward = request.GET['reward_text']
+
+    return render(request, 'home-site.html', {'Reward is: ':reward})
+
 
 # def get_Title(cur_level: int) -> str:
 #     new_levels = {
