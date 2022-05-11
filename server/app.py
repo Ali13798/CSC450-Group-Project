@@ -54,18 +54,18 @@ def greet():
         is_existing_user = db_tools.is_existing_user(cur=cur, name=name)
         if not is_existing_user:
             flask.flash("Username not found. Sign up for a new account.")
-            return flask.redirect(flask.url_for("signup"))
+            return flask.redirect("/signup")
 
         db_password = db_tools.get_user_password(cur=cur, name=name)
         if password not in db_password:
             flask.flash("Incorrect Password. Try again.")
-            return flask.redirect(flask.url_for("login"))
+            return flask.redirect("/login")
 
         flask.session["name"] = name
         if name == "admin":
             return render_template("greet.html", name=name, names=all_names)
         else:
-            return flask.redirect(flask.url_for("index"))
+            return flask.redirect("/")
 
 
 @app.route("/greetNewUser", methods=["GET", "POST"])
@@ -76,22 +76,22 @@ def new_user():
     name = flask.request.form.get("name")
     if " " in name:
         flask.flash('Username cannot contain empty spaces " ". Try again.')
-        return flask.redirect(flask.url_for("signup"))
+        return flask.redirect("/signup")
 
     if not name[0].isalpha():
         flask.flash("Username must begin with an alphabetic character.")
-        return flask.redirect(flask.url_for("signup"))
+        return flask.redirect("/signup")
 
     if not (name.isalnum() or any(x in name for x in ["_", "-", "."])):
         flask.flash("Username cannot contain any special characters.")
-        return flask.redirect(flask.url_for("signup"))
+        return flask.redirect("/signup")
 
     password = flask.request.form.get("password")
 
     confirm_password = flask.request.form.get("confirm_password")
     if password != confirm_password:
         flask.flash("Passwords do not match, try again.")
-        return flask.redirect(flask.url_for("signup"))
+        return flask.redirect("/signup")
 
     password = hash_password(password)
 
