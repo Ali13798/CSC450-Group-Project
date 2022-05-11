@@ -4,130 +4,249 @@
 <head>
     <meta charset="UTF-8">
     <title>Personal Study Assistant</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="popup.css">
 </head>
 
 <body>
     <div id="popupContainer">
-        <h3 id="PgTitle">Welcome!</h3>
-        <p id="messages">
-        <p id="healthy"></p>
-        </p>
-        <!-- <form name = "myform" onsubmit="return loginfunc()"> -->
-        <div id="userInfoInput" class="userInfoInput">
-             <!--Parent Mode Button-->
-             <button type="button" id="parentModeBtn">
-                Create Authorization Pin
-            </button>
-            <div id="parentInput">
-                <form id="parentInputForm">
-                    <input id="parentInputP1" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
-                    <input id="parentInputP2" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
-                    <input id="parentInputP3" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
-                    <input id="parentInputP4" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
-                    <button type="submit" id="validation">Save</button>
-                </form>
-            </div><br/>
-
-            <h4>Please Enter Your First name and Last name: </h4>
-            <label for="fname">First name: </label>
-            <input type="text" id="fname" name="fname" required><br><br>
-            <label for="lname">Last name: </label>
-            <input type="text" id="lname" name="lname" required><br><br>
-            <button type="submit" id="buttonInfo">Save</button>
-
-            <form id="createLoginForm" action="http://127.0.0.1:5000/login" target="_blank">
-                <input id="createLoginBtn" type="submit" value="Create Account or Login" />
-            </form><br />
-
-        </div>
-        <!-- </form> -->
-
-        <div id="timerOptions">
-            <h3>Choose a study session type:</h3>
-            <div id="radioButtons">
-                <table id="timerTable">
-                    <tr>
-                        <th>Option</th>
-                        <th>Study Period</th>
-                        <th>Short Break</th>
-                        <th>Number of Cycles</th>
-                        <th>Long Break</th>
-                        <th>Repeat</th>
-                    </tr>
-                    <tr>
-                        <td><input type="radio" id="opt1" name="timerOp" value="25/5/4/15/2"> </td>
-                        <td><label for="opt1">25</label></td>
-                        <td><label for="opt1">5</label></td>
-                        <td><label for="opt1">4</label></td>
-                        <td><label for="opt1">15</label></td>
-                        <td><label for="opt1">2</label></td>
-                    </tr>
-                    <tr>
-                        <td><input type="radio" id="opt2" name="timerOp" value="40/10/2/30/2"></td>
-                        <td><label for="opt2">40</label></td>
-                        <td><label for="opt2">10</label></td>
-                        <td><label for="opt2">2</label></td>
-                        <td><label for="opt2">30</label></td>
-                        <td><label for="opt2">2</label></td>
-                    </tr>
-                    <tr>
-                        <td><input type="radio" id="opt3" name="timerOp" value=".25/.15/2/.5/1"></td>
-                        <td><label for="opt3">.25</label></td>
-                        <td><label for="opt3">.15</label></td>
-                        <td><label for="opt3">2</label></td>
-                        <td><label for="opt3">.5</label></td>
-                        <td><label for="opt3">1</label></td>
-                    </tr>
-                    <tr>
-                        <!--  custom -->
-                        <td><input type="radio" id="cust" name="timerOp" value="cust"></td>
-                        <div id="custSessionInputs">
-                            <td><input class="custInput" type="number" id="studyMin" name="studyMin" min="1" max="120">
-                            </td>
-                            <td><input class="custInput" type="number" id="shortBkMin" name="shortBkMin" min="0.1"
-                                    max="30"></td>
-                            <td><input class="custInput" type="number" id="cycleNum" name="cycleNum" min="1" max="10">
-                            </td>
-                            <td><input class="custInput" type="number" id="longBkMin" name="longBkMin" min="1"
-                                    max="120"></td>
-                            <td><input class="custInput" type="number" id="repeatNum" name="repeatNum" min="1" max="10">
-                            </td>
-                        </div>
-                    </tr>
-                </table>
+        <div class="row">
+            <div class="col-12 mt-3 text-center">
+                <h3 id="PgTitle">Welcome!</h3>
+            
             </div>
         </div>
-        <br>
-        <button id="beginSession">Begin Session</button><br />
-        <button id="pauseBtn">Toggle Pause</button><br />
-        <button id="nextStep">Next Step</button><br />
-        <button id="endSession">End Session</button> <br />
-        <form action="http://127.0.0.1:5000/login" target="_blank">
-            <input id="websiteBtn" type="submit" value="Go to Website" />
-        </form><br />
-        <button id="optionsBtn">Whitelist Options</button> <br />
-        <div id="options">
-            <h3>Allowed During Study Mode:</h3>
-            <button id="popWebsites">Populate Recomended Websites</button>
-            <br>
-            <textarea id="textarea" rows="10" cols="30" spellcheck="false" readonly></textarea>
-            <br>
-            <button id="editbtn" type="submit">Edit</button>
-            <br>
-            <button id="save">Save</button>
-            <p id="removedDomains"></p>
+        <div class="row">
+            <div class="col-12 text-center">
+                <p id="messages">
+                    <p id="healthy"></p>
+                    </p>
+            </div>
         </div>
-        <div id="pinValidaionDiv">
-            <form id="pinValidaionForm">
-                <input id="pinVal1" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
-                <input id="pinVal2" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
-                <input id="pinVal3" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
-                <input id="pinVal4" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
-                <button type="submit" id="pinValidBtn">Submit</button>
-                <button type="submit" id="pinValidCancelBtn">Cancel</button>
+        <div class="row">
+            <div class="col-12 text-center">
+                <div id="userInfoInput" class="userInfoInput">
+                    <!--Parent Mode Button-->
+                    <div class="row">
+                        <div class="col text-center">
+                            <button type="button" id="parentModeBtn">
+                                Create Authorization Pin
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div id="parentInput">
+                                <form id="parentInputForm">
+                                    <div class="row my-2">
+                                        <div class="col-3 p-0">
+                                            <input id="parentInputP1" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                                        </div>
+                                         <div class="col-3 p-0">
+                                            <input id="parentInputP2" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                                        </div>
+                                         <div class="col-3 p-0">
+                                            <input id="parentInputP3" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                                        </div> 
+                                        <div class="col-3 p-0">
+                                            <input id="parentInputP4" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col my-2">
+                                            <button type="submit" id="validation">Save</button>
+                                        </div>
+                                    </div>
+                                    
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col ">
+                            <p>Please Enter Your First name and Last name: </p>
+                            <label for="fname">First name: </label>
+                            <input type="text" id="fname" name="fname" required><br><br>
+                            <label for="lname">Last name: </label>
+                            <input type="text" id="lname" name="lname" required><br><br>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col text-center">
+                            <button type="submit" id="buttonInfo">Save</button>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col text-center">
+                            <form id="createLoginForm" action="http://127.0.0.1:5000/login" target="_blank">
+                                <input id="createLoginBtn" type="submit" value="Create Account or Login" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col ">
+                <div id="timerOptions">
+                    <div class="row">
+                        <div class="col text-center">
+                            <h6>Choose a study session type:</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-center mx-2">
+                            <div id="radioButtons">
+                                <table id="timerTable">
+                                    <tr>
+                                        <th>Option</th>
+                                        <th>Study Period</th>
+                                        <th>Short Break</th>
+                                        <th>Number of Cycles</th>
+                                        <th>Long Break</th>
+                                        <th>Repeat</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" id="opt1" name="timerOp" value="25/5/4/15/2"> </td>
+                                        <td><label for="opt1">25</label></td>
+                                        <td><label for="opt1">5</label></td>
+                                        <td><label for="opt1">4</label></td>
+                                        <td><label for="opt1">15</label></td>
+                                        <td><label for="opt1">2</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" id="opt2" name="timerOp" value="40/10/2/30/2"></td>
+                                        <td><label for="opt2">40</label></td>
+                                        <td><label for="opt2">10</label></td>
+                                        <td><label for="opt2">2</label></td>
+                                        <td><label for="opt2">30</label></td>
+                                        <td><label for="opt2">2</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" id="opt3" name="timerOp" value=".25/.15/2/.5/1"></td>
+                                        <td><label for="opt3">.25</label></td>
+                                        <td><label for="opt3">.15</label></td>
+                                        <td><label for="opt3">2</label></td>
+                                        <td><label for="opt3">.5</label></td>
+                                        <td><label for="opt3">1</label></td>
+                                    </tr>
+                                    <tr>
+                                        <!--  custom -->
+                                        <td><input type="radio" id="cust" name="timerOp" value="cust"></td>
+                                        <div id="custSessionInputs">
+                                            <td><input class="custInput" type="number" id="studyMin" name="studyMin" min="1" max="120">
+                                            </td>
+                                            <td><input class="custInput" type="number" id="shortBkMin" name="shortBkMin" min="0.1"
+                                                    max="30"></td>
+                                            <td><input class="custInput" type="number" id="cycleNum" name="cycleNum" min="1" max="10">
+                                            </td>
+                                            <td><input class="custInput" type="number" id="longBkMin" name="longBkMin" min="1"
+                                                    max="120"></td>
+                                            <td><input class="custInput" type="number" id="repeatNum" name="repeatNum" min="1" max="10">
+                                            </td>
+                                        </div>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col my-2 text-center">
+                <button id="beginSession">Begin Session</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col my-3 text-center">
+                <button id="pauseBtn">Toggle Pause</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col my-3 text-center">
+                <button id="nextStep">Next Step</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col my-2 text-center">
+                <button id="endSession">End Session</button>
+            </div>
+        </div>
+
+        <div class="form-row justify-content-center">
+            <div class="form-group col text-center">
+            <form action="http://127.0.0.1:5000/login" target="_blank">
+                <input class=" mx-auto mb-3" id="websiteBtn" type="submit" value="Go to Website" />
             </form>
+            </div>
         </div>
+
+        <div class="row">
+            <div class="col text-center">
+                <button id="optionsBtn">Whitelist Options</button> 
+            </div>
+        </div>
+        
+        <div id="options">
+            <div class="row">
+                <div class="col m-2 text-center">
+                    <p>Allowed During Study Mode:</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col m-2 text-center">
+                    <button id="popWebsites">Populate Recomended Websites</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col m-2 text-center">
+                    <textarea id="textarea" rows="10" cols="30" spellcheck="false" readonly></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 my-2 text-center">
+                <button id="editbtn" type="submit">Edit</button>
+                </div>
+                <div class="col-6 my-2 text-center">
+                    <button id="save">Save</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col m-2 text-center">
+                    
+                    <p id="removedDomains"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col m-2 text-center">
+                <div id="pinValidaionDiv">
+                    <form id="pinValidaionForm">
+                        <div class="row mb-3">
+                            <div class="col text-center">
+                                <input id="pinVal1" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                                <input id="pinVal2" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                                <input id="pinVal3" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                                <input id="pinVal4" type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" />
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <button type="submit" id="pinValidBtn">Submit</button>
+                            </div>
+                            <div class="col-6 text-center">
+                                <button type="submit" id="pinValidCancelBtn">Cancel</button>
+                            </div>                    
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
     <script src="popup.js"></script>
 </body>

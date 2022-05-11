@@ -4,16 +4,15 @@ body {
     width: 500px;
 }
 
-#PgTitle{
+/* #PgTitle{
     margin-left: 2%;
-}
+} */
 
 #popupContainer {
     width: 100%;
     height: 100%;
-    font-size: 15px;
+    /* font-size: 15px; */
     color: white;
-    /* font-family:'Aquire', sans-serif; */
 }
 
 #options,
@@ -29,23 +28,18 @@ body {
 }
 
 #healthy {
-    text-align: left;
+    /* text-align: left; */
     display: inline-block;
 }
 
 #messages,
 #healthy {
     margin: 0;
-    font-size: 20px;
+    /* font-size: 20px; */
 }
 
 #pinValidaionDiv {
     display: none;
-}
-
-#textarea {
-    display: block;
-    margin-left: 25%;
 }
 
 
@@ -55,27 +49,27 @@ body {
 
 body {
     /* position: absolute; */
-    text-align: center;
+    /* text-align: center; */
     /* margin-left: 10em; */
-    padding: 0;
+    /* padding: 0; */
     font-family: 'Comfortaa', sans-serif;
-    box-sizing: border-box;
-    background: #808080;
+    /* box-sizing: border-box; */
+    /* background: #808080; */
     background-image: url(bg3.jpg);
     background-size: cover;
 }
 
 h3 {
     font-family: 'Michroma', sans-serif;
-    text-align: center;
-    margin-left: -1em;
+    color: #ffbe30;
+    /* text-align: center; */
+    /* margin-left: -1em; */
 }
 
 #timerTable {
-
-    width: 99%;
     background-color: rgba(0, 0, 0, 0.5);
-    font-size: 18px;
+    font-size: 15px;
+    width: 100%;
 }
 
 table,
@@ -92,17 +86,17 @@ td {
     text-align: left;
 }
 
-h3 {
+/* h3 {
     color: #ffbe30;
-    /* font-family:'Aquire', sans-serif; */
-}
+    font-family:'Aquire', sans-serif;
+} */
 
-#opt1,
+/* #opt1,
 #opt2,
 #opt3,
 #cust {
     margin-top: 1em;
-}
+} */
 
 
 /* START buttons*/
@@ -122,18 +116,18 @@ h3 {
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
-    text-align: left;
+    /* text-align: left;
     margin-left: -1%;
-    margin-top: 10%;
+    margin-top: 10%; */
 }
 
 #pauseBtn {
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
-    text-align: left;
+    /* text-align: left;
     margin-top: 0%;
-    margin-left: -1%;
+    margin-left: -1%; */
 }
 
 
@@ -142,22 +136,23 @@ h3 {
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
-    text-align: left;
-    margin-left: 2.5em;
+    /* text-align: left;
+    margin-left: 2.5em; */
     /* position: absolute;
     left: 0%; */
     /* padding-top: 3em; */
-    margin-top: 5%;
-    margin-left: 35%;
+    /* margin-top: 5%;
+    margin-left: 35%; */
 }
 
 #save,
-#editbtn{
+#editbtn, 
+#validation{
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
-    margin-bottom: 10px;
-    margin-right: 80%;
+    /* margin-bottom: 10px;
+    margin-right: 80%; */
 }
 
 #popWebsites, 
@@ -166,19 +161,19 @@ h3 {
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
-    margin-bottom: 10px;
-    margin-left: 15%;
+    /* margin-bottom: 10px;
+    margin-left: 15%; */
 }
-#save, 
+/* #save, 
 #editbtn{
     margin-left: 40%;
-}
+} */
 
-#pinValidBtn, 
+/* #pinValidBtn, 
 #pinValidCancelBtn{
     margin-top: 10%;
     margin-left: 25%;
-}
+} */
 
 #endSession {
     display: none;
@@ -186,8 +181,8 @@ h3 {
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
-    margin-left: -1%;
-    margin-top: 2%;
+    /* margin-left: -1%;
+    margin-top: 2%; */
 }
 
 #websiteBtn {
@@ -195,9 +190,9 @@ h3 {
     /* left: 0%; */
     color: rgb(255, 255, 255);
     background-color: #137575cc;
-    text-align: left;
+    /* text-align: left;
     margin-top: 5%;
-    margin-left: 31%;
+    margin-left: 31%; */
 
 }
 #createLoginBtn{
@@ -208,20 +203,20 @@ h3 {
     
     
 }
-#createLoginForm{
+/* #createLoginForm{
     margin-top: 10%;
     margin-left: 25.5%;
-}
+} */
 
 #optionsBtn {
-    padding-top: 11em;
+    /* padding-top: 11em; */
     font-family: 'Michroma', sans-serif;
     /* left: 0%; */
     color: rgb(255, 255, 255);
     background-color: #137575cc;
-    text-align: left;
+    /* text-align: left;
     margin-left: 28%;
-    margin-top: 5%;
+    margin-top: 5%; */
     /* margin-left: -88%; */
 }
 
@@ -231,11 +226,11 @@ h3 {
     color: rgb(255, 255, 255);
     /* position: absolute; */
     background-color: #137575cc;
-    text-align: center;
+    /* text-align: center;
     margin-left: 25%;
     margin-top: 5%;
     margin-right: 15%;
-    margin-bottom: 5%;
+    margin-bottom: 5%; */
 }
 
 input[type=submit] {
@@ -247,7 +242,7 @@ input[type=submit] {
 }
 
 #buttonInfo {
-    margin-left: 40%;
+    /* margin-left: 40%; */
     font-family: 'Michroma', sans-serif;
     color: rgb(255, 255, 255);
     /* position: absolute; */
@@ -255,36 +250,36 @@ input[type=submit] {
 }
 
 #validation {
-    margin-left: 30%;
-    margin-top: 5%;
+    /* margin-left: 30%;
+    margin-top: 5%; */
     font-family: 'Michroma', sans-serif;
     color: rgb(255, 255, 255);
     /* position: absolute; */
     background-color: #137575cc;
-    padding: 3%;
+    /* padding: 3%; */
 }
 
 #parentInput {
     display: none;
-    margin-left: 15%;
+    /* margin-left: 15%; */
 }
 
 #pinValidaionDiv {
     display: none;
-    margin-left: 15%;
-    margin-top: -25%;
+    /* margin-left: 15%;
+    margin-top: -25%; */
 }
 
 #parentInputForm, #pinValidaionForm {
     display: inline-block;
-    padding: 15px 25px;
-    font-size: 12px;
+    /* padding: 15px 25px; */
+    /* font-size: 12px; */
     cursor: pointer;
-    text-align: left;
+    /* text-align: left; */
     text-decoration: none;
     outline: none;
     border: none;
-    margin-left: 5%;
+    /* margin-left: 5%; */
 }
 
 #parentInputP1,
@@ -295,13 +290,13 @@ input[type=submit] {
 #pinVal2,
 #pinVal3,
 #pinVal4{
-    margin: 0 0.5rem;
-    padding: 0.5rem;
+    margin: 0 10px;
+    /* padding: 0.5rem; */
     border: 1px solid #333;
     width: 30px;
     height: 30px;
-    text-align: center;
-    font-size: 3rem;
+    /* text-align: center; */
+    font-size: 25px;
 }
 
 
@@ -319,7 +314,8 @@ input[type=submit],
 #save,
 #editbtn, 
 #pinValidBtn, 
-#pinValidCancelBtn{
+#pinValidCancelBtn,
+#validation{
     padding: 15px 25px;
     font-size: 14px;
     cursor: pointer;
@@ -329,7 +325,7 @@ input[type=submit],
     border: none;
 }
 
-#beginSession,
+/* #beginSession,
 #websiteBtn,
 #optionsBtn,
 #parentModeBtn,
@@ -337,7 +333,7 @@ input[type=submit],
 input[type=submit],
 #popWebsites{
     display: block;
-}
+} */
 
 #validation:hover,
 #beginSession:hover,
@@ -380,8 +376,8 @@ input[type="radio"] {
     /* position: relative; */
     width: 50px;
     height: 20px;
-    /* margin: 5px; */
-    margin-bottom: 1em;
+    margin: 5px;
+    /* margin-bottom: 1em; */
     padding-top: 10px;
     background: #fff;
     -webkit-appearance: none;
@@ -401,9 +397,9 @@ input[type="radio"]:checked {
 
 input[type="radio"]::before {
     /* content: ''; */
-    position: relative;
+    /* position: relative;
     top: 0px;
-    left: 0;
+    left: 0; */
     width: 40px;
     height: 20px;
     background: linear-gradient(to top, #000, #555);
@@ -415,26 +411,30 @@ input[type="radio"]::before {
 
 
 input[type="radio"]:checked::before {
-    position: relative;
-    left: 20px;
+    /* position: relative;
+    left: 20px; */
 }
 
 input[type="radio"]::after {
     /* content: '' */
-    position: relative;
+    /* position: relative;
     right: 65px;
     top: calc(50% - 2px);
     width: 4px;
-    height: 4px;
+    height: 4px; */
     border-radius: 50%;
     background: #555;
     transition: 0.8s;
 }
 
 input[type="radio"]:checked::after {
-    left: calc(65px - 20px);
+    /* left: calc(65px - 20px); */
     background: #ffbe30;
     box-shadow: 0 0 5px #ffbe30,
         0 0 15px #ffbe30,
         0 0 30px #ffbe30;
+}
+
+#parentModeBtn{
+    display: inline-block !important;
 }

@@ -558,7 +558,6 @@ document.addEventListener("DOMContentLoaded", () => {
             options.style.display = "block";
             //change options button to hide options
             optionsBtn.innerHTML = "Hide Options";
-            optionsBtn.style.marginLeft = "32%";
             //get the list of sites
             chrome.storage.local.get(["blocked"], function (local) {
                 console.log("getting sites");
@@ -576,7 +575,6 @@ document.addEventListener("DOMContentLoaded", () => {
             options.style.display = "none";
             //change hide options button to options
             optionsBtn.innerHTML = "Whitelist Options";
-            optionsBtn.style.marginLeft = "28%";
 
         }
     });
@@ -667,7 +665,7 @@ document.getElementById("pinValidBtn").addEventListener('click', () => {
             // Compare to storage
             if (!(result === undefined || result === null || Object.keys(result).length === 0)) {
                 var result = JSON.parse(result.authPin);
-                valid = validatePin(pin, result);
+                valid = validatePin(pin, result.encoded);
                 if (valid) {
                     console.log("pin was correct");
                     // Complete saved action
@@ -882,8 +880,6 @@ function interPageSettings() {
     endButton.style.display = "inline-block"; //only show end button
     pauseBtn.style.display = "none";
     userInfoInput.style.display = "none";
-    nextStep.style.marginLeft = "-1%";
-    nextStep.style.marginBottom = "5%";
     parentBtn.style.display = "none";
 
 }
@@ -941,7 +937,6 @@ function displayProgress() {
 
 function validatePin(givenPin, storedPin) {
 
-    //TODO: Encode to compare
     encodedPin = btoa(givenPin);
 
     // Comparing 
