@@ -28,7 +28,7 @@ def index():
 
     title = get_Title(cur_level=cur_level)
     next_title = get_Title(cur_level=9)
-    # arc = cur_xp / 360
+    arc = cur_xp / 1000
 
     return render_template(
         "home-site.html",
@@ -289,7 +289,7 @@ def main():
         #         xp,
         #         level
         #     ) VALUES (?, ?, ?)""",
-        #     (11, 0, 1),
+        #     (10, 0, 1),
         # )
         # print(db_tools.get_user_xp_level(cur=cur, username="userforlvl"))
 
