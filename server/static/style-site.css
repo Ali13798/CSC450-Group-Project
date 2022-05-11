@@ -1239,3 +1239,21 @@ animation-delay: .5s;
 #subButton{
   display: none;
 }
+
+
+/* Start Rewards */
+
+#reward_forms
+{
+  top: 50%;
+  left: 25%;
+  font-family:'Aquire', sans-serif;
+}
+
+h1
+{
+  font-family:'Aquire', sans-serif;
+  color: #ffbe30;
+}
+
+/* End Rewards */
