@@ -14,6 +14,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 DB_PATH = "./server/database.db"
+LEVEL_UP_XP_REQ = 1000
 
 
 @app.route("/")
@@ -24,18 +25,33 @@ def index():
     name = flask.session.get("name")
     with sqlite3.connect(DB_PATH) as con:
         cur = con.cursor()
-        cur_xp, cur_level = db_tools.get_user_xp_level(cur=cur, username=name)
+        # cur_xp, cur_level = db_tools.get_user_xp_level(cur=cur, username=name)
+        user_stats = db_tools.get_stats(cur=cur, username=name)
 
-    title = get_Title(cur_level=cur_level)
-    next_title = get_Title(cur_level=cur_level + 5)
-    # arc = cur_xp / 1000  #just send cur_xp, works just fine
+        calc_xp = 0
+        for stat in user_stats:
+            calc_xp += get_xp(
+                time_studied=stat[3],
+                click_count=stat[4],
+                key_count=stat[5],
+            )
+
+        level = int(calc_xp // LEVEL_UP_XP_REQ)
+        if level == 0:
+            level = 1
+        xp = int(calc_xp % LEVEL_UP_XP_REQ)
+
+        title = get_Title(cur_level=level)
+        next_title = get_Title(cur_level=level + 5)
+
+        db_tools.set_user_xp_level(cur=cur, username=name, xp=xp, level=level)
 
     return render_template(
         "home-site.html",
         title="Homepage",
         name=name,
-        xp=cur_xp,
-        curLevel=cur_level,
+        xp=xp,
+        curLevel=level,
         user_title=title,
         next_title=next_title,
     )
@@ -135,22 +151,24 @@ def get_xp(click_count: int, key_count: int, time_studied: int) -> int:
     xp = (2 * click_count) + (3 * key_count) + (time_studied)
     return xp
 
+
 @app.route("/addReward", methods=["POST"])
 def add_reward():
     username = flask.session.get("name")
     reward_level = flask.request.form["reward_level"]
     reward = flask.request.form["reward_text"]
-    print(username, reward_level, reward )
+    print(username, reward_level, reward)
     with sqlite3.connect(DB_PATH) as con:
         cur = con.cursor()
         db_tools.add_reward(
             cur=cur,
             username=username,
             reward_level=reward_level,
-            reward=reward
+            reward=reward,
         )
 
     return flask.redirect(flask.url_for("index"))
+
 
 def get_Title(cur_level: int) -> str:
     new_levels = {
@@ -170,7 +188,7 @@ def get_Title(cur_level: int) -> str:
 
     if cur_level in new_levels.keys():
         n = cur_level
-    
+
     else:
         # loop through keys
         keyList = list(new_levels.keys())
@@ -182,16 +200,16 @@ def get_Title(cur_level: int) -> str:
             k = 0
             for k in range(0, len(keyList)):
 
-                if k == len(keyList) - 1: # if at the end of the list
-                    if n == 0: #is unset still
-                        n = keyList[len(keyList)-1]
+                if k == len(keyList) - 1:  # if at the end of the list
+                    if n == 0:  # is unset still
+                        n = keyList[len(keyList) - 1]
                     pass
-                
+
                 else:
                     if cur_level > keyList[k] and cur_level < keyList[k + 1]:
-                        
+
                         n = keyList[k]
-                
+
     return new_levels[n]
 
 

@@ -75,6 +75,23 @@ class db_tools:
             "SELECT * FROM levels WHERE user_id=?", (user_id,)
         ).fetchall()[0][1:]
 
+    def set_user_xp_level(
+        cur: sqlite3.Cursor, username: str, xp: int, level: int
+    ) -> None:
+
+        user_id = db_tools.get_user_id(cur=cur, username=username)
+        cur.execute(
+            """
+            UPDATE levels
+            SET xp=?,
+                level=?
+            WHERE
+                user_id=?
+            """,
+            (xp, level, user_id),
+        )
+        return
+
     def get_user_credentials_rows(
         cur: sqlite3.Cursor,
     ):  # -> list[tuple[int, str, str]]
@@ -129,10 +146,7 @@ class db_tools:
         ).fetchall()
 
     def add_reward(
-        cur: sqlite3.Cursor,
-        username: str,
-        reward_level: int,
-        reward: str
+        cur: sqlite3.Cursor, username: str, reward_level: int, reward: str
     ) -> None:
         user_id = db_tools.get_user_id(cur=cur, username=username)
         cur.execute(
