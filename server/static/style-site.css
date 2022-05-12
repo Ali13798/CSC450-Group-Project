@@ -561,8 +561,8 @@ fill: none;
 stroke: url(#GradientColor);
 stroke-width: 20px;
 stroke-dasharray: 472;
-stroke-dashoffset: 472;
-animation: anim 2s linear forwards;
+stroke-dashoffset: 10;
+/* animation: anim 2s linear forwards; */
 }
 
 svg

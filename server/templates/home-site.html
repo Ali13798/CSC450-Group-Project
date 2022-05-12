@@ -60,7 +60,6 @@
 <!-- End Progress Buttons -->
 
 <!-- Start EXP Bar -->
-        <!-- Do and then adjust for the fancy light effects -->
 
 <div class = progWheel>
     <div class = "outer">
@@ -76,12 +75,27 @@
         <linearGradient id="GradientColor">
             <stop offset="0%" stop-color="#013236" /> <!-- #14ffe9 // blue : #ffeb3b // yellow : #8317ff // purple : #ff17f7 // pink -->
             <stop offset="100%" stop-color="#ffbe30" />
-
-            <!--<stop offset="51%" stop-color="#fff" />
-            <stop offset="100%" stop-color="#fff" /> -->
         </linearGradient>
         </defs>
         <circle cx="80" cy="80" r="70" stroke-linecap="round" />
 </svg>
+
+<script>
+    // get the xp
+    // determine percentage out of 500
+    // set circle stroke-dashoffset to that value
+    xp = document.getElementById("number").innerHTML;
+    xp = 999;
+    if (xp == 0){
+        amount = 500;
+    }else{
+        prog = parseInt(xp) / 1000; //progress to next level
+        relPerc = (prog * 472); //prog relative to amount for circle
+        amount = 472 - relPerc; //amount for the circle is inversely related
+                                // 0 == full, 500 == empty;
+    }
+    circle = document.getElementsByTagName("circle")[0];
+    circle.style.strokeDashoffset = amount;
+</script>
 
 {% endblock body %}
