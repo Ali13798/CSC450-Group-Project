@@ -27,7 +27,7 @@ def index():
         cur_xp, cur_level = db_tools.get_user_xp_level(cur=cur, username=name)
 
     title = get_Title(cur_level=cur_level)
-    next_title = get_Title(cur_level=9)
+    next_title = get_Title(cur_level=cur_level + 5)
     arc = cur_xp / 1000
 
     return render_template(
