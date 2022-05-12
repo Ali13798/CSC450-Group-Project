@@ -7,7 +7,7 @@ var pin = {};
 var popCont, timerDiv, custSessionInputs, textarea, messages, healthyMsg, userInfoInput, displayEnterPin;
 //Buttons
 var infoBtn, save, radioButtons, beginButton, endButton, optionsBtn, popWebsites, pauseBtn, nextStep, userInfoInput, parentBtn, validationP;
-var healthyMessage = "<br><br>Healthy Break Tips: <br>-Drink water <br>-Have some fruit as a snack <br>-Get up and stretch <br>-Some light exercise";
+var healthyMessage = "<br><br>Healthy Break Tips: <br>Drink water <br>Have some fruit as a snack <br>Get up and stretch <br>Some light exercise";
 
 //Clicking on the button starts the blocking session
 document.addEventListener("DOMContentLoaded", () => {
@@ -457,7 +457,6 @@ document.addEventListener("DOMContentLoaded", () => {
     for (var inputIndex = 0; inputIndex < inputs.length; inputIndex++) {
         inputs[inputIndex].addEventListener('change', function validateCustInputs(e) {
             //set separate values for keeping the custom timer for later use
-            // if (e.target && e.target.matches("input[type='number']")) {
             var studyMinCust = document.getElementById("studyMin").value;
             var shortBkMinCust = document.getElementById("shortBkMin").value;
             var cycleNumCust = document.getElementById("cycleNum").value;

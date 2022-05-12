@@ -4,14 +4,10 @@ body {
     width: 600px;
 }
 
-/* #PgTitle{
-    margin-left: 2%;
-} */
 
 #popupContainer {
     width: 100%;
     height: 100%;
-    /* font-size: 15px; */
     color: white;
 }
 
@@ -28,14 +24,12 @@ body {
 }
 
 #healthy {
-    /* text-align: left; */
     display: inline-block;
 }
 
 #messages,
 #healthy {
     margin: 0;
-    /* font-size: 20px; */
 }
 
 #pinValidaionDiv {
@@ -48,13 +42,7 @@ body {
 
 
 body {
-    /* position: absolute; */
-    /* text-align: center; */
-    /* margin-left: 10em; */
-    /* padding: 0; */
     font-family: 'Comfortaa', sans-serif;
-    /* box-sizing: border-box; */
-    /* background: #808080; */
     background-image: url(bg3.jpg);
     background-size: cover;
 }
@@ -62,8 +50,6 @@ body {
 h3 {
     font-family: 'Michroma', sans-serif;
     color: #ffbe30;
-    /* text-align: center; */
-    /* margin-left: -1em; */
 }
 
 #timerTable {
@@ -81,53 +67,23 @@ td {
 }
 
 #timerOptions {
-    /* margin-left: 1em;
-    margin-right: 1em; */
     text-align: left;
 }
 
-/* h3 {
-    color: #ffbe30;
-    font-family:'Aquire', sans-serif;
-} */
 
-/* #opt1,
-#opt2,
-#opt3,
-#cust {
-    margin-top: 1em;
-} */
 
 
 /* START buttons*/
 #beginSession {
-    /* color: cyan;
-    font-family:'Michroma', sans-serif;
-    background-color: rgb(58, 1, 122);
-    text-align: left;
-    /* margin-left: 2.5em; */
-    /* position: absolute; */
-    /* left: 0%; */
-    /* padding-top: 3em; */
-    /* margin-top: 10%;
-    margin-left: 6%;
-    float: left;  */
-
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
-    /* text-align: left;
-    margin-left: -1%;
-    margin-top: 10%; */
 }
 
 #pauseBtn {
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
-    /* text-align: left;
-    margin-top: 0%;
-    margin-left: -1%; */
 }
 
 
@@ -136,13 +92,6 @@ td {
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
-    /* text-align: left;
-    margin-left: 2.5em; */
-    /* position: absolute;
-    left: 0%; */
-    /* padding-top: 3em; */
-    /* margin-top: 5%;
-    margin-left: 35%; */
 }
 
 #save,
@@ -151,8 +100,6 @@ td {
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
-    /* margin-bottom: 10px;
-    margin-right: 80%; */
 }
 
 #popWebsites, 
@@ -161,125 +108,74 @@ td {
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
-    /* margin-bottom: 10px;
-    margin-left: 15%; */
 }
-/* #save, 
-#editbtn{
-    margin-left: 40%;
-} */
 
-/* #pinValidBtn, 
-#pinValidCancelBtn{
-    margin-top: 10%;
-    margin-left: 25%;
-} */
 
 #endSession {
     display: none;
-    /* same as begin btn */
     color: rgb(255, 255, 255);
     font-family: 'Michroma', sans-serif;
     background-color: #137575cc;
-    /* margin-left: -1%;
-    margin-top: 2%; */
 }
 
 #websiteBtn {
     font-family: 'Michroma', sans-serif;
-    /* left: 0%; */
     color: rgb(255, 255, 255);
     background-color: #137575cc;
-    /* text-align: left;
-    margin-top: 5%;
-    margin-left: 31%; */
 
 }
 #createLoginBtn{
     font-family: 'Michroma', sans-serif;
     color: rgb(255, 255, 255);
     background-color: #137575cc;
-    /* text-align: left; */
     
     
 }
-/* #createLoginForm{
-    margin-top: 10%;
-    margin-left: 25.5%;
-} */
 
 #optionsBtn {
-    /* padding-top: 11em; */
     font-family: 'Michroma', sans-serif;
-    /* left: 0%; */
     color: rgb(255, 255, 255);
     background-color: #137575cc;
-    /* text-align: left;
-    margin-left: 28%;
-    margin-top: 5%; */
-    /* margin-left: -88%; */
 }
 
 #parentModeBtn {
     font-family: 'Michroma', sans-serif;
-    /* left: 0%; */
     color: rgb(255, 255, 255);
-    /* position: absolute; */
     background-color: #137575cc;
-    /* text-align: center;
-    margin-left: 25%;
-    margin-top: 5%;
-    margin-right: 15%;
-    margin-bottom: 5%; */
 }
 
 input[type=submit] {
-    /* margin-left: -10%; */
     font-family: 'Michroma', sans-serif;
     color: rgb(255, 255, 255);
-    /* position: absolute; */
     background-color: #137575cc;
 }
 
 #buttonInfo {
-    /* margin-left: 40%; */
     font-family: 'Michroma', sans-serif;
     color: rgb(255, 255, 255);
-    /* position: absolute; */
     background-color: #137575cc;
 }
 
 #validation {
-    /* margin-left: 30%;
-    margin-top: 5%; */
     font-family: 'Michroma', sans-serif;
     color: rgb(255, 255, 255);
-    /* position: absolute; */
     background-color: #137575cc;
-    /* padding: 3%; */
 }
 
 #parentInput {
     display: none;
-    /* margin-left: 15%; */
 }
 
 #pinValidaionDiv {
     display: none;
-    /* margin-left: 15%;
-    margin-top: -25%; */
 }
 
 #parentInputForm, #pinValidaionForm {
     display: inline-block;
-    /* padding: 15px 25px; */
-    /* font-size: 12px; */
     cursor: pointer;
-    /* text-align: left; */
     text-decoration: none;
     outline: none;
     border: none;
-    /* margin-left: 5%; */
 }
 
 #parentInputP1,
@@ -291,7 +187,6 @@ input[type=submit] {
 #pinVal3,
 #pinVal4{
     margin: 0 10px;
-    /* padding: 0.5rem; */
     border: 1px solid #333;
     width: 80px;
     height: 80px;
@@ -319,21 +214,11 @@ input[type=submit],
     padding: 15px 25px;
     font-size: 14px;
     cursor: pointer;
-    /* text-align: left; */
     text-decoration: none;
     outline: none;
     border: none;
 }
 
-/* #beginSession,
-#websiteBtn,
-#optionsBtn,
-#parentModeBtn,
-#buttonInfo,
-input[type=submit],
-#popWebsites{
-    display: block;
-} */
 
 #validation:hover,
 #beginSession:hover,
@@ -373,11 +258,9 @@ input[type=submit]:active,
 /* RADIO BUTTONS */
 
 input[type="radio"] {
-    /* position: relative; */
     width: 50px;
     height: 20px;
     margin: 5px;
-    /* margin-bottom: 1em; */
     padding-top: 10px;
     background: #fff;
     -webkit-appearance: none;
@@ -396,10 +279,6 @@ input[type="radio"]:checked {
 }
 
 input[type="radio"]::before {
-    /* content: ''; */
-    /* position: relative;
-    top: 0px;
-    left: 0; */
     width: 40px;
     height: 20px;
     background: linear-gradient(to top, #000, #555);
@@ -409,26 +288,13 @@ input[type="radio"]::before {
     transition: 0.5s;
 }
 
-
-input[type="radio"]:checked::before {
-    /* position: relative;
-    left: 20px; */
-}
-
 input[type="radio"]::after {
-    /* content: '' */
-    /* position: relative;
-    right: 65px;
-    top: calc(50% - 2px);
-    width: 4px;
-    height: 4px; */
     border-radius: 50%;
     background: #555;
     transition: 0.8s;
 }
 
 input[type="radio"]:checked::after {
-    /* left: calc(65px - 20px); */
     background: #ffbe30;
     box-shadow: 0 0 5px #ffbe30,
         0 0 15px #ffbe30,
