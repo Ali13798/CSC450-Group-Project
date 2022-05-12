@@ -166,10 +166,32 @@ def get_Title(cur_level: int) -> str:
         49: "God-King",
     }
 
+    n = 0
+
     if cur_level in new_levels.keys():
         n = cur_level
+    
     else:
-        n = 4
+        # loop through keys
+        keyList = list(new_levels.keys())
+
+        if cur_level < keyList[0]:
+            n = keyList[0]
+        else:
+
+            k = 0
+            for k in range(0, len(keyList)):
+
+                if k == len(keyList) - 1: # if at the end of the list
+                    if n == 0: #is unset still
+                        n = keyList[len(keyList)-1]
+                    pass
+                
+                else:
+                    if cur_level > keyList[k] and cur_level < keyList[k + 1]:
+                        
+                        n = keyList[k]
+                
     return new_levels[n]
 
 
