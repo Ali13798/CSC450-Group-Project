@@ -19,22 +19,20 @@
 </div>
 
 <!-- End Welcome User -->
-        <div class = "reward_forms">
-            <h3>Input Level</h3>
-            <form action="">
+    <div>
+        <form action="/addReward" method="POST">
+            <div class = "reward_forms">
+                <h3>Input Level</h3>
                 <textarea cols = "20" rows = "1" name="reward_level"></textarea>
-                <br />
-                <!-- <input type="submit" value="Add reward" /> -->
-            </form>
-        </div>
-        <div class="reward_text_forms">
-            <h3>Input Reward</h3>
-            <form action="">
+            </div>
+            <div class="reward_text_forms">
+                <h3>Input Reward</h3>
                 <textarea cols = "20" rows = "1" name="reward_text"></textarea>
-                <br /> <br/>
-                <input class="addReward" type="submit" value="Add reward" />
-            </form>
-        </div>
+            </div>
+            <br /> <br/>
+            <input class="addReward" type="submit" value="Add reward" />
+        </form>
+    </div>
 <!-- End Input-->
 
 <!-- Start Progress Buttons -->

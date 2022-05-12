@@ -28,7 +28,7 @@ def index():
 
     title = get_Title(cur_level=cur_level)
     next_title = get_Title(cur_level=cur_level + 5)
-    arc = cur_xp / 1000
+    # arc = cur_xp / 1000  #just send cur_xp, works just fine
 
     return render_template(
         "home-site.html",
@@ -135,22 +135,22 @@ def get_xp(click_count: int, key_count: int, time_studied: int) -> int:
     xp = (2 * click_count) + (3 * key_count) + (time_studied)
     return xp
 
+@app.route("/addReward", methods=["POST"])
+def add_reward():
+    username = flask.session.get("name")
+    reward_level = flask.request.form["reward_level"]
+    reward = flask.request.form["reward_text"]
+    print(username, reward_level, reward )
+    with sqlite3.connect(DB_PATH) as con:
+        cur = con.cursor()
+        db_tools.add_reward(
+            cur=cur,
+            username=username,
+            reward_level=reward_level,
+            reward=reward
+        )
 
-# def get_reward_level(request):
-#     reward_level = request.GET["reward_text"]
-
-#     return render(
-#         request,
-#         "home-site.html",
-#         {"Reward will be given at level: ": reward_level},
-#     )
-
-
-# def get_reward(request):
-#     reward = request.GET["reward_text"]
-
-#     return render(request, "home-site.html", {"Reward is: ": reward})
-
+    return flask.redirect(flask.url_for("index"))
 
 def get_Title(cur_level: int) -> str:
     new_levels = {

@@ -38,6 +38,14 @@ class db_tools:
             )"""
         )
 
+        cur.execute(
+            """CREATE TABLE IF NOT EXISTS rewards (
+                user_id         INTEGER PRIMARY KEY,
+                level           INTEGER,
+                reward          TEXT
+            )"""
+        )
+
     def add_user(cur: sqlite3.Cursor, name: str, pswd: str) -> None:
         if not name or not pswd:
             print("Error: Missing name or password.")
@@ -119,3 +127,19 @@ class db_tools:
         return cur.execute(
             "SELECT * FROM user_sessions WHERE user_id=?", (user_id,)
         ).fetchall()
+
+    def add_reward(
+        cur: sqlite3.Cursor,
+        username: str,
+        reward_level: int,
+        reward: str
+    ) -> None:
+        user_id = db_tools.get_user_id(cur=cur, username=username)
+        cur.execute(
+            """INSERT INTO rewards (
+                user_id,
+                level,
+                reward
+            ) VALUES (?, ?, ?)""",
+            (user_id, reward_level, reward),
+        )

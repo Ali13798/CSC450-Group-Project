@@ -1265,6 +1265,7 @@ h1, h3
 }
 
 .addReward{
+  position: absolute;
   text-align: center;
   padding: 5px 5px;
   letter-spacing: 2px;
@@ -1273,7 +1274,8 @@ h1, h3
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   background-color: #ffbe30;
- 
+  top: 90%;
+  left: 55%;
 }
 
 /* End Rewards */
