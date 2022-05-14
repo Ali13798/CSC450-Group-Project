@@ -41,8 +41,8 @@ def index():
             level = 1
         xp = int(calc_xp % LEVEL_UP_XP_REQ)
 
-        title = get_Title(cur_level=level)
-        next_title = get_Title(cur_level=level + 5)
+        title = get_title(cur_level=level)
+        next_title = get_title(cur_level=level + 5)
 
         db_tools.set_user_xp_level(cur=cur, username=name, xp=xp, level=level)
 
@@ -170,47 +170,22 @@ def add_reward():
     return flask.redirect(flask.url_for("index"))
 
 
-def get_Title(cur_level: int) -> str:
+def get_title(cur_level: int) -> str:
     new_levels = {
-        4: "Novice",
-        9: "Apprentice",
-        14: "Rising Star",
-        19: "Master",
-        24: "Grandmaster",
-        29: "Chieftain",
-        34: "Demigod",
-        39: "Deity",
-        44: "Titan",
-        49: "God-King",
+        0: "Novice",
+        5: "Apprentice",
+        10: "Rising Star",
+        15: "Master",
+        20: "Grandmaster",
+        25: "Chieftain",
+        30: "Demigod",
+        35: "Deity",
+        40: "Titan",
+        45: "God-King",
     }
 
-    n = 0
-
-    if cur_level in new_levels.keys():
-        n = cur_level
-
-    else:
-        # loop through keys
-        keyList = list(new_levels.keys())
-
-        if cur_level < keyList[0]:
-            n = keyList[0]
-        else:
-
-            k = 0
-            for k in range(0, len(keyList)):
-
-                if k == len(keyList) - 1:  # if at the end of the list
-                    if n == 0:  # is unset still
-                        n = keyList[len(keyList) - 1]
-                    pass
-
-                else:
-                    if cur_level > keyList[k] and cur_level < keyList[k + 1]:
-
-                        n = keyList[k]
-
-    return new_levels[n]
+    key = next(val for val in new_levels.keys() if cur_level < val) - 5
+    return new_levels[key]
 
 
 @app.route("/stats")
